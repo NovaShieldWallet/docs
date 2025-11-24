@@ -3,27 +3,34 @@ title: 'Initiate Private SOL Transfer'
 openapi: 'POST /privacy-cash/send'
 ---
 
-**SOL ONLY** - No tokens supported. Send SOL with complete privacy.
+**SOL ONLY** - Send SOL with complete privacy and automatic refund protection.
+
+## Auto-Refund Protection
+
+If transfer fails, your SOL is **automatically refunded** to your refund address (minus network fees). No manual intervention needed.
 
 ## How It Works
 
-1. Call endpoint with amount and recipient
-2. Receive secure address
-3. Send SOL to that address (you keep your private key!)
+1. Call endpoint with amount, recipient, and optional refund address
+2. Receive temp wallet address
+3. Send SOL to temp wallet (you keep your private key!)
 4. Transfer auto-executes when funded (checks every 2s)
-5. Address expires in 30 minutes
+5. If fails: Auto-refunds to your address
+6. Temp wallet expires in 10 minutes
 
 ## Request
 
 ```json
 {
-  "amount": 0.05,
+  "amount": 0.1,
   "toAddress": "RECIPIENT_ADDRESS",
-  "network": "mainnet-beta"
+  "network": "mainnet",
+  "refundAddress": "YOUR_REFUND_ADDRESS"
 }
 ```
 
-**You NEVER send your private key!**
+**Required:** `amount`, `toAddress`  
+**Optional:** `network` (default: devnet), `refundAddress` (recommended)
 
 ## Response
 
@@ -31,28 +38,34 @@ openapi: 'POST /privacy-cash/send'
 {
   "success": true,
   "data": {
-    "sendTo": "SECURE_ADDRESS",
     "transferId": "transfer-123",
-    "expiresAt": 1700001800
+    "tempWallet": "TEMP_WALLET_ADDRESS",
+    "amount": 0.1,
+    "toAddress": "RECIPIENT_ADDRESS",
+    "refundAddress": "YOUR_REFUND_ADDRESS",
+    "expiresAt": "2024-01-01T12:00:00Z",
+    "network": "mainnet"
   },
-  "message": "Send SOL to 'sendTo' address. Transfer executes automatically when funded."
+  "message": "Send SOL to tempWallet. Auto-executes when funded. Auto-refunds on failure."
 }
 ```
 
 ## Next Steps
 
-1. Send SOL to the `sendTo` address
-2. Use `transferId` to check status
-3. Transfer completes automatically
+1. Send SOL to `tempWallet` address
+2. Check status with `transferId`
+3. Transfer completes automatically OR refunds on failure
 
-## Fees & Minimums
+## Details
 
-- **Minimum**: 0.04 SOL (recipient gets 0.03 after fees)
-- **Total fee**: 1% + 0.006 SOL
-- **Expiry**: 30 minutes
+- **Minimum**: 0.01 SOL
+- **Expiry**: 10 minutes
+- **Auto-refund**: Yes (minus network fees)
+- **SOL ONLY**: No tokens
 
 ## Important
 
-⚠️ **SOL ONLY** - Do not send tokens to address  
-⚠️ **30 minute expiry** - Funds returned if not used  
-✅ **No private key needed** - You remain in control
+✅ **Auto-refund on failure** - Your funds are protected  
+✅ **No private key needed** - You stay in control  
+⚠️ **10 minute expiry** - Send SOL within this time  
+⚠️ **SOL ONLY** - Do not send tokens

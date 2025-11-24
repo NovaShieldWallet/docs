@@ -3,11 +3,11 @@ title: 'Check Transfer Status'
 openapi: 'GET /privacy-cash/status/{transferId}'
 ---
 
-Check the status of a privacy cash transfer using the `transferId` from `/privacy-cash/send`.
+Check the status of a privacy cash transfer with detailed refund information.
 
 ## Parameters
 
-- **transferId** (path, required) - Transfer ID from send endpoint
+- **transferId** (path, required) - Transfer ID from `/privacy-cash/send`
 
 ## Response
 
@@ -15,11 +15,16 @@ Check the status of a privacy cash transfer using the `transferId` from `/privac
 {
   "success": true,
   "data": {
-    "signature": "5J7x...",
+    "transferId": "transfer-123",
     "status": "completed",
-    "amount": 50000000,
+    "tempWallet": "TEMP_WALLET_ADDRESS",
+    "amount": 0.1,
     "recipient": "RECIPIENT_ADDRESS",
-    "timestamp": 1700000000
+    "signature": "5J7x...",
+    "refundAddress": "YOUR_REFUND_ADDRESS",
+    "expiresAt": "2024-01-01T12:00:00Z",
+    "createdAt": "2024-01-01T11:50:00Z",
+    "completedAt": "2024-01-01T11:51:30Z"
   }
 }
 ```
@@ -27,15 +32,30 @@ Check the status of a privacy cash transfer using the `transferId` from `/privac
 ## Status Values
 
 | Status | Description |
-|--------|-------------|
-| `pending` | Temp wallet created, awaiting funds |
-| `funded` | Temp wallet received SOL, processing transfer |
-| `completed` | Transfer successfully delivered |
-| `failed` | Transfer failed |
-| `expired` | 30 minute timeout reached, funds returned |
+| ------ | ----------- |
+| pending | Temp wallet created, awaiting SOL |
+| funded | SOL received, processing transfer |
+| completed | Transfer successful |
+| failed-refunded | Transfer failed, SOL automatically refunded |
+| failed | Transfer failed, refund also failed |
+| expired | 10 minute timeout, funds returned |
+
+## Refund Information
+
+When `status` is `failed-refunded`, response includes:
+
+```json
+{
+  "refunded": true,
+  "refundSignature": "ABC123...",
+  "refundAmount": 0.099,
+  "refundAddress": "YOUR_REFUND_ADDRESS",
+  "error": "Recipient address invalid"
+}
+```
 
 ## Transfer Flow
 
-1. **pending** - Initial state, send SOL to temp wallet
-2. **funded** - SOL received, auto-executing transfer
-3. **completed** - Done! Recipient has funds
+1. **pending** → Send SOL to temp wallet
+2. **funded** → Processing transfer
+3. **completed** → Done! OR **failed-refunded** → Auto-refunded

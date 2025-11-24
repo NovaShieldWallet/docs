@@ -215,43 +215,49 @@
     "/privacy-cash/send": {
       "post": {
         "tags": ["Privacy Cash"],
-        "summary": "Initiate private SOL transfer (SOL ONLY)",
-        "description": "Initiate private SOL transfer. User NEVER sends private key. API creates secure address - user sends SOL there. Queue auto-executes transfer when funded (checks every 2 seconds). Address expires in 30 minutes. SOL ONLY - no tokens. Minimum: 0.04 SOL (recipient gets 0.03 after fees).",
+        "summary": "Initiate private SOL transfer with auto-refund (SOL ONLY)",
+        "description": "Initiate private SOL transfer. User NEVER sends private key. API creates secure temp wallet - user sends SOL there. Queue auto-executes transfer when funded (checks every 2 seconds). If transfer fails, SOL is AUTOMATICALLY REFUNDED to refundAddress or sender minus network fees. Address expires in 10 minutes. SOL ONLY - no tokens. Minimum: 0.01 SOL.",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["amount"],
+                "required": ["amount", "toAddress"],
                 "properties": {
                   "amount": { 
                     "type": "number", 
-                    "minimum": 0.04,
-                    "description": "Amount in SOL (minimum 0.04, recipient gets 0.03 after fees). SOL ONLY." 
+                    "minimum": 0.01,
+                    "description": "Amount in SOL (minimum 0.01). SOL ONLY." 
                   },
                   "toAddress": {
                     "type": "string",
-                    "description": "Recipient wallet address"
+                    "description": "Recipient wallet address (where private transfer goes)"
                   },
                   "network": {
                     "type": "string",
-                    "enum": ["devnet", "mainnet-beta"],
-                    "default": "devnet"
+                    "enum": ["devnet", "mainnet"],
+                    "default": "devnet",
+                    "description": "Solana network to use"
+                  },
+                  "refundAddress": {
+                    "type": "string",
+                    "description": "OPTIONAL: Where to send SOL if transfer fails. If not provided, auto-detects sender address. Recommended to always specify."
                   }
                 }
               },
               "example": {
-                "amount": 0.05,
+                "amount": 0.1,
                 "toAddress": "RECIPIENT_ADDRESS",
-                "network": "devnet"
+                "network": "devnet",
+                "refundAddress": "YOUR_REFUND_ADDRESS"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Transfer initiated - send SOL to provided address",
+            "description": "Transfer initiated - send SOL to temp wallet address",
             "content": {
               "application/json": {
                 "schema": {
@@ -261,14 +267,30 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "sendTo": { "type": "string", "description": "Address where user sends SOL (SOL ONLY)" },
                         "transferId": { "type": "string", "description": "Transfer ID for status checks" },
-                        "expiresAt": { "type": "integer", "description": "Unix timestamp when wallet expires (30 minutes)" }
+                        "tempWallet": { "type": "string", "description": "Temporary wallet address - SEND SOL HERE" },
+                        "amount": { "type": "number", "description": "Amount in SOL" },
+                        "toAddress": { "type": "string", "description": "Recipient address" },
+                        "refundAddress": { "type": "string", "description": "Refund address if transfer fails" },
+                        "expiresAt": { "type": "string", "format": "date-time", "description": "When temp wallet expires (10 minutes)" },
+                        "network": { "type": "string", "description": "Network (devnet/mainnet)" }
                       }
                     },
-                    "message": { "type": "string", "description": "Instruction: Send SOL to 'sendTo' address. Transfer executes automatically when funded." }
+                    "message": { 
+                      "type": "string", 
+                      "description": "Instructions: Send SOL to tempWallet. Auto-executes when funded. Auto-refunds on failure." 
+                    },
+                    "timestamp": { "type": "string", "format": "date-time" }
                   }
                 }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (amount too low, invalid addresses, etc.)",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/responses/BadRequest" }
               }
             }
           }
@@ -279,7 +301,7 @@
       "get": {
         "tags": ["Privacy Cash"],
         "summary": "Check transfer status",
-        "description": "Check status of privacy cash transfer. Returns: pending (awaiting SOL), funded (SOL received, processing), completed (transfer done), failed, expired (30min timeout).",
+        "description": "Check status of privacy cash transfer. Returns: pending (awaiting SOL), funded (SOL received, processing), completed (transfer successful), failed-refunded (transfer failed, SOL refunded), failed (transfer failed, refund failed), expired (10min timeout).",
         "parameters": [
           {
             "name": "transferId",
@@ -301,18 +323,38 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "signature": { "type": "string" },
+                        "transferId": { "type": "string" },
                         "status": { 
                           "type": "string", 
-                          "enum": ["pending", "funded", "completed", "failed", "expired"] 
+                          "enum": ["pending", "funded", "completed", "failed-refunded", "failed", "expired"],
+                          "description": "Transfer status. failed-refunded means SOL was automatically returned." 
                         },
-                        "amount": { "type": "integer" },
-                        "recipient": { "type": "string" },
-                        "timestamp": { "type": "integer" }
+                        "tempWallet": { "type": "string", "description": "Temporary wallet address" },
+                        "amount": { "type": "number", "description": "Amount in SOL" },
+                        "recipient": { "type": "string", "description": "Recipient address" },
+                        "signature": { "type": "string", "description": "Transaction signature (if completed)" },
+                        "currentBalance": { "type": "number", "description": "Current temp wallet balance in SOL (if pending)" },
+                        "refunded": { "type": "boolean", "description": "Whether SOL was refunded (if failed)" },
+                        "refundSignature": { "type": "string", "description": "Refund transaction signature (if refunded)" },
+                        "refundAmount": { "type": "number", "description": "Amount refunded in SOL (if refunded)" },
+                        "refundAddress": { "type": "string", "description": "Address where SOL was refunded (if refunded)" },
+                        "error": { "type": "string", "description": "Error message (if failed)" },
+                        "expiresAt": { "type": "string", "format": "date-time" },
+                        "createdAt": { "type": "string", "format": "date-time" },
+                        "completedAt": { "type": "string", "format": "date-time" }
                       }
-                    }
+                    },
+                    "timestamp": { "type": "string", "format": "date-time" }
                   }
                 }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/responses/ServerError" }
               }
             }
           }
