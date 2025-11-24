@@ -96,18 +96,18 @@
                 "$ref": "#/components/schemas/TokenSecurityRequest"
               },
               "examples": {
-                "solana": {
-                  "summary": "Solana USDC",
-                  "value": {
-                    "chainId": "501",
-                    "contractAddresses": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
-                  }
-                },
                 "ethereum": {
                   "summary": "Ethereum USDT",
                   "value": {
                     "chainId": "1",
                     "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
+                  }
+                },
+                "solana": {
+                  "summary": "Solana USDC",
+                  "value": {
+                    "chainId": "501",
+                    "contractAddresses": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
                   }
                 }
               }
@@ -148,8 +148,8 @@
                 "$ref": "#/components/schemas/TokenAnalyzeRequest"
               },
               "example": {
-                "chainId": "501",
-                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                "chainId": "1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7"
               }
             }
           }
@@ -191,8 +191,8 @@
                 "$ref": "#/components/schemas/TokenAnalyzeRequest"
               },
               "example": {
-                "chainId": "501",
-                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                "chainId": "1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7"
               }
             }
           }
@@ -231,8 +231,8 @@
                 "$ref": "#/components/schemas/RugCheckRequest"
               },
               "example": {
-                "chainId": "501",
-                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                "chainId": "1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7"
               }
             }
           }
@@ -271,8 +271,8 @@
                 "$ref": "#/components/schemas/AddressSecurityRequest"
               },
               "example": {
-                "chainId": "501",
-                "address": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
+                "chainId": "1",
+                "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
               }
             }
           }
@@ -311,8 +311,8 @@
                 "$ref": "#/components/schemas/AddressSecurityRequest"
               },
               "example": {
-                "chainId": "501",
-                "address": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
+                "chainId": "1",
+                "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
               }
             }
           }
@@ -429,7 +429,7 @@
                 "$ref": "#/components/schemas/SignatureSecurityRequest"
               },
               "example": {
-                "chainId": "501",
+                "chainId": "1",
                 "data": "0xa9059cbb0000000000000000000000001234567890123456789012345678901234567890"
               }
             }
@@ -473,15 +473,15 @@
                   {
                     "type": "token",
                     "params": {
-                      "chainId": "501",
-                      "contractAddresses": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
+                      "chainId": "1",
+                      "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
                     }
                   },
                   {
                     "type": "address",
                     "params": {
-                      "chainId": "501",
-                      "address": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
+                      "chainId": "1",
+                      "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
                     }
                   }
                 ]
@@ -548,8 +548,8 @@
         "properties": {
           "chainId": {
             "type": "string",
-            "description": "Blockchain chain ID (501=Solana, 1=Ethereum, 56=BSC, 137=Polygon, etc.)",
-            "example": "501"
+            "description": "Blockchain chain ID (1=Ethereum, 56=BSC, 137=Polygon, 501=Solana, etc.)",
+            "example": "1"
           },
           "contractAddresses": {
             "type": "array",
@@ -557,7 +557,7 @@
               "type": "string"
             },
             "description": "Array of token contract addresses to check",
-            "example": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
+            "example": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
           }
         }
       },
@@ -568,12 +568,12 @@
           "chainId": {
             "type": "string",
             "description": "Blockchain chain ID",
-            "example": "501"
+            "example": "1"
           },
           "contractAddress": {
             "type": "string",
             "description": "Token contract address",
-            "example": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+            "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
           }
         }
       },
@@ -584,7 +584,7 @@
           "chainId": {
             "type": "string",
             "description": "Blockchain chain ID",
-            "example": "501"
+            "example": "1"
           },
           "contractAddress": {
             "type": "string",
@@ -600,12 +600,12 @@
           "chainId": {
             "type": "string",
             "description": "Blockchain chain ID",
-            "example": "501"
+            "example": "1"
           },
           "address": {
             "type": "string",
             "description": "Wallet address to check",
-            "example": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
+            "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
           }
         }
       },
@@ -640,7 +640,7 @@
           "chainId": {
             "type": "string",
             "description": "Blockchain chain ID",
-            "example": "501"
+            "example": "1"
           },
           "data": {
             "type": "string",
