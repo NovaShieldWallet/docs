@@ -20,12 +20,6 @@
         ]
       },
       {
-        "group": "API Reference",
-        "pages": [
-          "api-reference/introduction"
-        ]
-      },
-      {
         "group": "Security API",
         "pages": [
           {
