@@ -27,9 +27,32 @@
     {
       "name": "Transaction",
       "description": "Transaction simulation"
+    },
+    {
+      "name": "Privacy Cash",
+      "description": "Private SOL transfers (minimum 0.03 SOL)"
     }
   ],
   "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Service healthy",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "healthy",
+                  "version": "2.0.0",
+                  "mode": "local-first"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/token/security/{mint}": {
       "get": {
         "tags": ["Token Security"],
@@ -185,6 +208,121 @@
         "responses": {
           "200": {
             "description": "Simulation result"
+          }
+        }
+      }
+    },
+    "/privacy-cash/send": {
+      "post": {
+        "tags": ["Privacy Cash"],
+        "summary": "Send private SOL transfer",
+        "description": "Send SOL privately. Fees: Privacy Cash (0.35% + 0.006 SOL) + NovaShield (0.65%) = Total 1% + 0.006 SOL. Minimum recipient amount: 0.03 SOL after fees. Auto-deposits, auto-withdraws, saves keys to Firebase for recovery.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["fromPrivateKey", "toAddress", "amount"],
+                "properties": {
+                  "fromPrivateKey": { 
+                    "type": "string", 
+                    "description": "Sender wallet private key (JSON array string)" 
+                  },
+                  "toAddress": { 
+                    "type": "string", 
+                    "description": "Recipient wallet address" 
+                  },
+                  "amount": { 
+                    "type": "number", 
+                    "minimum": 0.04,
+                    "description": "Amount in SOL to send (minimum ~0.04 to ensure recipient gets 0.03 after fees)" 
+                  },
+                  "network": {
+                    "type": "string",
+                    "enum": ["devnet", "mainnet-beta"],
+                    "description": "Network to use (default: devnet for testing)"
+                  }
+                }
+              },
+              "example": {
+                "fromPrivateKey": "[1,2,3,...]",
+                "toAddress": "RECIPIENT_WALLET_ADDRESS",
+                "amount": 0.05,
+                "network": "devnet"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Private transfer successful",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "signature": { "type": "string" },
+                        "amount": { "type": "integer" },
+                        "recipient": { "type": "string" },
+                        "txId": { "type": "string", "description": "Firebase tracking ID" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request or amount too low"
+          }
+        }
+      }
+    },
+    "/privacy-cash/status/{signature}": {
+      "get": {
+        "tags": ["Privacy Cash"],
+        "summary": "Check transaction status",
+        "description": "Check status of privacy cash transaction. Looks up in Firebase database.",
+        "parameters": [
+          {
+            "name": "signature",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Transaction signature"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "signature": { "type": "string" },
+                        "status": { 
+                          "type": "string", 
+                          "enum": ["pending", "completed", "failed"] 
+                        },
+                        "amount": { "type": "integer" },
+                        "recipient": { "type": "string" },
+                        "timestamp": { "type": "integer" }
+                      }
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }

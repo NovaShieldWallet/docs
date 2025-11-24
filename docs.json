@@ -19,9 +19,21 @@
         ]
       },
       {
+        "group": "API Reference",
+        "pages": [
+          "api-reference/introduction"
+        ]
+      },
+      {
+        "group": "Privacy Cash API",
+        "pages": [
+          "api-reference/privacy-cash/send",
+          "api-reference/privacy-cash/status"
+        ]
+      },
+      {
         "group": "Security API",
         "pages": [
-          "api-reference/introduction",
           {
             "group": "Token Security",
             "pages": [

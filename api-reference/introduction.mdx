@@ -1,17 +1,22 @@
 ---
 title: 'Quick Start'
-description: 'Get started with the NovaShield Security API'
+description: 'Get started with NovaShield APIs'
 ---
 
-## NovaShield Security API
+## NovaShield APIs
 
-Comprehensive Solana token security scanning with local-first detection. Analyze tokens for rug pulls, detect honeypots, and protect users from phishing sites.
+**Security** - Detect rug pulls, honeypots, and phishing sites before your users get scammed.  
+**Privacy Cash** - Send SOL with zero trace. Complete privacy for sensitive transfers.
 
-Available as both an **API** for developers and integrated into the **[Nova iOS Wallet](/quickstart)** for end users.
+Both available as APIs and integrated into the **[Nova iOS Wallet](/quickstart)**.
 
-## Authentication
+## Core Features
 
-API endpoints are currently **open** and do not require authentication.
+**🛡️ Token Security** - AI-powered analysis catches scams before they happen  
+**🕵️ Honeypot Detection** - Verify tokens are actually tradeable  
+**🔒 Privacy Cash** - Untraceable SOL transfers (1% + 0.006 SOL fee)  
+**🎣 Phishing Protection** - Block typosquatting and fake sites  
+**🔮 Transaction Simulation** - Preview what transactions do before signing
 
 ## Base URL
 
@@ -19,49 +24,29 @@ API endpoints are currently **open** and do not require authentication.
 https://secure.novashield.space
 ```
 
-## Example Request
-
-Check a token for security risks:
+## Example: Check Token Security
 
 ```bash
-curl https://secure.novashield.space/token/security/HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump
+curl https://secure.novashield.space/token/security/MINT_ADDRESS
 ```
 
-## Example Response
+## Example: Send Private SOL
 
-```json
-{
-  "success": true,
-  "data": {
-    "overallScore": 15,
-    "riskLevel": "CRITICAL",
-    "verdict": "🚨 EXTREME RUG PULL RISK - DO NOT BUY!",
-    "canTrade": false,
-    "honeypot": { "isHoneypot": false, "canBuy": true, "canSell": true },
-    "authorities": { "freezeAuthority": null, "mintAuthority": null },
-    "liquidity": { "locked": false, "lpValue": 0 },
-    "holders": { "top10Concentration": 95, "totalHolders": 5 },
-    "aiAnalysis": {
-      "summary": "Critical risk token with extreme concentration",
-      "keyRisks": ["Extremely low holder count", "No liquidity"],
-      "recommendations": ["Do not trade this token"],
-      "confidence": 99
-    }
-  }
-}
+```bash
+curl -X POST https://secure.novashield.space/privacy-cash/send \
+  -H "Content-Type: application/json" \
+  -d '{
+    "fromPrivateKey": "[...]",
+    "toAddress": "RECIPIENT",
+    "amount": 0.05,
+    "network": "mainnet-beta"
+  }'
 ```
 
-## Key Response Fields
+## Authentication
 
-- **overallScore** - Security score (0-100, lower = more dangerous)
-- **riskLevel** - SAFE, LOW, MEDIUM, HIGH, or CRITICAL
-- **verdict** - Human-readable assessment
-- **canTrade** - Boolean recommendation
-- **aiAnalysis** - AI-powered insights with key risks and recommendations
+All endpoints are currently **open** - no API key required.
 
-## Available Endpoints
+## Get Started
 
-Explore the API endpoints in the sidebar:
-- **Token Security** - Comprehensive analysis, rug scores, honeypot detection, LP analysis
-- **Phishing Detection** - URL safety checks
-- **Transaction Simulation** - Preview transactions before signing
+Browse the endpoint documentation in the sidebar to integrate NovaShield into your app.

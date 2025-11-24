@@ -1,0 +1,32 @@
+---
+title: 'Check Transaction Status'
+openapi: 'GET /privacy-cash/status/{signature}'
+---
+
+Check the status of a privacy cash transaction.
+
+## Parameters
+
+- **signature** (path, required) - Transaction signature
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "signature": "5J7x...",
+    "status": "completed",
+    "amount": 50000000,
+    "recipient": "RECIPIENT_WALLET_ADDRESS",
+    "timestamp": 1700000000
+  }
+}
+```
+
+## Status Values
+
+- **pending** - Transaction processing
+- **completed** - Successfully delivered
+- **failed** - Transaction failed
+
