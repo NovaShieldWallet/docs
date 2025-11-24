@@ -19,24 +19,6 @@
         ]
       },
       {
-        "group": "iOS Wallet",
-        "pages": [
-          "ios/help-center",
-          "ios/private-cash",
-          "ios/network-fees",
-          "ios/transaction-status",
-          "ios/watch-wallet",
-          "ios/slippage",
-          "ios/price-impact",
-          "ios/token-verification",
-          "ios/staking",
-          "ios/perpetuals",
-          "ios/safari-extension",
-          "ios/tron-multisig-scam",
-          "ios/secret-phrase"
-        ]
-      },
-      {
         "group": "Security API",
         "pages": [
           "api-reference/introduction",
@@ -64,6 +46,24 @@
               "api-reference/transaction/simulate"
             ]
           }
+        ]
+      },
+      {
+        "group": "iOS Wallet",
+        "pages": [
+          "ios/help-center",
+          "ios/private-cash",
+          "ios/network-fees",
+          "ios/transaction-status",
+          "ios/watch-wallet",
+          "ios/slippage",
+          "ios/price-impact",
+          "ios/token-verification",
+          "ios/staking",
+          "ios/perpetuals",
+          "ios/safari-extension",
+          "ios/tron-multisig-scam",
+          "ios/secret-phrase"
         ]
       }
     ],
