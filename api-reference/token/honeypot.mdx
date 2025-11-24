@@ -1,0 +1,45 @@
+---
+title: 'Honeypot Detection'
+openapi: 'GET /token/honeypot/{mint}'
+---
+
+## Overview
+
+Detects if a Solana token is a honeypot - a scam where you can buy but cannot sell. This check simulates both buy and sell operations to verify the token is tradeable in both directions.
+
+## What is a Honeypot?
+
+A honeypot token allows purchases but prevents sales through:
+- Hidden transfer restrictions
+- Blacklist mechanisms
+- Excessive sell taxes (Solana tokens typically don't have taxes, but checks exist)
+- Contract logic that blocks sells
+
+## Use Cases
+
+- **Pre-purchase verification** - Ensure you'll be able to sell
+- **Scam detection** - Identify malicious tokens
+- **Wallet protection** - Prevent users from buying untradeable tokens
+
+## Response Fields
+
+- **isHoneypot** - Whether the token is detected as a honeypot
+- **canBuy** - Whether buy operations are possible
+- **canSell** - Whether sell operations are possible
+- **confidence** - Detection confidence level (0-100)
+
+## Interpreting Results
+
+| canBuy | canSell | isHoneypot | Verdict |
+|--------|---------|------------|---------|
+| ✅ | ✅ | false | Safe to trade |
+| ✅ | ❌ | true | 🚨 HONEYPOT - Do not buy! |
+| ❌ | ❌ | N/A | Token not tradeable |
+| ❌ | ✅ | false | Unusual - investigate further |
+
+## Important Notes
+
+- A `confidence` score below 80 suggests uncertain results
+- Always verify liquidity exists before trading
+- Some tokens may have legitimate restrictions (e.g., vesting)
+

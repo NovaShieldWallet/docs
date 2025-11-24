@@ -1,0 +1,62 @@
+---
+title: 'Holder Concentration Analysis'
+openapi: 'GET /token/bundled/{mint}'
+---
+
+## Overview
+
+Analyzes token holder distribution to detect concentration risks. High holder concentration is a major red flag indicating potential for coordinated dumps or rug pulls.
+
+## What is "Bundling"?
+
+Bundling refers to a common Solana scam tactic where a developer:
+1. Creates a token
+2. Buys the supply across multiple wallets (bundles)
+3. Makes it look like organic distribution
+4. Dumps all wallets simultaneously
+
+This endpoint detects such patterns.
+
+## Key Metrics Analyzed
+
+### Concentration Metrics
+- **Top 10 holders** - Percentage of supply held
+- **Top 20 holders** - Broader concentration view
+- **Gini coefficient** - Distribution inequality measure
+- **Effective holder count** - Adjusted for concentration
+
+### Warning Thresholds
+
+| Metric | Safe | Warning | Danger |
+|--------|------|---------|--------|
+| Top 10 holders | <30% | 30-50% | >50% |
+| Top 20 holders | <40% | 40-60% | >60% |
+| Unique holders | >1000 | 100-1000 | <100 |
+
+## Red Flags 🚨
+
+- **Few holders with large %** - 5 wallets holding 80%+ of supply
+- **Similar wallet ages** - All created around the same time
+- **Similar holding amounts** - Suspiciously even distribution
+- **Known bundler addresses** - Wallets linked to previous scams
+
+## Use Cases
+
+- **Pre-purchase screening** - Avoid concentrated tokens
+- **Market manipulation detection** - Identify pump & dump setups
+- **Due diligence** - Verify organic vs artificial distribution
+
+## Healthy Distribution Example
+
+A legitimate token typically shows:
+- ✅ Top 10 holders: 15-25%
+- ✅ Gradual concentration drop-off
+- ✅ 500+ unique holders
+- ✅ Mix of old and new wallet ages
+
+## Important Notes
+
+- Newly launched tokens naturally have higher concentration
+- Some legitimate tokens (DAOs, gaming) may have designed concentration
+- Always cross-reference with other security checks
+

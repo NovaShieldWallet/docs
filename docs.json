@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "NovaShield",
   "colors": {
-    "primary": "#EB7C0B",
-    "light": "#FFA03D",
-    "dark": "#C26209"
+    "primary": "#FF7A00",
+    "light": "#FF7A00",
+    "dark": "#FF7A00"
   },
   "backgroundDark": "#000000",
   "favicon": "/favicon.svg",
@@ -19,6 +19,24 @@
         ]
       },
       {
+        "group": "iOS Wallet",
+        "pages": [
+          "ios/help-center",
+          "ios/private-cash",
+          "ios/network-fees",
+          "ios/transaction-status",
+          "ios/watch-wallet",
+          "ios/slippage",
+          "ios/price-impact",
+          "ios/token-verification",
+          "ios/staking",
+          "ios/perpetuals",
+          "ios/safari-extension",
+          "ios/tron-multisig-scam",
+          "ios/secret-phrase"
+        ]
+      },
+      {
         "group": "Security API",
         "pages": [
           "api-reference/introduction",
@@ -27,9 +45,11 @@
             "group": "Token Security",
             "pages": [
               "api-reference/token/security",
-              "api-reference/token/analyze",
-              "api-reference/token/comprehensive",
-              "api-reference/token/rug-check"
+              "api-reference/token/rug-score",
+              "api-reference/token/honeypot",
+              "api-reference/token/lp",
+              "api-reference/token/bundled",
+              "api-reference/token/bundler-cluster"
             ]
           },
           {

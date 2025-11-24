@@ -1,0 +1,53 @@
+---
+title: 'Liquidity Pool Analysis'
+openapi: 'GET /token/lp/{mint}'
+---
+
+## Overview
+
+Analyzes the liquidity pools (LPs) associated with a Solana token. This endpoint provides insights into:
+
+- LP size and depth
+- LP lock status and duration
+- Number of liquidity pools
+- DEX distribution (Raydium, Orca, etc.)
+
+## Why LP Analysis Matters
+
+Liquidity pool health is critical for token safety:
+
+### Red Flags 🚨
+- **No LP locks** - Developer can rug pull by removing liquidity
+- **Short lock duration** - Lock expires soon, enabling rug pull
+- **Shallow liquidity** - High slippage, easy to manipulate
+- **Single small LP** - One person controls all liquidity
+
+### Green Flags ✅
+- **Long-term locks** - LP locked for months/years
+- **Multiple pools** - Distributed across DEXs
+- **Deep liquidity** - Large LP size relative to market cap
+- **Burned LP tokens** - Liquidity locked forever
+
+## Use Cases
+
+- **Safety checks** - Verify LP is locked before buying
+- **Price impact estimation** - Calculate potential slippage
+- **Market analysis** - Understand token's trading infrastructure
+
+## Key Metrics
+
+The response typically includes:
+- Total liquidity value (in SOL/USDC)
+- LP lock status and expiration
+- Distribution across DEXs
+- LP provider addresses
+- Lock percentages
+
+## Best Practices
+
+Before trading any token:
+1. ✅ Verify LP is locked (ideally >80% locked)
+2. ✅ Check lock duration (minimum 30 days recommended)
+3. ✅ Ensure adequate depth ($1K+ for small trades)
+4. ⚠️ Be cautious with unlocked or partially locked LPs
+

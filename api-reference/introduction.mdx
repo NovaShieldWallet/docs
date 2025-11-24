@@ -1,11 +1,13 @@
 ---
 title: 'API Introduction'
-description: 'Solana security scanner API. Check tokens for rug pulls, detect phishing sites, and simulate transactions.'
+description: 'Solana security scanner API with local-first detection and 10 security modules'
 ---
 
-## Welcome to NovaShield Security API
+## NovaShield Security API
 
-The NovaShield Security API provides comprehensive Solana security scanning. Detect scams, analyze tokens for rug pull risks, and protect users from phishing sites.
+The NovaShield Security API provides comprehensive Solana token security scanning with local-first detection. Analyze tokens for rug pulls, detect honeypots, and protect users from phishing sites.
+
+Available as both an **API** for developers and integrated into the **[Nova iOS Wallet](/quickstart)** for end users.
 
 <Card
   title="OpenAPI Specification"
@@ -17,78 +19,102 @@ The NovaShield Security API provides comprehensive Solana security scanning. Det
 
 ## Core Features
 
-Protect your users with real-time security analysis.
+Protect your users with real-time security analysis powered by 10 security modules.
 
 <CardGroup cols={2}>
   <Card
-    title="Rug Pull Detection"
-    icon="shield-exclamation"
-    href="/api-reference/token/rug-check"
-  >
-    Fast rug pull detection with clear verdicts. Best for pre-trade checks.
-  </Card>
-  <Card
-    title="Token Security"
-    icon="coins"
+    title="Complete Security Analysis"
+    icon="shield-check"
     href="/api-reference/token/security"
   >
-    Check Solana tokens for scams, honeypots, and malicious contracts.
+    Run all 10 security modules with AI-powered insights and comprehensive reports.
+  </Card>
+  <Card
+    title="Rug Pull Score"
+    icon="shield-exclamation"
+    href="/api-reference/token/rug-score"
+  >
+    Fast rug pull probability scoring for quick pre-trade checks.
+  </Card>
+  <Card
+    title="Honeypot Detection"
+    icon="honey-pot"
+    href="/api-reference/token/honeypot"
+  >
+    Detect tokens that allow buys but prevent sells.
+  </Card>
+  <Card
+    title="Liquidity Analysis"
+    icon="droplet"
+    href="/api-reference/token/lp"
+  >
+    Analyze LP locks, depth, and distribution across DEXs.
+  </Card>
+  <Card
+    title="Holder Distribution"
+    icon="users"
+    href="/api-reference/token/bundled"
+  >
+    Detect holder concentration and bundling patterns.
+  </Card>
+  <Card
+    title="Bundler Clusters"
+    icon="diagram-project"
+    href="/api-reference/token/bundler-cluster"
+  >
+    Identify coordinated buying and wash trading.
   </Card>
   <Card
     title="Phishing Detection"
     icon="fish"
     href="/api-reference/phishing/check"
   >
-    Detect typosquatting and fake websites trying to steal wallets.
+    Detect typosquatting and fake websites.
   </Card>
   <Card
     title="Transaction Simulation"
     icon="play"
     href="/api-reference/transaction/simulate"
   >
-    See what a transaction will do before your users sign it.
+    Preview transaction effects before signing.
   </Card>
 </CardGroup>
 
-## AI-Powered Analysis
+## Local-First Detection
 
-Every security check includes intelligent risk assessment:
+NovaShield uses a local-first approach:
+- ✅ Primary analysis runs on our infrastructure
+- ✅ Fast response times (typically <500ms)
+- ✅ No external API dependencies for core checks
+- ✅ 10 security modules working together
 
-- **Risk Scores**: 0-100 risk score with severity levels (SAFE, LOW, MEDIUM, HIGH, CRITICAL)
-- **Clear Verdicts**: Human-readable verdicts like "🚨 EXTREME RUG PULL RISK - DO NOT BUY!"
-- **Actionable Recommendations**: Specific advice on how to protect users
-- **Real-Time Intelligence**: Up-to-date threat data beyond static databases
+## Risk Assessment
+
+Every security check includes intelligent risk scoring:
+
+- **Risk Scores**: 0-100 with severity levels (SAFE, LOW, MEDIUM, HIGH, CRITICAL)
+- **Clear Verdicts**: Human-readable assessments
+- **AI Analysis**: Comprehensive insights with key risks and recommendations
+- **Trading Recommendations**: Boolean `canTrade` flags
 
 ## Authentication
 
-API endpoints are currently **open** and do not require authentication. Bearer tokens are optional.
-
-```json
-"security": [
-  {
-    "bearerAuth": []
-  }
-]
-```
+API endpoints are currently **open** and do not require authentication.
 
 <Card
-  title="Need API Key? Apply Here"
+  title="Need API Access?"
   icon="key"
-  href="mailto:hi@nshield.org?subject=NovaShield%20API%20Key%20Request&body=Hi%20NovaShield%20Team%2C%0A%0AI%20would%20like%20to%20request%20an%20API%20key%20for%20the%20NovaShield%20Security%20API.%0A%0AProduct%2FProject%20Name%3A%20%0A%0AWhy%20do%20you%20need%20API%20access%3F%0A%0A%0AEstimated%20Monthly%20Usage%3A%20%0A%0AThank%20you!"
+  href="mailto:hi@nshield.org?subject=NovaShield%20API%20Key%20Request&body=Hi%20NovaShield%20Team%2C%0A%0AI%20would%20like%20to%20request%20API%20access.%0A%0AProduct%2FProject%20Name%3A%20%0A%0AUse%20Case%3A%0A%0A%0AEstimated%20Monthly%20Usage%3A%20%0A%0AThank%20you!"
 >
-  Click to apply for API access via email
+  Apply for API access via email
 </Card>
 
 ## Quick Start
 
 <Steps>
-<Step title="Check a token for rug pull">
+<Step title="Check token security">
   ```bash
-  curl -X POST https://secure.novashield.space/api/token/rug-check \
-    -H "Content-Type: application/json" \
-    -d '{
-      "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump"
-    }'
+  curl https://secure.novashield.space/token/security/HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump
   ```
 </Step>
 
@@ -97,21 +123,19 @@ API endpoints are currently **open** and do not require authentication. Bearer t
   {
     "success": true,
     "data": {
-      "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump",
-      "chain": "solana",
-      "rugPullRisk": {
-        "score": 100,
-        "level": "CRITICAL",
-        "verdict": "🚨 EXTREME RUG PULL RISK - DO NOT BUY!",
-        "canTrade": false,
-        "isHoneypot": false
-      },
-      "tokenMetrics": {
-        "holderCount": 5,
-        "name": "Present Coin",
-        "symbol": "Present",
-        "liquidity": 0,
-        "marketCap": 0
+      "overallScore": 15,
+      "riskLevel": "CRITICAL",
+      "verdict": "🚨 EXTREME RUG PULL RISK - DO NOT BUY!",
+      "canTrade": false,
+      "honeypot": { "isHoneypot": false, "canBuy": true, "canSell": true },
+      "authorities": { "freezeAuthority": null, "mintAuthority": null },
+      "liquidity": { "locked": false, "lpValue": 0 },
+      "holders": { "top10Concentration": 95, "totalHolders": 5 },
+      "aiAnalysis": {
+        "summary": "Critical risk token with extreme concentration",
+        "keyRisks": ["Extremely low holder count", "No liquidity"],
+        "recommendations": ["Do not trade this token"],
+        "confidence": 99
       }
     }
   }
@@ -119,7 +143,7 @@ API endpoints are currently **open** and do not require authentication. Bearer t
 </Step>
 
 <Step title="Protect your users">
-  Use the `verdict`, `canTrade`, and `riskLevel` fields to block dangerous transactions and warn users about risks.
+  Use `canTrade`, `riskLevel`, and AI insights to block dangerous transactions and warn users.
 </Step>
 </Steps>
 

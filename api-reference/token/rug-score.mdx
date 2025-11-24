@@ -1,0 +1,37 @@
+---
+title: 'Rug Pull Probability Score'
+openapi: 'GET /token/rug-score/{mint}'
+---
+
+## Overview
+
+Get a focused rug pull probability score for a Solana token. This endpoint is optimized for speed and returns a clear risk assessment without the full details of the comprehensive security analysis.
+
+## Use Cases
+
+- **Quick checks** - Fast risk assessment before trading
+- **Trading bots** - Automated rug pull screening
+- **High-volume scanning** - Check multiple tokens efficiently
+
+## Response Fields
+
+### Risk Score
+- **score** - Rug pull probability (0-100, higher = more dangerous)
+  - 0-20: SAFE
+  - 21-40: LOW risk
+  - 41-60: MEDIUM risk
+  - 61-80: HIGH risk
+  - 81-100: CRITICAL risk
+
+### Assessment
+- **level** - Risk classification (SAFE, LOW, MEDIUM, HIGH, CRITICAL)
+- **verdict** - Clear, actionable verdict
+- **canTrade** - Trading recommendation (boolean)
+
+## Best Practices
+
+For tokens with HIGH or CRITICAL scores:
+- ⚠️ Do not trade without further investigation
+- 🔍 Use the comprehensive `/token/security/{mint}` endpoint for details
+- 📊 Check holder distribution with `/token/bundled/{mint}`
+
