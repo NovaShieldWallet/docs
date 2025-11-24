@@ -15,7 +15,8 @@
         "group": "Getting Started",
         "pages": [
           "index",
-          "quickstart"
+          "quickstart",
+          "error-codes"
         ]
       },
       {
