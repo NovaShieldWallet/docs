@@ -1,101 +1,102 @@
 ---
-title: "Introduction"
-description: "Your ultimate defense against wallet drains with multi-sig security and AI-powered protection"
+title: "NovaShield Security API"
+description: "Solana security scanner powered by AI. Check tokens for rug pulls, detect phishing sites, and simulate transactions before signing."
 ---
 
 ## Welcome to NovaShield
 
-NovaShield is an iOS and web multi-sig security wallet built to combat wallet drains. Our platform combines advanced security features with intelligent threat detection to keep your digital assets safe.
+Protect your users from scams, rug pulls, and malicious contracts with our comprehensive Solana security API.
 
 <Card
-  title="Start here"
+  title="Get Started"
   icon="rocket"
-  href="/quickstart"
+  href="/api-reference/introduction"
   horizontal
 >
-  Get started with NovaShield in minutes.
+  Start integrating NovaShield's security features into your app.
 </Card>
 
 ## Core Features
 
-Powerful security tools designed to protect your assets.
+Real-time security analysis powered by AI and blockchain intelligence.
 
-<Columns cols={2}>
+<CardGroup cols={2}>
   <Card
-    title="Multi-Sig Wallets"
-    icon="lock"
-    href="/quickstart"
+    title="Rug Pull Detection"
+    icon="shield-exclamation"
+    href="/api-reference/token/rug-check"
   >
-    Multi-approval wallets with pattern-lock security for enhanced protection.
+    Fast rug pull detection with clear verdicts. Get risk scores and actionable insights before your users trade.
   </Card>
   <Card
-    title="Private Transfers"
-    icon="shield"
-    href="/essentials/settings"
+    title="Phishing Detection"
+    icon="fish"
+    href="/api-reference/phishing/check"
   >
-    Secure, private transaction capabilities to keep your transfers confidential.
-  </Card>
-    <Card
-    title="Pattern-Lock Approvals"
-    icon="fingerprint"
-    href="/essentials/navigation"
-  >
-    Innovative pattern-based authentication for transaction approvals.
+    Catch typosquatting and fake sites. Protect users from connecting wallets to malicious domains.
   </Card>
   <Card
-    title="API Integration"
-    icon="terminal"
+    title="Transaction Simulation"
+    icon="play"
+    href="/api-reference/transaction/simulate"
+  >
+    See what a transaction will do before signing. Detect hidden risks and suspicious behavior.
+  </Card>
+  <Card
+    title="Token Security"
+    icon="coins"
+    href="/api-reference/token/security"
+  >
+    Comprehensive token analysis with holder distribution, liquidity checks, and scam indicators.
+  </Card>
+</CardGroup>
+
+## AI-Powered Analysis
+
+Every security check includes intelligent risk assessment that goes beyond static databases.
+
+<CardGroup cols={2}>
+  <Card
+    title="Risk Scoring"
+    icon="chart-line"
+  >
+    0-100 risk scores with clear severity levels: SAFE, LOW, MEDIUM, HIGH, CRITICAL
+  </Card>
+  <Card
+    title="Clear Verdicts"
+    icon="check-circle"
+  >
+    Human-readable verdicts like "🚨 EXTREME RUG PULL RISK - DO NOT BUY!"
+  </Card>
+  <Card
+    title="Actionable Recommendations"
+    icon="lightbulb"
+  >
+    Get specific advice on how to protect your users from detected threats
+  </Card>
+  <Card
+    title="Real-Time Intelligence"
+    icon="bolt"
+  >
+    Stay ahead of emerging scams with up-to-date threat data
+  </Card>
+</CardGroup>
+
+## Quick Links
+
+<CardGroup cols={2}>
+  <Card
+    title="API Documentation"
+    icon="book"
     href="/api-reference/introduction"
   >
-    Integrate NovaShield's security features into your applications.
-  </Card>
-</Columns>
-
-## AI-Powered Security
-
-Stay ahead of threats with intelligent detection technology.
-
-<Warning>
-NovaShield's Safari extension uses AI and GoPlus to detect malicious domains in real-time, acting as your security lawyer to identify threats that traditional databases miss.
-</Warning>
-
-<Columns cols={2}>
-  <Card
-    title="Real-Time Threat Detection"
-    icon="radar"
-    href="/essentials/markdown"
-  >
-    AI-powered analysis that goes beyond static databases to catch emerging threats.
+    View all endpoints and start building
   </Card>
   <Card
-    title="Domain Security"
-    icon="globe"
-    href="/essentials/code"
+    title="Request API Key"
+    icon="key"
+    href="mailto:hi@nshield.org?subject=NovaShield%20API%20Key%20Request&body=Hi%20NovaShield%20Team%2C%0A%0AI%20would%20like%20to%20request%20an%20API%20key%20for%20the%20NovaShield%20Security%20API.%0A%0AProduct%2FProject%20Name%3A%20%0A%0AWhy%20do%20you%20need%20API%20access%3F%0A%0A%0AEstimated%20Monthly%20Usage%3A%20%0A%0AThank%20you!"
   >
-    Automatic scanning of new and existing domains for malicious activity.
+    Apply for access to the Security API
   </Card>
-  <Card
-    title="GoPlus Integration"
-    icon="plug"
-    href="/essentials/images"
-  >
-    Leveraging GoPlus security data enhanced with AI intelligence.
-  </Card>
-  <Card
-    title="Rewards Coming Soon"
-    icon="gift"
-    href="/essentials/reusable-snippets"
-  >
-    Earn rewards for using NovaShield and contributing to the security ecosystem.
-  </Card>
-</Columns>
-
-## Get Protected Today
-
-<Card
-  title="Download NovaShield"
-  icon="download"
-  href="/quickstart"
->
-  Start securing your digital assets with NovaShield's multi-layered protection.
-</Card>
+</CardGroup>

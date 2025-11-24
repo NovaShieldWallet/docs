@@ -1,11 +1,11 @@
 ---
 title: 'API Introduction'
-description: 'AI-powered blockchain security API with GoPlus integration for comprehensive threat detection'
+description: 'Solana security scanner API. Check tokens for rug pulls, detect phishing sites, and simulate transactions.'
 ---
 
 ## Welcome to NovaShield Security API
 
-The NovaShield Security API provides comprehensive blockchain security scanning powered by GoPlus and enhanced with AI analysis. Detect threats, analyze risks, and protect your users from scams, rug pulls, and malicious contracts.
+The NovaShield Security API provides comprehensive Solana security scanning. Detect scams, analyze tokens for rug pull risks, and protect users from phishing sites.
 
 <Card
   title="OpenAPI Specification"
@@ -17,51 +17,51 @@ The NovaShield Security API provides comprehensive blockchain security scanning 
 
 ## Core Features
 
-Powerful security tools to protect your blockchain applications.
+Protect your users with real-time security analysis.
 
 <CardGroup cols={2}>
+  <Card
+    title="Rug Pull Detection"
+    icon="shield-exclamation"
+    href="/api-reference/token/rug-check"
+  >
+    Fast rug pull detection with clear verdicts. Best for pre-trade checks.
+  </Card>
   <Card
     title="Token Security"
     icon="coins"
     href="/api-reference/token/security"
   >
-    Scan tokens for honeypots, hidden taxes, and malicious functions
-  </Card>
-  <Card
-    title="Rug Pull Detection"
-    icon="shield-exclamation"
-    href="/api-reference/rug/check"
-  >
-    Detect rug pull risks with liquidity and ownership analysis
-  </Card>
-  <Card
-    title="Address Security"
-    icon="wallet"
-    href="/api-reference/address/security"
-  >
-    Check wallet addresses for malicious activity history
+    Check Solana tokens for scams, honeypots, and malicious contracts.
   </Card>
   <Card
     title="Phishing Detection"
     icon="fish"
-    href="/api-reference/dapp/phishing"
+    href="/api-reference/phishing/check"
   >
-    Identify phishing sites and malicious dApps
+    Detect typosquatting and fake websites trying to steal wallets.
+  </Card>
+  <Card
+    title="Transaction Simulation"
+    icon="play"
+    href="/api-reference/transaction/simulate"
+  >
+    See what a transaction will do before your users sign it.
   </Card>
 </CardGroup>
 
 ## AI-Powered Analysis
 
-Every security check includes AI-enhanced risk analysis that goes beyond static databases:
+Every security check includes intelligent risk assessment:
 
-- **Risk Scoring**: 0-100 risk score with detailed classification
-- **Smart Recommendations**: Actionable security advice
-- **Pattern Detection**: Identify threats that databases miss
-- **Real-Time Intelligence**: Stay ahead of emerging scams
+- **Risk Scores**: 0-100 risk score with severity levels (SAFE, LOW, MEDIUM, HIGH, CRITICAL)
+- **Clear Verdicts**: Human-readable verdicts like "🚨 EXTREME RUG PULL RISK - DO NOT BUY!"
+- **Actionable Recommendations**: Specific advice on how to protect users
+- **Real-Time Intelligence**: Up-to-date threat data beyond static databases
 
 ## Authentication
 
-All API endpoints require Bearer token authentication.
+API endpoints are currently **open** and do not require authentication. Bearer tokens are optional.
 
 ```json
 "security": [
@@ -76,29 +76,55 @@ All API endpoints require Bearer token authentication.
   icon="key"
   href="mailto:hi@nshield.org?subject=NovaShield%20API%20Key%20Request&body=Hi%20NovaShield%20Team%2C%0A%0AI%20would%20like%20to%20request%20an%20API%20key%20for%20the%20NovaShield%20Security%20API.%0A%0AProduct%2FProject%20Name%3A%20%0A%0AWhy%20do%20you%20need%20API%20access%3F%0A%0A%0AEstimated%20Monthly%20Usage%3A%20%0A%0AThank%20you!"
 >
-  Click to send us your API key application via email
+  Click to apply for API access via email
 </Card>
 
 ## Quick Start
 
 <Steps>
-<Step title="Get your API key">
-  [Apply for an API key](mailto:hi@nshield.org?subject=NovaShield%20API%20Key%20Request&body=Hi%20NovaShield%20Team%2C%0A%0AI%20would%20like%20to%20request%20an%20API%20key%20for%20the%20NovaShield%20Security%20API.%0A%0AProduct%2FProject%20Name%3A%20%0A%0AWhy%20do%20you%20need%20API%20access%3F%0A%0A%0AEstimated%20Monthly%20Usage%3A%20%0A%0AThank%20you!) and we'll send you your Bearer token.
-</Step>
-
-<Step title="Make your first request">
+<Step title="Check a token for rug pull">
   ```bash
-  curl -X POST https://secure.novashield.space/api/token/security \
-    -H "Authorization: Bearer YOUR_API_KEY" \
+  curl -X POST https://secure.novashield.space/api/token/rug-check \
     -H "Content-Type: application/json" \
     -d '{
-      "chainId": "501",
-      "contractAddresses": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
+      "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump"
     }'
   ```
 </Step>
 
-<Step title="Analyze the results">
-  Review the security data and AI analysis to identify risks and protect your users.
+<Step title="Analyze the response">
+  ```json
+  {
+    "success": true,
+    "data": {
+      "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump",
+      "chain": "solana",
+      "rugPullRisk": {
+        "score": 100,
+        "level": "CRITICAL",
+        "verdict": "🚨 EXTREME RUG PULL RISK - DO NOT BUY!",
+        "canTrade": false,
+        "isHoneypot": false
+      },
+      "tokenMetrics": {
+        "holderCount": 5,
+        "name": "Present Coin",
+        "symbol": "Present",
+        "liquidity": 0,
+        "marketCap": 0
+      }
+    }
+  }
+  ```
+</Step>
+
+<Step title="Protect your users">
+  Use the `verdict`, `canTrade`, and `riskLevel` fields to block dangerous transactions and warn users about risks.
 </Step>
 </Steps>
+
+## Base URL
+
+```
+https://secure.novashield.space
+```

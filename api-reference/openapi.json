@@ -2,8 +2,8 @@
   "openapi": "3.0.3",
   "info": {
     "title": "NovaShield Security API",
-    "description": "GoPlus-powered security API with AI analysis for blockchain security checks. Provides comprehensive security scanning for tokens, addresses, dApps, phishing detection, and rug pull detection.",
-    "version": "1.0.0",
+    "description": "Solana security scanner. Check tokens for rug pulls, detect phishing sites, and simulate transactions before signing.",
+    "version": "2.0.0",
     "contact": {
       "name": "NovaShield",
       "url": "https://novashield.space"
@@ -31,27 +31,15 @@
     },
     {
       "name": "Token Security",
-      "description": "Token security scanning and analysis"
+      "description": "Check Solana tokens for rug pulls and scams"
     },
     {
-      "name": "Rug Check",
-      "description": "Rug pull detection and analysis"
+      "name": "Phishing Detection",
+      "description": "Detect fake websites and phishing attempts"
     },
     {
-      "name": "Address Security",
-      "description": "Wallet address security checks"
-    },
-    {
-      "name": "dApp & Phishing",
-      "description": "dApp and phishing site detection"
-    },
-    {
-      "name": "Signature Security",
-      "description": "Transaction signature analysis"
-    },
-    {
-      "name": "Batch Operations",
-      "description": "Batch security operations"
+      "name": "Transaction Security",
+      "description": "Simulate transactions before signing to see what they'll do"
     }
   ],
   "paths": {
@@ -73,7 +61,7 @@
                 "example": {
                   "status": "healthy",
                   "service": "Nova Security API",
-                  "timestamp": "2025-11-24T05:07:49.709Z",
+                  "timestamp": "2025-11-24T09:00:00.000Z",
                   "version": "1.0.0"
                 }
               }
@@ -85,31 +73,18 @@
     "/api/token/security": {
       "post": {
         "tags": ["Token Security"],
-        "summary": "Check token security (basic)",
-        "description": "Perform basic security checks on one or more token contracts using GoPlus",
+        "summary": "Check token security",
+        "description": "Check if a Solana token is a scam or rug pull",
         "operationId": "checkTokenSecurity",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TokenSecurityRequest"
+            "schema": {
+                "$ref": "#/components/schemas/TokenRequest"
               },
-              "examples": {
-                "solana": {
-                  "summary": "Solana USDC",
-                  "value": {
-                    "chainId": "501",
-                    "contractAddresses": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
-                  }
-                },
-                "ethereum": {
-                  "summary": "Ethereum USDT",
-                  "value": {
-                    "chainId": "1",
-                    "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
-                  }
-                }
+              "example": {
+                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
               }
             }
           }
@@ -137,26 +112,25 @@
     "/api/token/analyze": {
       "post": {
         "tags": ["Token Security"],
-        "summary": "Analyze token with AI",
-        "description": "Check token security and get AI-powered risk analysis",
+        "summary": "Analyze token",
+        "description": "Get detailed security analysis for a Solana token",
         "operationId": "analyzeToken",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TokenAnalyzeRequest"
+                "$ref": "#/components/schemas/TokenRequest"
               },
               "example": {
-                "chainId": "501",
-                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Token analysis with AI insights",
+            "description": "Token analysis with full RugCheck report",
             "content": {
               "application/json": {
                 "schema": {
@@ -168,31 +142,27 @@
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
-          "404": {
-            "$ref": "#/components/responses/NotFound"
-          },
           "500": {
             "$ref": "#/components/responses/InternalError"
+            }
           }
         }
-      }
-    },
+      },
     "/api/token/comprehensive": {
       "post": {
         "tags": ["Token Security"],
         "summary": "Comprehensive token report",
-        "description": "Get comprehensive security report including token security, contract analysis, and AI insights",
+        "description": "Get comprehensive security report with risks, warnings, holders, and markets",
         "operationId": "comprehensiveTokenReport",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TokenAnalyzeRequest"
+                "$ref": "#/components/schemas/TokenRequest"
               },
               "example": {
-                "chainId": "501",
-                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump"
               }
             }
           }
@@ -217,152 +187,75 @@
         }
       }
     },
-    "/api/rug/check": {
+    "/api/token/rug-check": {
       "post": {
-        "tags": ["Rug Check"],
-        "summary": "Check for rug pull risks",
-        "description": "Analyze token contract for rug pull indicators including liquidity locks, ownership issues, and suspicious patterns",
-        "operationId": "checkRugPull",
+        "tags": ["Token Security"],
+        "summary": "Rug pull detection (RECOMMENDED)",
+        "description": "Fast rug pull detection with clear verdict. Best for pre-trade checks.",
+        "operationId": "rugPullCheck",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/RugCheckRequest"
+                "$ref": "#/components/schemas/TokenRequest"
               },
-              "example": {
-                "chainId": "501",
-                "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+              "examples": {
+                "scam": {
+                  "summary": "Scam Token",
+                  "value": {
+                    "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump"
+                  }
+                },
+                "usdc": {
+                  "summary": "USDC (Safe)",
+                  "value": {
+                    "contractAddress": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+                  }
+                }
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Rug pull risk analysis",
+            "description": "Rug pull risk assessment",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/RugCheckResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/address/security": {
-      "post": {
-        "tags": ["Address Security"],
-        "summary": "Check address security",
-        "description": "Check if a wallet address has been involved in malicious activities",
-        "operationId": "checkAddressSecurity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddressSecurityRequest"
-              },
-              "example": {
-                "chainId": "501",
-                "address": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Address security data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddressSecurityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/address/analyze": {
-      "post": {
-        "tags": ["Address Security"],
-        "summary": "Analyze address with AI",
-        "description": "Check address security with AI-powered risk analysis",
-        "operationId": "analyzeAddress",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AddressSecurityRequest"
-              },
-              "example": {
-                "chainId": "501",
-                "address": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Address analysis with AI insights",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AddressAnalyzeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/dapp/security": {
-      "post": {
-        "tags": ["dApp & Phishing"],
-        "summary": "Check dApp security",
-        "description": "Check if a dApp URL is safe",
-        "operationId": "checkDappSecurity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DappSecurityRequest"
-              },
-              "example": {
-                "url": "https://uniswap.org"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "dApp security data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DappSecurityResponse"
+                },
+                "examples": {
+                  "critical": {
+                    "summary": "Critical Risk Detected",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "contractAddress": "HrPpKj6BPmCH4HmLiNCmJ7HiFmv8CYiM7qRmnqWipump",
+                        "chain": "solana",
+                        "rugPullRisk": {
+                          "score": 100,
+                          "level": "CRITICAL",
+                          "verdict": "🚨 EXTREME RUG PULL RISK - DO NOT BUY!",
+                          "canTrade": false,
+                          "isHoneypot": false
+                        },
+                        "risks": [],
+                        "warnings": [],
+                        "tokenMetrics": {
+                          "holderCount": 5,
+                          "name": "Present Coin",
+                          "symbol": "Present",
+                          "freezeAuthority": "None",
+                          "mintAuthority": "None",
+                          "liquidity": 0,
+                          "marketCap": 0
+                        },
+                        "source": "RugCheck.xyz",
+                        "rugCheckScore": 1
+                      }
+                    }
+                  }
                 }
               }
             }
@@ -378,19 +271,30 @@
     },
     "/api/phishing/check": {
       "post": {
-        "tags": ["dApp & Phishing"],
+        "tags": ["Phishing Detection"],
         "summary": "Check for phishing",
-        "description": "Check if a URL is a known phishing site",
+        "description": "Check if a URL is fake or trying to steal your wallet. Catches typosquatting (like cpump.fun vs pump.fun).",
         "operationId": "checkPhishing",
         "requestBody": {
-          "required": true,
+            "required": true,
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/PhishingCheckRequest"
+            "schema": {
+                "$ref": "#/components/schemas/PhishingRequest"
               },
-              "example": {
-                "url": "https://uniswap.org"
+              "examples": {
+                "phishing": {
+                  "summary": "Phishing Site (cpump.fun)",
+                  "value": {
+                    "url": "https://cpump.fun"
+                  }
+                },
+                "legitimate": {
+                  "summary": "Legitimate Site",
+                  "value": {
+                    "url": "https://pump.fun"
+                  }
+                }
               }
             }
           }
@@ -401,101 +305,89 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/PhishingCheckResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/signature/security": {
-      "post": {
-        "tags": ["Signature Security"],
-        "summary": "Check signature security",
-        "description": "Analyze transaction signature/input data for security risks",
-        "operationId": "checkSignatureSecurity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SignatureSecurityRequest"
-              },
-              "example": {
-                "chainId": "501",
-                "data": "0xa9059cbb0000000000000000000000001234567890123456789012345678901234567890"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Signature security analysis",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SignatureSecurityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/batch/analyze": {
-      "post": {
-        "tags": ["Batch Operations"],
-        "summary": "Batch analyze multiple items",
-        "description": "Perform multiple security checks in a single request",
-        "operationId": "batchAnalyze",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/BatchAnalyzeRequest"
-              },
-              "example": {
-                "operations": [
-                  {
-                    "type": "token",
-                    "params": {
-                      "chainId": "501",
-                      "contractAddresses": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
+                  "$ref": "#/components/schemas/PhishingResponse"
+                },
+                "examples": {
+                  "phishing_detected": {
+                    "summary": "Phishing Detected",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "url": "https://cpump.fun",
+                        "isPhishing": true,
+                        "confidence": 95,
+                        "riskLevel": "CRITICAL",
+                        "verdict": "🚨 PHISHING SITE DETECTED - DO NOT CONNECT!",
+                        "reasons": [
+                          "Suspicious similarity to pump.fun (typosquatting attempt)",
+                          "AI detected phishing"
+                        ],
+                        "similarTo": "pump.fun",
+                        "recommendations": [
+                          "DO NOT connect your wallet to this site",
+                          "This appears to be impersonating a legitimate site"
+                        ]
+                      }
                     }
                   },
-                  {
-                    "type": "address",
-                    "params": {
-                      "chainId": "501",
-                      "address": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
+                  "safe_site": {
+                    "summary": "Safe Site",
+                    "value": {
+                      "success": true,
+                      "data": {
+                        "url": "https://pump.fun",
+                        "isPhishing": false,
+                        "confidence": 50,
+                        "riskLevel": "LOW",
+                        "verdict": "⚠️ Unknown site - Proceed with caution",
+                        "reasons": ["No phishing indicators found"],
+                        "recommendations": [
+                          "Cannot verify legitimacy with high confidence",
+                          "Only connect if you trust this source"
+                        ]
+                      }
                     }
                   }
-                ]
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+        }
+      }
+    }
+  },
+    "/api/simulate-transaction": {
+      "post": {
+        "tags": ["Transaction Security"],
+        "summary": "Simulate Solana transaction",
+        "description": "Simulate a Solana transaction before signing to see what it will do and assess risks",
+        "operationId": "simulateTransaction",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SimulateTransactionRequest"
+              },
+              "example": {
+                "transaction": "BASE64_ENCODED_TRANSACTION_HERE",
+                "signerPublicKey": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
               }
             }
           }
         },
         "responses": {
           "200": {
-            "description": "Batch analysis results",
+            "description": "Transaction simulation result",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/BatchAnalyzeResponse"
+                  "$ref": "#/components/schemas/SimulateTransactionResponse"
                 }
               }
             }
@@ -516,7 +408,7 @@
         "type": "http",
         "scheme": "bearer",
         "bearerFormat": "JWT",
-        "description": "Enter your Bearer token in the format: Bearer {token}"
+        "description": "Optional Bearer token authentication (not currently required)"
       }
     },
     "schemas": {
@@ -533,8 +425,7 @@
           },
           "timestamp": {
             "type": "string",
-            "format": "date-time",
-            "example": "2025-11-24T05:07:49.709Z"
+            "format": "date-time"
           },
           "version": {
             "type": "string",
@@ -542,86 +433,18 @@
           }
         }
       },
-      "TokenSecurityRequest": {
+      "TokenRequest": {
         "type": "object",
-        "required": ["chainId", "contractAddresses"],
+        "required": ["contractAddress"],
         "properties": {
-          "chainId": {
-            "type": "string",
-            "description": "Blockchain chain ID (501=Solana, 1=Ethereum, 56=BSC, 137=Polygon, etc.)",
-            "example": "501"
-          },
-          "contractAddresses": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Array of token contract addresses to check",
-            "example": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
-          }
-        }
-      },
-      "TokenAnalyzeRequest": {
-        "type": "object",
-        "required": ["chainId", "contractAddress"],
-        "properties": {
-          "chainId": {
-            "type": "string",
-            "description": "Blockchain chain ID",
-            "example": "501"
-          },
           "contractAddress": {
             "type": "string",
-            "description": "Token contract address",
+            "description": "Solana token mint address",
             "example": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
           }
         }
       },
-      "RugCheckRequest": {
-        "type": "object",
-        "required": ["chainId", "contractAddress"],
-        "properties": {
-          "chainId": {
-            "type": "string",
-            "description": "Blockchain chain ID",
-            "example": "501"
-          },
-          "contractAddress": {
-            "type": "string",
-            "description": "Token contract address to check for rug pull risks",
-            "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
-          }
-        }
-      },
-      "AddressSecurityRequest": {
-        "type": "object",
-        "required": ["chainId", "address"],
-        "properties": {
-          "chainId": {
-            "type": "string",
-            "description": "Blockchain chain ID",
-            "example": "501"
-          },
-          "address": {
-            "type": "string",
-            "description": "Wallet address to check",
-            "example": "7cvkjYAkUYs4W8XcXsca7cBrEwHPb2Zr6w6j4yNxCXs"
-          }
-        }
-      },
-      "DappSecurityRequest": {
-        "type": "object",
-        "required": ["url"],
-        "properties": {
-          "url": {
-            "type": "string",
-            "format": "uri",
-            "description": "dApp URL to check",
-            "example": "https://uniswap.org"
-          }
-        }
-      },
-      "PhishingCheckRequest": {
+      "PhishingRequest": {
         "type": "object",
         "required": ["url"],
         "properties": {
@@ -629,47 +452,91 @@
             "type": "string",
             "format": "uri",
             "description": "URL to check for phishing",
-            "example": "https://uniswap.org"
+            "example": "https://pump.fun"
           }
         }
       },
-      "SignatureSecurityRequest": {
+      "SimulateTransactionRequest": {
         "type": "object",
-        "required": ["chainId", "data"],
+        "required": ["transaction", "signerPublicKey"],
         "properties": {
-          "chainId": {
+          "transaction": {
             "type": "string",
-            "description": "Blockchain chain ID",
-            "example": "501"
+            "description": "Base64-encoded Solana transaction",
+            "example": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQABAgMEBQ..."
           },
-          "data": {
+          "signerPublicKey": {
             "type": "string",
-            "description": "Transaction data or signature to analyze",
-            "example": "0xa9059cbb0000000000000000000000001234567890123456789012345678901234567890"
+            "description": "Public key of the transaction signer",
+            "example": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
           }
         }
       },
-      "BatchAnalyzeRequest": {
+      "RugPullRisk": {
         "type": "object",
-        "required": ["operations"],
         "properties": {
-          "operations": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "type": {
-                  "type": "string",
-                  "enum": ["token", "address", "rug"],
-                  "description": "Type of operation"
-                },
-                "params": {
-                  "type": "object",
-                  "description": "Parameters for the operation"
-                }
-              }
-            },
-            "description": "Array of operations to perform"
+          "score": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Rug pull risk score (0=safe, 100=critical)",
+            "example": 100
+          },
+          "level": {
+            "type": "string",
+            "enum": ["SAFE", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+            "description": "Risk level classification",
+            "example": "CRITICAL"
+          },
+          "verdict": {
+            "type": "string",
+            "description": "Human-readable verdict",
+            "example": "🚨 EXTREME RUG PULL RISK - DO NOT BUY!"
+          },
+          "canTrade": {
+            "type": "boolean",
+            "description": "Whether trading should be allowed",
+            "example": false
+          },
+          "isHoneypot": {
+            "type": "boolean",
+            "description": "Whether token is a honeypot",
+            "example": false
+          }
+        }
+      },
+      "TokenMetrics": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Present Coin"
+          },
+          "symbol": {
+            "type": "string",
+            "example": "Present"
+          },
+          "holderCount": {
+            "type": "integer",
+            "example": 5
+          },
+          "liquidity": {
+            "type": "number",
+            "example": 0
+          },
+          "marketCap": {
+            "type": "number",
+            "example": 0
+          },
+          "freezeAuthority": {
+            "type": "string",
+            "nullable": true,
+            "example": "None"
+          },
+          "mintAuthority": {
+            "type": "string",
+            "nullable": true,
+            "example": "None"
           }
         }
       },
@@ -682,152 +549,30 @@
           },
           "data": {
             "type": "object",
-            "additionalProperties": {
-              "$ref": "#/components/schemas/TokenSecurityData"
+            "properties": {
+              "contractAddress": {
+                "type": "string"
+              },
+              "chain": {
+                "type": "string",
+                "example": "solana"
+              },
+              "rugPullRisk": {
+                "$ref": "#/components/schemas/RugPullRisk"
+              },
+              "tokenMetrics": {
+                "$ref": "#/components/schemas/TokenMetrics"
+              },
+              "rugCheckScore": {
+                "type": "integer",
+                "description": "RugCheck score (0-1000, higher=better)",
+                "example": 1
+              }
             }
           },
           "timestamp": {
             "type": "string",
             "format": "date-time"
-          }
-        }
-      },
-      "TokenSecurityData": {
-        "type": "object",
-        "properties": {
-          "is_open_source": {
-            "type": "string",
-            "description": "Whether contract is open source (0/1)",
-            "example": "1"
-          },
-          "is_proxy": {
-            "type": "string",
-            "description": "Whether contract is a proxy (0/1)",
-            "example": "0"
-          },
-          "is_mintable": {
-            "type": "string",
-            "description": "Whether token can be minted (0/1)",
-            "example": "0"
-          },
-          "can_take_back_ownership": {
-            "type": "string",
-            "description": "Whether ownership can be taken back (0/1)",
-            "example": "0"
-          },
-          "owner_change_balance": {
-            "type": "string",
-            "description": "Whether owner can change balances (0/1)",
-            "example": "0"
-          },
-          "hidden_owner": {
-            "type": "string",
-            "description": "Whether there's a hidden owner (0/1)",
-            "example": "0"
-          },
-          "selfdestruct": {
-            "type": "string",
-            "description": "Whether contract can selfdestruct (0/1)",
-            "example": "0"
-          },
-          "external_call": {
-            "type": "string",
-            "description": "Whether contract makes external calls (0/1)",
-            "example": "0"
-          },
-          "buy_tax": {
-            "type": "string",
-            "description": "Buy tax percentage",
-            "example": "0"
-          },
-          "sell_tax": {
-            "type": "string",
-            "description": "Sell tax percentage",
-            "example": "0"
-          },
-          "is_honeypot": {
-            "type": "string",
-            "description": "Whether token is a honeypot (0/1)",
-            "example": "0"
-          },
-          "transfer_pausable": {
-            "type": "string",
-            "description": "Whether transfers can be paused (0/1)",
-            "example": "0"
-          },
-          "is_blacklisted": {
-            "type": "string",
-            "description": "Whether token is blacklisted (0/1)",
-            "example": "0"
-          },
-          "is_whitelisted": {
-            "type": "string",
-            "description": "Whether token has whitelist (0/1)",
-            "example": "0"
-          },
-          "is_in_dex": {
-            "type": "string",
-            "description": "Whether token is listed on DEX (0/1)",
-            "example": "1"
-          },
-          "holder_count": {
-            "type": "string",
-            "description": "Number of token holders",
-            "example": "5847291"
-          },
-          "total_supply": {
-            "type": "string",
-            "description": "Total token supply",
-            "example": "45283098435.077835"
-          },
-          "lp_holder_count": {
-            "type": "string",
-            "description": "Number of liquidity pool holders",
-            "example": "352"
-          },
-          "lp_total_supply": {
-            "type": "string",
-            "description": "Total LP supply",
-            "example": "9457381493225.959"
-          }
-        }
-      },
-      "AIAnalysis": {
-        "type": "object",
-        "properties": {
-          "riskScore": {
-            "type": "integer",
-            "minimum": 0,
-            "maximum": 100,
-            "description": "Risk score from 0 (safe) to 100 (dangerous)",
-            "example": 10
-          },
-          "riskLevel": {
-            "type": "string",
-            "enum": ["Low", "Medium", "High", "Critical", "Unknown"],
-            "description": "Risk level classification",
-            "example": "Low"
-          },
-          "summary": {
-            "type": "string",
-            "description": "AI-generated summary of security analysis",
-            "example": "The token shows minimal security risks. Contract is open source and verified."
-          },
-          "risks": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "List of identified risks",
-            "example": ["No major risks detected"]
-          },
-          "recommendations": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Security recommendations",
-            "example": ["Always verify contract addresses before transactions"]
           }
         }
       },
@@ -841,11 +586,22 @@
           "data": {
             "type": "object",
             "properties": {
-              "securityData": {
-                "$ref": "#/components/schemas/TokenSecurityData"
+              "contractAddress": {
+                "type": "string"
               },
-              "aiAnalysis": {
-                "$ref": "#/components/schemas/AIAnalysis"
+              "chain": {
+                "type": "string",
+                "example": "solana"
+              },
+              "rugPullRisk": {
+                "$ref": "#/components/schemas/RugPullRisk"
+              },
+              "tokenMetrics": {
+                "type": "object"
+              },
+              "rugCheckReport": {
+                "type": "object",
+                "description": "Full RugCheck.xyz report"
               }
             }
           },
@@ -865,15 +621,47 @@
           "data": {
             "type": "object",
             "properties": {
-              "tokenSecurity": {
-                "$ref": "#/components/schemas/TokenSecurityData"
+              "contractAddress": {
+                "type": "string"
               },
-              "contractSecurity": {
-                "type": "object",
-                "description": "Contract approval security data"
+              "chain": {
+                "type": "string",
+                "example": "solana"
               },
-              "aiAnalysis": {
-                "$ref": "#/components/schemas/AIAnalysis"
+              "rugPullRisk": {
+                "$ref": "#/components/schemas/RugPullRisk"
+              },
+              "risks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": ["🚨 High concentration risk"]
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+            "type": "string"
+                },
+                "example": ["⚠️ Pump.fun token"]
+              },
+              "tokenMetrics": {
+                "$ref": "#/components/schemas/TokenMetrics"
+              },
+              "markets": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "topHolders": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                }
+              },
+              "fullReport": {
+                "type": "object"
               }
             }
           },
@@ -893,184 +681,209 @@
           "data": {
             "type": "object",
             "properties": {
-              "isRugPull": {
-                "type": "boolean",
-                "description": "Whether token shows rug pull indicators",
-                "example": false
+              "contractAddress": {
+                "type": "string"
               },
-              "rugScore": {
+              "chain": {
+                "type": "string",
+                "example": "solana"
+              },
+              "rugPullRisk": {
+                "$ref": "#/components/schemas/RugPullRisk"
+              },
+              "risks": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+            "type": "string"
+                }
+              },
+              "tokenMetrics": {
+                "$ref": "#/components/schemas/TokenMetrics"
+              },
+              "rugCheckScore": {
+                "type": "integer"
+              },
+              "rawReport": {
+                "type": "object"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PhishingResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string",
+                "example": "https://cpump.fun"
+              },
+              "isPhishing": {
+                "type": "boolean",
+                "description": "Whether site is phishing",
+                "example": true
+              },
+              "confidence": {
                 "type": "integer",
                 "minimum": 0,
                 "maximum": 100,
-                "description": "Rug pull risk score (0=safe, 100=high risk)",
-                "example": 15
+                "description": "Confidence level (0-100)",
+                "example": 95
               },
-              "indicators": {
+              "riskLevel": {
+                "type": "string",
+                "enum": ["SAFE", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+                "example": "CRITICAL"
+              },
+              "verdict": {
+                "type": "string",
+                "example": "🚨 PHISHING SITE DETECTED - DO NOT CONNECT!"
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "Suspicious similarity to pump.fun (typosquatting attempt)"
+                ]
+              },
+              "similarTo": {
+                "type": "string",
+                "nullable": true,
+                "description": "Legitimate domain this may be impersonating",
+                "example": "pump.fun"
+              },
+              "recommendations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "DO NOT connect your wallet to this site"
+                ]
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SimulateTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "simulation": {
                 "type": "object",
                 "properties": {
-                  "liquidityLocked": {
+                  "success": {
                     "type": "boolean",
-                    "description": "Whether liquidity is locked"
+                    "description": "Whether transaction will succeed"
                   },
-                  "ownershipRenounced": {
-                    "type": "boolean",
-                    "description": "Whether contract ownership is renounced"
+                  "logs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
                   },
-                  "honeypotRisk": {
-                    "type": "boolean",
-                    "description": "Honeypot detection"
+                  "risks": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["🚨 Attempting to transfer ALL tokens"]
                   },
-                  "suspiciousHoldings": {
-                    "type": "boolean",
-                    "description": "Large holder concentration detected"
+                  "warnings": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "example": ["⚠️ High slippage detected"]
                   }
                 }
               },
-              "aiAnalysis": {
-                "$ref": "#/components/schemas/AIAnalysis"
-              }
-            }
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "AddressSecurityResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "description": "Address security data from GoPlus"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "AddressAnalyzeResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "securityData": {
-                "type": "object"
+              "transaction": {
+                "type": "object",
+                "properties": {
+                  "instructions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "program": {
+                          "type": "string",
+                          "example": "Token Program"
+                        },
+                        "programId": {
+                          "type": "string",
+                          "example": "TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA"
+                        },
+                        "accountsInvolved": {
+                          "type": "integer",
+                          "example": 3
+                        }
+                      }
+                    }
+                  },
+                  "totalInstructions": {
+                    "type": "integer",
+                    "example": 1
+                  }
+                }
               },
-              "aiAnalysis": {
-                "$ref": "#/components/schemas/AIAnalysis"
-              }
-            }
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "DappSecurityResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "description": "dApp security data"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "PhishingCheckResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "phishing_site": {
-                "type": "integer",
-                "description": "Whether site is phishing (0=safe, 1=phishing)",
-                "example": 0
+              "riskAssessment": {
+                "type": "object",
+                "properties": {
+                  "score": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 100,
+                    "example": 10
+                  },
+                  "level": {
+                    "type": "string",
+                    "enum": ["SAFE", "LOW", "MEDIUM", "HIGH", "CRITICAL"],
+                    "example": "SAFE"
+                  },
+                  "verdict": {
+                    "type": "string",
+                    "example": "✅ Transaction appears safe"
+                  }
+                }
               },
-              "website_contract_security": {
+              "recommendations": {
                 "type": "array",
                 "items": {
-                  "type": "object"
+                  "type": "string"
                 },
-                "description": "Contract security info if applicable"
-              }
-            }
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "SignatureSecurityResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "description": "Signature security analysis"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "BatchAnalyzeResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "array",
-            "items": {
-              "type": "object",
-              "properties": {
-                "operation": {
-                  "type": "object",
-                  "description": "Original operation request"
-                },
-                "status": {
-                  "type": "string",
-                  "enum": ["fulfilled", "rejected"],
-                  "description": "Operation status"
-                },
-                "data": {
-                  "type": "object",
-                  "description": "Operation result data (if fulfilled)"
-                },
-                "error": {
-                  "type": "string",
-                  "description": "Error message (if rejected)"
-                }
+                "example": [
+                  "✅ Transaction appears safe to sign",
+                  "Always verify recipient addresses"
+                ]
               }
             }
           },
@@ -1090,7 +903,7 @@
           "error": {
             "type": "string",
             "description": "Error message",
-            "example": "Missing required fields"
+            "example": "Missing required field: contractAddress"
           },
           "timestamp": {
             "type": "string",
@@ -1109,8 +922,8 @@
             },
             "example": {
               "success": false,
-              "error": "Missing required fields: chainId and contractAddress",
-              "timestamp": "2025-11-24T05:07:49.709Z"
+              "error": "Missing required field: contractAddress",
+              "timestamp": "2025-11-24T09:00:00.000Z"
             }
           }
         }
@@ -1125,7 +938,7 @@
             "example": {
               "success": false,
               "error": "Token data not found",
-              "timestamp": "2025-11-24T05:07:49.709Z"
+              "timestamp": "2025-11-24T09:00:00.000Z"
             }
           }
         }
@@ -1140,7 +953,7 @@
             "example": {
               "success": false,
               "error": "Internal server error",
-              "timestamp": "2025-11-24T05:07:49.709Z"
+              "timestamp": "2025-11-24T09:00:00.000Z"
             }
           }
         }
@@ -1148,4 +961,3 @@
     }
   }
 }
-

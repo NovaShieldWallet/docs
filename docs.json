@@ -5,7 +5,10 @@
   "colors": {
     "primary": "#EB7C0B",
     "light": "#FFA03D",
-    "dark": "#C26209"
+    "dark": "#C26209",
+    "background": {
+      "dark": "#000000"
+    }
   },
   "favicon": "/favicon.svg",
   "navigation": {
@@ -27,34 +30,20 @@
             "pages": [
               "api-reference/token/security",
               "api-reference/token/analyze",
-              "api-reference/token/comprehensive"
+              "api-reference/token/comprehensive",
+              "api-reference/token/rug-check"
             ]
           },
           {
-            "group": "Rug Check",
+            "group": "Phishing Detection",
             "pages": [
-              "api-reference/rug/check"
+              "api-reference/phishing/check"
             ]
           },
           {
-            "group": "Address Security",
+            "group": "Transaction Security",
             "pages": [
-              "api-reference/address/security",
-              "api-reference/address/analyze"
-            ]
-          },
-          {
-            "group": "dApp & Phishing",
-            "pages": [
-              "api-reference/dapp/security",
-              "api-reference/dapp/phishing"
-            ]
-          },
-          {
-            "group": "Advanced",
-            "pages": [
-              "api-reference/signature/security",
-              "api-reference/batch/analyze"
+              "api-reference/transaction/simulate"
             ]
           }
         ]
