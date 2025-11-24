@@ -9,45 +9,76 @@
   },
   "favicon": "/favicon.svg",
   "navigation": {
-    "tabs": [
+    "pages": [
       {
-        "tab": "Overview",
-        "groups": [
-          {
-            "group": "Getting started",
-            "pages": [
-              "index",
-              "quickstart"
-            ]
-          }
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart"
         ]
       },
       {
-        "tab": "Security API",
-        "groups": [
-          {
-            "group": "API Documentation",
-            "pages": [
-              "api-reference/introduction"
-            ]
-          }
+        "group": "Security API",
+        "pages": [
+          "api-reference/introduction",
+          "api-reference/health"
+        ]
+      },
+      {
+        "group": "Token Security",
+        "pages": [
+          "api-reference/token/security",
+          "api-reference/token/analyze",
+          "api-reference/token/comprehensive"
+        ]
+      },
+      {
+        "group": "Address Security",
+        "pages": [
+          "api-reference/address/security",
+          "api-reference/address/analyze"
+        ]
+      },
+      {
+        "group": "NFT Security",
+        "pages": [
+          "api-reference/nft/security",
+          "api-reference/nft/analyze"
+        ]
+      },
+      {
+        "group": "Approval Security",
+        "pages": [
+          "api-reference/approval/security"
+        ]
+      },
+      {
+        "group": "dApp & Phishing",
+        "pages": [
+          "api-reference/dapp/security",
+          "api-reference/dapp/phishing"
+        ]
+      },
+      {
+        "group": "Advanced",
+        "pages": [
+          "api-reference/signature/security",
+          "api-reference/batch/analyze"
         ]
       }
     ],
-    "global": {
-      "anchors": [
-        {
-          "anchor": "Documentation",
-          "href": "https://mintlify.com/docs",
-          "icon": "book-open-cover"
-        },
-        {
-          "anchor": "Blog",
-          "href": "https://mintlify.com/blog",
-          "icon": "newspaper"
-        }
-      ]
-    }
+    "anchors": [
+      {
+        "name": "Website",
+        "url": "https://novashield.space",
+        "icon": "globe"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/novashieldwallet",
+        "icon": "github"
+      }
+    ]
   },
   "logo": {
     "light": "/logo/light.svg",
@@ -57,14 +88,9 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:hi@mintlify.com"
+        "href": "mailto:support@novashield.space"
       }
-    ],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://dashboard.mintlify.com"
-    }
+    ]
   },
   "contextual": {
     "options": [
@@ -81,8 +107,7 @@
   "footer": {
     "socials": {
       "x": "https://x.com/novashield",
-      "github": "https://github.com/novashieldwallet",
-      "linkedin": "https://linkedin.com/company/NovaShield"
+      "github": "https://github.com/novashieldwallet"
     }
   }
 }
