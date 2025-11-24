@@ -30,25 +30,6 @@
     }
   ],
   "paths": {
-    "/health": {
-      "get": {
-        "summary": "Health check",
-        "responses": {
-          "200": {
-            "description": "Service healthy",
-            "content": {
-              "application/json": {
-                "example": {
-                  "status": "healthy",
-                  "version": "2.0.0",
-                  "mode": "local-first"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/token/security/{mint}": {
       "get": {
         "tags": ["Token Security"],
