@@ -23,10 +23,14 @@ A honeypot token allows purchases but prevents sales through:
 
 ## Response Fields
 
-- **isHoneypot** - Whether the token is detected as a honeypot
-- **canBuy** - Whether buy operations are possible
-- **canSell** - Whether sell operations are possible
+- **isHoneypot** - Whether the token is detected as a honeypot (true/false), or `null` if unable to verify
+- **canBuy** - Whether buy operations are possible (true/false), or `null` if unable to verify
+- **canSell** - Whether sell operations are possible (true/false), or `null` if unable to verify
 - **confidence** - Detection confidence level (0-100)
+  - `0` = Unable to verify
+  - `1-79` = Low to moderate confidence
+  - `80-100` = High confidence
+- **reasons** - Array of explanations for the detection result
 
 ## Interpreting Results
 
@@ -35,11 +39,14 @@ A honeypot token allows purchases but prevents sales through:
 | ✅ | ✅ | false | Safe to trade |
 | ✅ | ❌ | true | 🚨 HONEYPOT - Do not buy! |
 | ❌ | ❌ | N/A | Token not tradeable |
+| null | null | null | ⚠️ Unable to verify - proceed with caution |
 | ❌ | ✅ | false | Unusual - investigate further |
 
 ## Important Notes
 
-- A `confidence` score below 80 suggests uncertain results
-- Always verify liquidity exists before trading
-- Some tokens may have legitimate restrictions (e.g., vesting)
+- **Null values** indicate the API couldn't verify trading permissions (new/unusual token structure)
+- A `confidence` of `0` means unable to verify - treat with extreme caution
+- Confidence below 80 suggests uncertain results - verify manually
+- Always check liquidity exists before trading
+- Some tokens may have legitimate restrictions (e.g., vesting periods)
 

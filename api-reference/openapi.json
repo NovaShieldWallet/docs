@@ -307,10 +307,11 @@
           "data": {
             "type": "object",
             "properties": {
-              "isHoneypot": { "type": "boolean" },
-              "canBuy": { "type": "boolean" },
-              "canSell": { "type": "boolean" },
-              "confidence": { "type": "integer" }
+              "isHoneypot": { "type": "boolean", "nullable": true, "description": "True if honeypot, false if safe, null if unable to verify" },
+              "canBuy": { "type": "boolean", "nullable": true, "description": "True if can buy, null if unable to verify" },
+              "canSell": { "type": "boolean", "nullable": true, "description": "True if can sell, null if unable to verify" },
+              "confidence": { "type": "integer", "minimum": 0, "maximum": 100, "description": "0 if unable to verify, 100 if certain" },
+              "reasons": { "type": "array", "items": { "type": "string" } }
             }
           }
         }
