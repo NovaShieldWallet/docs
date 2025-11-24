@@ -1,28 +1,31 @@
 ---
-title: 'Introduction'
-description: 'Example section for showcasing API endpoints'
+title: 'API Introduction'
+description: 'Integrate NovaShield security features into your applications'
 ---
 
-<Note>
-  If you're not looking to build API reference documentation, you can delete
-  this section by removing the api-reference folder.
-</Note>
+## Welcome to NovaShield API
 
-## Welcome
-
-There are two ways to build API documentation: [OpenAPI](https://mintlify.com/docs/api-playground/openapi/setup) and [MDX components](https://mintlify.com/docs/api-playground/mdx/configuration). For the starter kit, we are using the following OpenAPI specification.
+The NovaShield API enables developers to integrate our multi-sig security wallet features, AI-powered threat detection, and transaction verification capabilities into their applications.
 
 <Card
-  title="Plant Store Endpoints"
-  icon="leaf"
+  title="NovaShield API Endpoints"
+  icon="shield"
   href="https://github.com/mintlify/starter/blob/main/api-reference/openapi.json"
 >
   View the OpenAPI specification file
 </Card>
 
+## Key Features
+
+- **Multi-Sig Wallet Management**: Create and manage multi-approval wallets
+- **Pattern-Lock Integration**: Implement pattern-based authentication
+- **Threat Detection**: Access AI-powered domain and transaction analysis
+- **Private Transfers**: Execute secure, confidential transactions
+- **Real-Time Security**: Get instant alerts on suspicious activity
+
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens and picked up from the specification file.
+All API endpoints are authenticated using Bearer tokens for secure access to NovaShield services.
 
 ```json
 "security": [
@@ -31,3 +34,7 @@ All API endpoints are authenticated using Bearer tokens and picked up from the s
   }
 ]
 ```
+
+<Tip>
+Generate your API key from the NovaShield dashboard to start integrating our security features.
+</Tip>
