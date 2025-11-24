@@ -3,19 +3,15 @@ title: 'Initiate Private SOL Transfer'
 openapi: 'POST /privacy-cash/send'
 ---
 
-**SOL ONLY** - Send SOL with complete privacy and automatic refund protection.
-
-## Auto-Refund Protection
-
-If transfer fails, your SOL is **automatically refunded** to your refund address (minus network fees). No manual intervention needed.
+**SOL ONLY** - Send SOL with complete privacy and auto-refund protection.
 
 ## How It Works
 
-1. Call endpoint with amount, recipient, and optional refund address
+1. Call endpoint with amount and recipient
 2. Receive temp wallet address
 3. Send SOL to temp wallet (you keep your private key!)
 4. Transfer auto-executes when funded (checks every 2s)
-5. If fails: Auto-refunds to your address
+5. **If transfer fails, SOL automatically refunds to you**
 6. Temp wallet expires in 10 minutes
 
 ## Request
@@ -30,7 +26,7 @@ If transfer fails, your SOL is **automatically refunded** to your refund address
 ```
 
 **Required:** `amount`, `toAddress`  
-**Optional:** `network` (default: devnet), `refundAddress` (recommended)
+**Optional:** `refundAddress` (recommended - where failed transfers refund to)
 
 ## Response
 
@@ -52,20 +48,23 @@ If transfer fails, your SOL is **automatically refunded** to your refund address
 
 ## Next Steps
 
-1. Send SOL to `tempWallet` address
-2. Check status with `transferId`
-3. Transfer completes automatically OR refunds on failure
+1. Send SOL to the `tempWallet` address
+2. Use `transferId` to check status
+3. Transfer completes automatically
 
-## Details
+## Auto-Refund Protection
+
+✅ **Transfer fails?** SOL automatically refunds to `refundAddress`  
+✅ **Temp wallet expires?** SOL automatically refunds  
+✅ **Always specify refundAddress** for guaranteed refund destination
+
+## Fees & Minimums
 
 - **Minimum**: 0.01 SOL
 - **Expiry**: 10 minutes
-- **Auto-refund**: Yes (minus network fees)
-- **SOL ONLY**: No tokens
 
 ## Important
 
-✅ **Auto-refund on failure** - Your funds are protected  
-✅ **No private key needed** - You stay in control  
-⚠️ **10 minute expiry** - Send SOL within this time  
-⚠️ **SOL ONLY** - Do not send tokens
+⚠️ **SOL ONLY** - Do not send tokens  
+✅ **Auto-refund** - Failed transfers refund automatically  
+✅ **No private key needed**
