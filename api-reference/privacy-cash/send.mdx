@@ -8,10 +8,10 @@ openapi: 'POST /privacy-cash/send'
 ## How It Works
 
 1. Call endpoint with amount and recipient
-2. Receive temp wallet address
-3. Send SOL to temp wallet (you keep your private key!)
+2. Receive secure address
+3. Send SOL to that address (you keep your private key!)
 4. Transfer auto-executes when funded (checks every 2s)
-5. Temp wallet expires in 30 minutes
+5. Address expires in 30 minutes
 
 ## Request
 
@@ -31,17 +31,17 @@ openapi: 'POST /privacy-cash/send'
 {
   "success": true,
   "data": {
-    "tempWallet": "TEMP_WALLET_ADDRESS",
+    "sendTo": "SECURE_ADDRESS",
     "transferId": "transfer-123",
     "expiresAt": 1700001800
   },
-  "message": "Send SOL to tempWallet. Transfer executes automatically when funded."
+  "message": "Send SOL to 'sendTo' address. Transfer executes automatically when funded."
 }
 ```
 
 ## Next Steps
 
-1. Send SOL to the `tempWallet` address
+1. Send SOL to the `sendTo` address
 2. Use `transferId` to check status
 3. Transfer completes automatically
 
@@ -53,6 +53,6 @@ openapi: 'POST /privacy-cash/send'
 
 ## Important
 
-⚠️ **SOL ONLY** - Do not send tokens to temp wallet  
+⚠️ **SOL ONLY** - Do not send tokens to address  
 ⚠️ **30 minute expiry** - Funds returned if not used  
 ✅ **No private key needed** - You remain in control

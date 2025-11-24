@@ -216,7 +216,7 @@
       "post": {
         "tags": ["Privacy Cash"],
         "summary": "Initiate private SOL transfer (SOL ONLY)",
-        "description": "Creates temp wallet for private SOL transfer. User NEVER sends private key. Returns temp wallet address - user sends SOL to this address. Queue auto-executes transfer when funded (checks every 2 seconds). Temp wallet expires in 30 minutes. SOL ONLY - no tokens. Minimum: 0.04 SOL (recipient gets 0.03 after fees).",
+        "description": "Initiate private SOL transfer. User NEVER sends private key. API creates secure address - user sends SOL there. Queue auto-executes transfer when funded (checks every 2 seconds). Address expires in 30 minutes. SOL ONLY - no tokens. Minimum: 0.04 SOL (recipient gets 0.03 after fees).",
         "requestBody": {
           "required": true,
           "content": {
@@ -251,7 +251,7 @@
         },
         "responses": {
           "200": {
-            "description": "Temp wallet created",
+            "description": "Transfer initiated - send SOL to provided address",
             "content": {
               "application/json": {
                 "schema": {
@@ -261,12 +261,12 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "tempWallet": { "type": "string", "description": "Temp wallet address - user sends SOL here (SOL ONLY)" },
+                        "sendTo": { "type": "string", "description": "Address where user sends SOL (SOL ONLY)" },
                         "transferId": { "type": "string", "description": "Transfer ID for status checks" },
                         "expiresAt": { "type": "integer", "description": "Unix timestamp when wallet expires (30 minutes)" }
                       }
                     },
-                    "message": { "type": "string", "description": "Instruction: Send SOL to tempWallet. Transfer executes automatically when funded." }
+                    "message": { "type": "string", "description": "Instruction: Send SOL to 'sendTo' address. Transfer executes automatically when funded." }
                   }
                 }
               }
@@ -279,7 +279,7 @@
       "get": {
         "tags": ["Privacy Cash"],
         "summary": "Check transfer status",
-        "description": "Check status of privacy cash transfer. Returns: pending (temp wallet created, awaiting funds), funded (temp wallet received SOL), completed (transfer done), failed, expired (30min timeout).",
+        "description": "Check status of privacy cash transfer. Returns: pending (awaiting SOL), funded (SOL received, processing), completed (transfer done), failed, expired (30min timeout).",
         "parameters": [
           {
             "name": "transferId",
