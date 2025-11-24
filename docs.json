@@ -21,42 +21,42 @@
         "group": "Security API",
         "pages": [
           "api-reference/introduction",
-          "api-reference/health"
-        ]
-      },
-      {
-        "group": "Token Security",
-        "pages": [
-          "api-reference/token/security",
-          "api-reference/token/analyze",
-          "api-reference/token/comprehensive"
-        ]
-      },
-      {
-        "group": "Rug Check",
-        "pages": [
-          "api-reference/rug/check"
-        ]
-      },
-      {
-        "group": "Address Security",
-        "pages": [
-          "api-reference/address/security",
-          "api-reference/address/analyze"
-        ]
-      },
-      {
-        "group": "dApp & Phishing",
-        "pages": [
-          "api-reference/dapp/security",
-          "api-reference/dapp/phishing"
-        ]
-      },
-      {
-        "group": "Advanced",
-        "pages": [
-          "api-reference/signature/security",
-          "api-reference/batch/analyze"
+          "api-reference/health",
+          {
+            "group": "Token Security",
+            "pages": [
+              "api-reference/token/security",
+              "api-reference/token/analyze",
+              "api-reference/token/comprehensive"
+            ]
+          },
+          {
+            "group": "Rug Check",
+            "pages": [
+              "api-reference/rug/check"
+            ]
+          },
+          {
+            "group": "Address Security",
+            "pages": [
+              "api-reference/address/security",
+              "api-reference/address/analyze"
+            ]
+          },
+          {
+            "group": "dApp & Phishing",
+            "pages": [
+              "api-reference/dapp/security",
+              "api-reference/dapp/phishing"
+            ]
+          },
+          {
+            "group": "Advanced",
+            "pages": [
+              "api-reference/signature/security",
+              "api-reference/batch/analyze"
+            ]
+          }
         ]
       }
     ],
