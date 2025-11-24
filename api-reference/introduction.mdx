@@ -1,31 +1,67 @@
 ---
 title: 'API Introduction'
-description: 'Integrate NovaShield security features into your applications'
+description: 'AI-powered blockchain security API with GoPlus integration for comprehensive threat detection'
 ---
 
-## Welcome to NovaShield API
+## Welcome to NovaShield Security API
 
-The NovaShield API enables developers to integrate our multi-sig security wallet features, AI-powered threat detection, and transaction verification capabilities into their applications.
+The NovaShield Security API provides comprehensive blockchain security scanning powered by GoPlus and enhanced with AI analysis. Detect threats, analyze risks, and protect your users from scams, rug pulls, and malicious contracts.
 
 <Card
-  title="NovaShield API Endpoints"
-  icon="shield"
+  title="OpenAPI Specification"
+  icon="code"
   href="https://github.com/NovaShieldWallet/docs/blob/main/api-reference/openapi.json"
 >
-  View the OpenAPI specification file
+  View the complete API specification
 </Card>
 
-## Key Features
+## Core Features
 
-- **Multi-Sig Wallet Management**: Create and manage multi-approval wallets
-- **Pattern-Lock Integration**: Implement pattern-based authentication
-- **Threat Detection**: Access AI-powered domain and transaction analysis
-- **Private Transfers**: Execute secure, confidential transactions
-- **Real-Time Security**: Get instant alerts on suspicious activity
+Powerful security tools to protect your blockchain applications.
+
+<CardGroup cols={2}>
+  <Card
+    title="Token Security"
+    icon="coins"
+    href="/api-reference/token/security"
+  >
+    Scan tokens for honeypots, hidden taxes, and malicious functions
+  </Card>
+  <Card
+    title="Rug Pull Detection"
+    icon="shield-exclamation"
+    href="/api-reference/rug/check"
+  >
+    Detect rug pull risks with liquidity and ownership analysis
+  </Card>
+  <Card
+    title="Address Security"
+    icon="wallet"
+    href="/api-reference/address/security"
+  >
+    Check wallet addresses for malicious activity history
+  </Card>
+  <Card
+    title="Phishing Detection"
+    icon="fish"
+    href="/api-reference/dapp/phishing"
+  >
+    Identify phishing sites and malicious dApps
+  </Card>
+</CardGroup>
+
+## AI-Powered Analysis
+
+Every security check includes AI-enhanced risk analysis that goes beyond static databases:
+
+- **Risk Scoring**: 0-100 risk score with detailed classification
+- **Smart Recommendations**: Actionable security advice
+- **Pattern Detection**: Identify threats that databases miss
+- **Real-Time Intelligence**: Stay ahead of emerging scams
 
 ## Authentication
 
-All API endpoints are authenticated using Bearer tokens for secure access to NovaShield services.
+All API endpoints require Bearer token authentication.
 
 ```json
 "security": [
@@ -36,5 +72,29 @@ All API endpoints are authenticated using Bearer tokens for secure access to Nov
 ```
 
 <Tip>
-Generate your API key from the NovaShield dashboard to start integrating our security features.
+Contact NovaShield to get your API key and start protecting your users.
 </Tip>
+
+## Quick Start
+
+<Steps>
+<Step title="Get your API key">
+  Contact the NovaShield team to receive your Bearer token.
+</Step>
+
+<Step title="Make your first request">
+  ```bash
+  curl -X POST https://secure.novashield.space/api/token/security \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "chainId": "1",
+      "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
+    }'
+  ```
+</Step>
+
+<Step title="Analyze the results">
+  Review the security data and AI analysis to identify risks and protect your users.
+</Step>
+</Steps>
