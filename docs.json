@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "NovaShield",
   "colors": {
-    "primary": "#EA580C",
-    "light": "#FB923C",
-    "dark": "#C2410C"
+    "primary": "#FF4B33",
+    "light": "#FF7A66",
+    "dark": "#CC3C29"
   },
   "favicon": "/favicon.svg",
   "navigation": {
