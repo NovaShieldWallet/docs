@@ -1,16 +1,13 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
-    "license": {
-      "name": "MIT"
-    },
+    "title": "NovaShield Security API",
+    "description": "AI-powered security API for detecting malicious domains and transactions using GoPlus integration",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.novashield.com"
     }
   ],
   "security": [
@@ -19,36 +16,33 @@
     }
   ],
   "paths": {
-    "/plants": {
-      "get": {
-        "description": "Returns all plants from the system that the user has access to",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "The maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "format": "int32"
+    "/security/scan/domain": {
+      "post": {
+        "summary": "Scan Domain",
+        "description": "Scan a domain for malicious activity using AI and GoPlus threat intelligence",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DomainScanRequest"
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Domain scan results",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/Plant"
-                  }
+                  "$ref": "#/components/schemas/SecurityScanResult"
                 }
               }
             }
           },
           "400": {
-            "description": "Unexpected error",
+            "description": "Invalid request",
             "content": {
               "application/json": {
                 "schema": {
@@ -56,35 +50,9 @@
                 }
               }
             }
-          }
-        }
-      },
-      "post": {
-        "description": "Creates a new plant in the store",
-        "requestBody": {
-          "description": "Plant to add to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
           },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "plant response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Plant"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "unexpected error",
+          "401": {
+            "description": "Unauthorized",
             "content": {
               "application/json": {
                 "schema": {
@@ -96,28 +64,33 @@
         }
       }
     },
-    "/plants/{id}": {
-      "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "description": "ID of plant to delete",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
+    "/security/scan/transaction": {
+      "post": {
+        "summary": "Scan Transaction",
+        "description": "Analyze a blockchain transaction for security threats and malicious patterns",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransactionScanRequest"
+              }
             }
           }
-        ],
+        },
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "Transaction scan results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SecurityScanResult"
+                }
+              }
+            }
           },
           "400": {
-            "description": "unexpected error",
+            "description": "Invalid request",
             "content": {
               "application/json": {
                 "schema": {
@@ -128,25 +101,45 @@
           }
         }
       }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
+    },
+    "/security/threats": {
+      "get": {
+        "summary": "Get Threat Intelligence",
+        "description": "Retrieve latest threat intelligence and security updates",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Maximum number of results to return",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "severity",
+            "in": "query",
+            "description": "Filter by threat severity level",
+            "schema": {
+              "type": "string",
+              "enum": ["critical", "high", "medium", "low"]
             }
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
+            "description": "List of threat intelligence",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ThreatIntelligence"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -154,55 +147,128 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "DomainScanRequest": {
         "type": "object",
+        "required": ["domain"],
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
-          },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "domain": {
+            "type": "string",
+            "description": "Domain URL to scan for malicious activity",
+            "example": "example-dapp.com"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "TransactionScanRequest": {
+        "type": "object",
+        "required": ["transaction_hash", "chain"],
+        "properties": {
+          "transaction_hash": {
+            "type": "string",
+            "description": "Transaction hash to analyze",
+            "example": "0x1234567890abcdef..."
           },
-          {
-            "required": [
-              "id"
-            ],
-            "type": "object",
-            "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
-              }
-            }
+          "chain": {
+            "type": "string",
+            "description": "Blockchain network",
+            "example": "ethereum"
           }
-        ]
+        }
       },
-      "Error": {
-        "required": [
-          "error",
-          "message"
-        ],
+      "SecurityScanResult": {
         "type": "object",
         "properties": {
+          "scan_id": {
+            "type": "string",
+            "description": "Unique identifier for this scan",
+            "example": "scan_abc123xyz"
+          },
+          "is_malicious": {
+            "type": "boolean",
+            "description": "Whether the scanned item is malicious"
+          },
+          "risk_level": {
+            "type": "string",
+            "enum": ["safe", "low", "medium", "high", "critical"],
+            "description": "Overall risk assessment"
+          },
+          "ai_analysis": {
+            "type": "object",
+            "properties": {
+              "confidence": {
+                "type": "number",
+                "description": "AI confidence score (0-1)",
+                "example": 0.95
+              },
+              "reasoning": {
+                "type": "string",
+                "description": "AI explanation of the threat assessment",
+                "example": "Domain exhibits phishing patterns similar to known scams"
+              }
+            }
+          },
+          "goplus_data": {
+            "type": "object",
+            "description": "Raw data from GoPlus API"
+          },
+          "threats_detected": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of specific threats identified",
+            "example": ["phishing", "fake_token"]
+          },
+          "scanned_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Timestamp of when scan was performed"
+          }
+        }
+      },
+      "ThreatIntelligence": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Threat intelligence ID"
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of threat",
+            "example": "wallet_drain"
+          },
+          "severity": {
+            "type": "string",
+            "enum": ["critical", "high", "medium", "low"]
+          },
+          "description": {
+            "type": "string",
+            "description": "Description of the threat"
+          },
+          "indicators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Indicators of compromise"
+          },
+          "reported_at": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "Error": {
+        "type": "object",
+        "required": ["error", "message"],
+        "properties": {
           "error": {
-            "type": "integer",
-            "format": "int32"
+            "type": "string",
+            "description": "Error code"
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Human-readable error message"
           }
         }
       }
@@ -210,7 +276,8 @@
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "description": "Bearer token authentication"
       }
     }
   }
