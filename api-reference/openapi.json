@@ -1,283 +1,1289 @@
 {
-  "openapi": "3.1.0",
+  "openapi": "3.0.3",
   "info": {
     "title": "NovaShield Security API",
-    "description": "AI-powered security API for detecting malicious domains and transactions using GoPlus integration",
-    "version": "1.0.0"
+    "description": "GoPlus-powered security API with AI analysis for blockchain security checks. Provides comprehensive security scanning for tokens, addresses, NFTs, dApps, and phishing detection.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "NovaShield",
+      "url": "https://novashield.space"
+    }
   },
   "servers": [
     {
-      "url": "https://api.novashield.com"
+      "url": "https://secure.novashield.space",
+      "description": "Production Server"
+    },
+    {
+      "url": "http://localhost:3005",
+      "description": "Local Development"
     }
   ],
   "security": [
     {
-      "bearerAuth": []
+      "BearerAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Health",
+      "description": "Health check endpoints"
+    },
+    {
+      "name": "Token Security",
+      "description": "Token security scanning and analysis"
+    },
+    {
+      "name": "Address Security",
+      "description": "Wallet address security checks"
+    },
+    {
+      "name": "NFT Security",
+      "description": "NFT contract security analysis"
+    },
+    {
+      "name": "Approval Security",
+      "description": "Token approval security checks"
+    },
+    {
+      "name": "dApp & Phishing",
+      "description": "dApp and phishing site detection"
+    },
+    {
+      "name": "Signature Security",
+      "description": "Transaction signature analysis"
+    },
+    {
+      "name": "Batch Operations",
+      "description": "Batch security operations"
     }
   ],
   "paths": {
-    "/security/scan/domain": {
-      "post": {
-        "summary": "Scan Domain",
-        "description": "Scan a domain for malicious activity using AI and GoPlus threat intelligence",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DomainScanRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Domain scan results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SecurityScanResult"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/security/scan/transaction": {
-      "post": {
-        "summary": "Scan Transaction",
-        "description": "Analyze a blockchain transaction for security threats and malicious patterns",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/TransactionScanRequest"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Transaction scan results",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SecurityScanResult"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/Error"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/security/threats": {
+    "/health": {
       "get": {
-        "summary": "Get Threat Intelligence",
-        "description": "Retrieve latest threat intelligence and security updates",
-        "parameters": [
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "Maximum number of results to return",
-            "schema": {
-              "type": "integer",
-              "default": 20,
-              "maximum": 100
-            }
-          },
-          {
-            "name": "severity",
-            "in": "query",
-            "description": "Filter by threat severity level",
-            "schema": {
-              "type": "string",
-              "enum": ["critical", "high", "medium", "low"]
-            }
-          }
-        ],
+        "tags": ["Health"],
+        "summary": "Health check",
+        "description": "Check if the API service is running",
+        "operationId": "healthCheck",
+        "security": [],
         "responses": {
           "200": {
-            "description": "List of threat intelligence",
+            "description": "Service is healthy",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/ThreatIntelligence"
+                  "$ref": "#/components/schemas/HealthResponse"
+                },
+                "example": {
+                  "status": "healthy",
+                  "service": "Nova Security API",
+                  "timestamp": "2025-11-24T05:07:49.709Z",
+                  "version": "1.0.0"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/token/security": {
+      "post": {
+        "tags": ["Token Security"],
+        "summary": "Check token security (basic)",
+        "description": "Perform basic security checks on one or more token contracts using GoPlus",
+        "operationId": "checkTokenSecurity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenSecurityRequest"
+              },
+              "examples": {
+                "ethereum": {
+                  "summary": "Ethereum USDT",
+                  "value": {
+                    "chainId": "1",
+                    "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
+                  }
+                },
+                "solana": {
+                  "summary": "Solana USDC",
+                  "value": {
+                    "chainId": "501",
+                    "contractAddresses": ["EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"]
                   }
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token security data retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenSecurityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/token/analyze": {
+      "post": {
+        "tags": ["Token Security"],
+        "summary": "Analyze token with AI",
+        "description": "Check token security and get AI-powered risk analysis",
+        "operationId": "analyzeToken",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenAnalyzeRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token analysis with AI insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenAnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "404": {
+            "$ref": "#/components/responses/NotFound"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/token/comprehensive": {
+      "post": {
+        "tags": ["Token Security"],
+        "summary": "Comprehensive token report",
+        "description": "Get comprehensive security report including token security, contract analysis, and AI insights",
+        "operationId": "comprehensiveTokenReport",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TokenAnalyzeRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Comprehensive token report",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ComprehensiveTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/address/security": {
+      "post": {
+        "tags": ["Address Security"],
+        "summary": "Check address security",
+        "description": "Check if a wallet address has been involved in malicious activities",
+        "operationId": "checkAddressSecurity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressSecurityRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Address security data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressSecurityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/address/analyze": {
+      "post": {
+        "tags": ["Address Security"],
+        "summary": "Analyze address with AI",
+        "description": "Check address security with AI-powered risk analysis",
+        "operationId": "analyzeAddress",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddressSecurityRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Address analysis with AI insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AddressAnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/nft/security": {
+      "post": {
+        "tags": ["NFT Security"],
+        "summary": "Check NFT security",
+        "description": "Check NFT contract for security issues",
+        "operationId": "checkNFTSecurity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NFTSecurityRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "contractAddress": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "NFT security data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NFTSecurityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/nft/analyze": {
+      "post": {
+        "tags": ["NFT Security"],
+        "summary": "Analyze NFT with AI",
+        "description": "Check NFT contract security with AI-powered analysis",
+        "operationId": "analyzeNFT",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NFTSecurityRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "contractAddress": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "NFT analysis with AI insights",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NFTAnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/approval/security": {
+      "post": {
+        "tags": ["Approval Security"],
+        "summary": "Check approval security",
+        "description": "Check token approval contract for security risks",
+        "operationId": "checkApprovalSecurity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalSecurityRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Approval security data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApprovalSecurityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/dapp/security": {
+      "post": {
+        "tags": ["dApp & Phishing"],
+        "summary": "Check dApp security",
+        "description": "Check if a dApp URL is safe",
+        "operationId": "checkDappSecurity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DappSecurityRequest"
+              },
+              "example": {
+                "url": "https://uniswap.org"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "dApp security data",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DappSecurityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/phishing/check": {
+      "post": {
+        "tags": ["dApp & Phishing"],
+        "summary": "Check for phishing",
+        "description": "Check if a URL is a known phishing site",
+        "operationId": "checkPhishing",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhishingCheckRequest"
+              },
+              "example": {
+                "url": "https://uniswap.org"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Phishing check result",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhishingCheckResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/signature/security": {
+      "post": {
+        "tags": ["Signature Security"],
+        "summary": "Check signature security",
+        "description": "Analyze transaction signature/input data for security risks",
+        "operationId": "checkSignatureSecurity",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SignatureSecurityRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "data": "0xa9059cbb0000000000000000000000001234567890123456789012345678901234567890"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Signature security analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SignatureSecurityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/api/batch/analyze": {
+      "post": {
+        "tags": ["Batch Operations"],
+        "summary": "Batch analyze multiple items",
+        "description": "Perform multiple security checks in a single request",
+        "operationId": "batchAnalyze",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/BatchAnalyzeRequest"
+              },
+              "example": {
+                "operations": [
+                  {
+                    "type": "token",
+                    "params": {
+                      "chainId": "1",
+                      "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
+                    }
+                  },
+                  {
+                    "type": "address",
+                    "params": {
+                      "chainId": "1",
+                      "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+                    }
+                  },
+                  {
+                    "type": "nft",
+                    "params": {
+                      "chainId": "1",
+                      "contractAddress": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Batch analysis results",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BatchAnalyzeResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
           }
         }
       }
     }
   },
   "components": {
+    "securitySchemes": {
+      "BearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Enter your Bearer token in the format: Bearer {token}"
+      }
+    },
     "schemas": {
-      "DomainScanRequest": {
-        "type": "object",
-        "required": ["domain"],
-        "properties": {
-          "domain": {
-            "type": "string",
-            "description": "Domain URL to scan for malicious activity",
-            "example": "example-dapp.com"
-          }
-        }
-      },
-      "TransactionScanRequest": {
-        "type": "object",
-        "required": ["transaction_hash", "chain"],
-        "properties": {
-          "transaction_hash": {
-            "type": "string",
-            "description": "Transaction hash to analyze",
-            "example": "0x1234567890abcdef..."
-          },
-          "chain": {
-            "type": "string",
-            "description": "Blockchain network",
-            "example": "ethereum"
-          }
-        }
-      },
-      "SecurityScanResult": {
+      "HealthResponse": {
         "type": "object",
         "properties": {
-          "scan_id": {
+          "status": {
             "type": "string",
-            "description": "Unique identifier for this scan",
-            "example": "scan_abc123xyz"
+            "example": "healthy"
           },
-          "is_malicious": {
-            "type": "boolean",
-            "description": "Whether the scanned item is malicious"
-          },
-          "risk_level": {
+          "service": {
             "type": "string",
-            "enum": ["safe", "low", "medium", "high", "critical"],
-            "description": "Overall risk assessment"
+            "example": "Nova Security API"
           },
-          "ai_analysis": {
-            "type": "object",
-            "properties": {
-              "confidence": {
-                "type": "number",
-                "description": "AI confidence score (0-1)",
-                "example": 0.95
-              },
-              "reasoning": {
-                "type": "string",
-                "description": "AI explanation of the threat assessment",
-                "example": "Domain exhibits phishing patterns similar to known scams"
-              }
-            }
-          },
-          "goplus_data": {
-            "type": "object",
-            "description": "Raw data from GoPlus API"
-          },
-          "threats_detected": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "List of specific threats identified",
-            "example": ["phishing", "fake_token"]
-          },
-          "scanned_at": {
+          "timestamp": {
             "type": "string",
             "format": "date-time",
-            "description": "Timestamp of when scan was performed"
+            "example": "2025-11-24T05:07:49.709Z"
+          },
+          "version": {
+            "type": "string",
+            "example": "1.0.0"
           }
         }
       },
-      "ThreatIntelligence": {
+      "TokenSecurityRequest": {
         "type": "object",
+        "required": ["chainId", "contractAddresses"],
         "properties": {
-          "id": {
+          "chainId": {
             "type": "string",
-            "description": "Threat intelligence ID"
+            "description": "Blockchain chain ID (1=Ethereum, 56=BSC, 137=Polygon, 501=Solana, etc.)",
+            "example": "1"
           },
-          "type": {
-            "type": "string",
-            "description": "Type of threat",
-            "example": "wallet_drain"
-          },
-          "severity": {
-            "type": "string",
-            "enum": ["critical", "high", "medium", "low"]
-          },
-          "description": {
-            "type": "string",
-            "description": "Description of the threat"
-          },
-          "indicators": {
+          "contractAddresses": {
             "type": "array",
             "items": {
               "type": "string"
             },
-            "description": "Indicators of compromise"
+            "description": "Array of token contract addresses to check",
+            "example": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
+          }
+        }
+      },
+      "TokenAnalyzeRequest": {
+        "type": "object",
+        "required": ["chainId", "contractAddress"],
+        "properties": {
+          "chainId": {
+            "type": "string",
+            "description": "Blockchain chain ID",
+            "example": "1"
           },
-          "reported_at": {
+          "contractAddress": {
+            "type": "string",
+            "description": "Token contract address",
+            "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+          }
+        }
+      },
+      "AddressSecurityRequest": {
+        "type": "object",
+        "required": ["chainId", "address"],
+        "properties": {
+          "chainId": {
+            "type": "string",
+            "description": "Blockchain chain ID",
+            "example": "1"
+          },
+          "address": {
+            "type": "string",
+            "description": "Wallet address to check",
+            "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
+          }
+        }
+      },
+      "NFTSecurityRequest": {
+        "type": "object",
+        "required": ["chainId", "contractAddress"],
+        "properties": {
+          "chainId": {
+            "type": "string",
+            "description": "Blockchain chain ID",
+            "example": "1"
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "NFT contract address",
+            "example": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
+          }
+        }
+      },
+      "ApprovalSecurityRequest": {
+        "type": "object",
+        "required": ["chainId", "contractAddresses"],
+        "properties": {
+          "chainId": {
+            "type": "string",
+            "description": "Blockchain chain ID",
+            "example": "1"
+          },
+          "contractAddresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Array of contract addresses to check approvals",
+            "example": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
+          }
+        }
+      },
+      "DappSecurityRequest": {
+        "type": "object",
+        "required": ["url"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "dApp URL to check",
+            "example": "https://uniswap.org"
+          }
+        }
+      },
+      "PhishingCheckRequest": {
+        "type": "object",
+        "required": ["url"],
+        "properties": {
+          "url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL to check for phishing",
+            "example": "https://uniswap.org"
+          }
+        }
+      },
+      "SignatureSecurityRequest": {
+        "type": "object",
+        "required": ["chainId", "data"],
+        "properties": {
+          "chainId": {
+            "type": "string",
+            "description": "Blockchain chain ID",
+            "example": "1"
+          },
+          "data": {
+            "type": "string",
+            "description": "Transaction data or signature to analyze",
+            "example": "0xa9059cbb0000000000000000000000001234567890123456789012345678901234567890"
+          }
+        }
+      },
+      "BatchAnalyzeRequest": {
+        "type": "object",
+        "required": ["operations"],
+        "properties": {
+          "operations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "enum": ["token", "address", "nft"],
+                  "description": "Type of operation"
+                },
+                "params": {
+                  "type": "object",
+                  "description": "Parameters for the operation"
+                }
+              }
+            },
+            "description": "Array of operations to perform"
+          }
+        }
+      },
+      "TokenSecurityResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TokenSecurityData"
+            }
+          },
+          "timestamp": {
             "type": "string",
             "format": "date-time"
           }
         }
       },
-      "Error": {
+      "TokenSecurityData": {
         "type": "object",
-        "required": ["error", "message"],
         "properties": {
+          "is_open_source": {
+            "type": "string",
+            "description": "Whether contract is open source (0/1)",
+            "example": "1"
+          },
+          "is_proxy": {
+            "type": "string",
+            "description": "Whether contract is a proxy (0/1)",
+            "example": "0"
+          },
+          "is_mintable": {
+            "type": "string",
+            "description": "Whether token can be minted (0/1)",
+            "example": "0"
+          },
+          "can_take_back_ownership": {
+            "type": "string",
+            "description": "Whether ownership can be taken back (0/1)",
+            "example": "0"
+          },
+          "owner_change_balance": {
+            "type": "string",
+            "description": "Whether owner can change balances (0/1)",
+            "example": "0"
+          },
+          "hidden_owner": {
+            "type": "string",
+            "description": "Whether there's a hidden owner (0/1)",
+            "example": "0"
+          },
+          "selfdestruct": {
+            "type": "string",
+            "description": "Whether contract can selfdestruct (0/1)",
+            "example": "0"
+          },
+          "external_call": {
+            "type": "string",
+            "description": "Whether contract makes external calls (0/1)",
+            "example": "0"
+          },
+          "buy_tax": {
+            "type": "string",
+            "description": "Buy tax percentage",
+            "example": "0"
+          },
+          "sell_tax": {
+            "type": "string",
+            "description": "Sell tax percentage",
+            "example": "0"
+          },
+          "is_honeypot": {
+            "type": "string",
+            "description": "Whether token is a honeypot (0/1)",
+            "example": "0"
+          },
+          "transfer_pausable": {
+            "type": "string",
+            "description": "Whether transfers can be paused (0/1)",
+            "example": "0"
+          },
+          "is_blacklisted": {
+            "type": "string",
+            "description": "Whether token is blacklisted (0/1)",
+            "example": "0"
+          },
+          "is_whitelisted": {
+            "type": "string",
+            "description": "Whether token has whitelist (0/1)",
+            "example": "0"
+          },
+          "is_in_dex": {
+            "type": "string",
+            "description": "Whether token is listed on DEX (0/1)",
+            "example": "1"
+          },
+          "holder_count": {
+            "type": "string",
+            "description": "Number of token holders",
+            "example": "5847291"
+          },
+          "total_supply": {
+            "type": "string",
+            "description": "Total token supply",
+            "example": "45283098435.077835"
+          },
+          "lp_holder_count": {
+            "type": "string",
+            "description": "Number of liquidity pool holders",
+            "example": "352"
+          },
+          "lp_total_supply": {
+            "type": "string",
+            "description": "Total LP supply",
+            "example": "9457381493225.959"
+          }
+        }
+      },
+      "AIAnalysis": {
+        "type": "object",
+        "properties": {
+          "riskScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "description": "Risk score from 0 (safe) to 100 (dangerous)",
+            "example": 10
+          },
+          "riskLevel": {
+            "type": "string",
+            "enum": ["Low", "Medium", "High", "Critical", "Unknown"],
+            "description": "Risk level classification",
+            "example": "Low"
+          },
+          "summary": {
+            "type": "string",
+            "description": "AI-generated summary of security analysis",
+            "example": "The token shows minimal security risks. Contract is open source and verified."
+          },
+          "risks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of identified risks",
+            "example": ["No major risks detected"]
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Security recommendations",
+            "example": ["Always verify contract addresses before transactions"]
+          }
+        }
+      },
+      "TokenAnalyzeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "securityData": {
+                "$ref": "#/components/schemas/TokenSecurityData"
+              },
+              "aiAnalysis": {
+                "$ref": "#/components/schemas/AIAnalysis"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ComprehensiveTokenResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "tokenSecurity": {
+                "$ref": "#/components/schemas/TokenSecurityData"
+              },
+              "contractSecurity": {
+                "type": "object",
+                "description": "Contract approval security data"
+              },
+              "aiAnalysis": {
+                "$ref": "#/components/schemas/AIAnalysis"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AddressSecurityResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "description": "Address security data from GoPlus"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "AddressAnalyzeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "securityData": {
+                "type": "object"
+              },
+              "aiAnalysis": {
+                "$ref": "#/components/schemas/AIAnalysis"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NFTSecurityResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "description": "NFT security data"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "NFTAnalyzeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "securityData": {
+                "type": "object"
+              },
+              "aiAnalysis": {
+                "$ref": "#/components/schemas/AIAnalysis"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ApprovalSecurityResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "contract_name": {
+                "type": "string",
+                "example": "TetherToken"
+              },
+              "creator_address": {
+                "type": "string",
+                "example": "0x36928500bc1dcd7af6a2b4008875cc336b927d57"
+              },
+              "deployed_time": {
+                "type": "integer",
+                "example": 1511829681
+              },
+              "is_open_source": {
+                "type": "integer",
+                "example": 1
+              },
+              "is_proxy": {
+                "type": "integer",
+                "example": 0
+              },
+              "doubt_list": {
+                "type": "integer",
+                "description": "Whether contract is on doubt list (0/1)",
+                "example": 0
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "DappSecurityResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "description": "dApp security data"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PhishingCheckResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "phishing_site": {
+                "type": "integer",
+                "description": "Whether site is phishing (0=safe, 1=phishing)",
+                "example": 0
+              },
+              "website_contract_security": {
+                "type": "array",
+                "items": {
+                  "type": "object"
+                },
+                "description": "Contract security info if applicable"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "SignatureSecurityResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "description": "Signature security analysis"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "BatchAnalyzeResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "operation": {
+                  "type": "object",
+                  "description": "Original operation request"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": ["fulfilled", "rejected"],
+                  "description": "Operation status"
+                },
+                "data": {
+                  "type": "object",
+                  "description": "Operation result data (if fulfilled)"
+                },
+                "error": {
+                  "type": "string",
+                  "description": "Error message (if rejected)"
+                }
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
           "error": {
             "type": "string",
-            "description": "Error code"
+            "description": "Error message",
+            "example": "Missing required fields"
           },
-          "message": {
+          "timestamp": {
             "type": "string",
-            "description": "Human-readable error message"
+            "format": "date-time"
           }
         }
       }
     },
-    "securitySchemes": {
-      "bearerAuth": {
-        "type": "http",
-        "scheme": "bearer",
-        "description": "Bearer token authentication"
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request parameters",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "success": false,
+              "error": "Missing required fields: chainId and contractAddress",
+              "timestamp": "2025-11-24T05:07:49.709Z"
+            }
+          }
+        }
+      },
+      "NotFound": {
+        "description": "Resource not found",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "success": false,
+              "error": "Token data not found",
+              "timestamp": "2025-11-24T05:07:49.709Z"
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "example": {
+              "success": false,
+              "error": "Internal server error",
+              "timestamp": "2025-11-24T05:07:49.709Z"
+            }
+          }
+        }
       }
     }
   }
