@@ -5,13 +5,13 @@ openapi: 'GET /token/security/{mint}'
 
 ## Overview
 
-This endpoint runs all 10 security modules and returns a comprehensive security report for a Solana token. It provides an overall risk assessment, AI-powered analysis, and detailed insights into:
+This endpoint runs multiple security modules and returns a comprehensive security report for a Solana token. It provides an overall risk assessment, AI-powered analysis, and detailed insights into:
 
 - Honeypot detection
 - Authority analysis (freeze/mint)
 - Liquidity pool analysis
-- Holder concentration
-- And 6 additional security checks
+- Holder distribution
+- Additional security checks
 
 ## Use Cases
 
@@ -39,7 +39,7 @@ The `aiAnalysis` object provides:
 - **confidence** - AI confidence level (0-100)
 
 ### Security Modules
-Detailed results from each of the 10 security modules:
+Detailed results from security modules:
 - `honeypot` - Buy/sell restriction detection
 - `authorities` - Freeze and mint authority analysis
 - `liquidity` - LP lock status and depth

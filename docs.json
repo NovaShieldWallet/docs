@@ -29,9 +29,7 @@
               "api-reference/token/security",
               "api-reference/token/rug-score",
               "api-reference/token/honeypot",
-              "api-reference/token/lp",
-              "api-reference/token/bundled",
-              "api-reference/token/bundler-cluster"
+              "api-reference/token/lp"
             ]
           },
           {

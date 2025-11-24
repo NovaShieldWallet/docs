@@ -151,52 +151,6 @@
         }
       }
     },
-    "/token/bundled/{mint}": {
-      "get": {
-        "tags": ["Token Security"],
-        "summary": "Holder concentration",
-        "parameters": [
-          {
-            "name": "mint",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Holder analysis"
-          }
-        }
-      }
-    },
-    "/token/bundler-cluster/{mint}": {
-      "get": {
-        "tags": ["Token Security"],
-        "summary": "Coordinated buyer detection",
-        "parameters": [
-          {
-            "name": "mint",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          },
-          {
-            "name": "period",
-            "in": "query",
-            "schema": {
-              "type": "string",
-              "enum": ["launch", "recent"]
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Bundler analysis"
-          }
-        }
-      }
-    },
     "/api/phishing/check": {
       "post": {
         "tags": ["Phishing"],
