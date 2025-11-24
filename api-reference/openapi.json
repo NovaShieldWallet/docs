@@ -2,7 +2,7 @@
   "openapi": "3.0.3",
   "info": {
     "title": "NovaShield Security API",
-    "description": "GoPlus-powered security API with AI analysis for blockchain security checks. Provides comprehensive security scanning for tokens, addresses, NFTs, dApps, and phishing detection.",
+    "description": "GoPlus-powered security API with AI analysis for blockchain security checks. Provides comprehensive security scanning for tokens, addresses, dApps, phishing detection, and rug pull detection.",
     "version": "1.0.0",
     "contact": {
       "name": "NovaShield",
@@ -34,16 +34,12 @@
       "description": "Token security scanning and analysis"
     },
     {
+      "name": "Rug Check",
+      "description": "Rug pull detection and analysis"
+    },
+    {
       "name": "Address Security",
       "description": "Wallet address security checks"
-    },
-    {
-      "name": "NFT Security",
-      "description": "NFT contract security analysis"
-    },
-    {
-      "name": "Approval Security",
-      "description": "Token approval security checks"
     },
     {
       "name": "dApp & Phishing",
@@ -221,6 +217,46 @@
         }
       }
     },
+    "/api/rug/check": {
+      "post": {
+        "tags": ["Rug Check"],
+        "summary": "Check for rug pull risks",
+        "description": "Analyze token contract for rug pull indicators including liquidity locks, ownership issues, and suspicious patterns",
+        "operationId": "checkRugPull",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RugCheckRequest"
+              },
+              "example": {
+                "chainId": "1",
+                "contractAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Rug pull risk analysis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RugCheckResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
     "/api/address/security": {
       "post": {
         "tags": ["Address Security"],
@@ -288,126 +324,6 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AddressAnalyzeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/nft/security": {
-      "post": {
-        "tags": ["NFT Security"],
-        "summary": "Check NFT security",
-        "description": "Check NFT contract for security issues",
-        "operationId": "checkNFTSecurity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NFTSecurityRequest"
-              },
-              "example": {
-                "chainId": "1",
-                "contractAddress": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "NFT security data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NFTSecurityResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/nft/analyze": {
-      "post": {
-        "tags": ["NFT Security"],
-        "summary": "Analyze NFT with AI",
-        "description": "Check NFT contract security with AI-powered analysis",
-        "operationId": "analyzeNFT",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NFTSecurityRequest"
-              },
-              "example": {
-                "chainId": "1",
-                "contractAddress": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "NFT analysis with AI insights",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/NFTAnalyzeResponse"
-                }
-              }
-            }
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          },
-          "500": {
-            "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/api/approval/security": {
-      "post": {
-        "tags": ["Approval Security"],
-        "summary": "Check approval security",
-        "description": "Check token approval contract for security risks",
-        "operationId": "checkApprovalSecurity",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ApprovalSecurityRequest"
-              },
-              "example": {
-                "chainId": "1",
-                "contractAddresses": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Approval security data",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApprovalSecurityResponse"
                 }
               }
             }
@@ -567,13 +483,6 @@
                       "chainId": "1",
                       "address": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
                     }
-                  },
-                  {
-                    "type": "nft",
-                    "params": {
-                      "chainId": "1",
-                      "contractAddress": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
-                    }
                   }
                 ]
               }
@@ -668,6 +577,22 @@
           }
         }
       },
+      "RugCheckRequest": {
+        "type": "object",
+        "required": ["chainId", "contractAddress"],
+        "properties": {
+          "chainId": {
+            "type": "string",
+            "description": "Blockchain chain ID",
+            "example": "1"
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "Token contract address to check for rug pull risks",
+            "example": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+          }
+        }
+      },
       "AddressSecurityRequest": {
         "type": "object",
         "required": ["chainId", "address"],
@@ -681,41 +606,6 @@
             "type": "string",
             "description": "Wallet address to check",
             "example": "0x742d35Cc6634C0532925a3b844Bc9e7595f0bEb"
-          }
-        }
-      },
-      "NFTSecurityRequest": {
-        "type": "object",
-        "required": ["chainId", "contractAddress"],
-        "properties": {
-          "chainId": {
-            "type": "string",
-            "description": "Blockchain chain ID",
-            "example": "1"
-          },
-          "contractAddress": {
-            "type": "string",
-            "description": "NFT contract address",
-            "example": "0xbc4ca0eda7647a8ab7c2061c2e118a18a936f13d"
-          }
-        }
-      },
-      "ApprovalSecurityRequest": {
-        "type": "object",
-        "required": ["chainId", "contractAddresses"],
-        "properties": {
-          "chainId": {
-            "type": "string",
-            "description": "Blockchain chain ID",
-            "example": "1"
-          },
-          "contractAddresses": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            },
-            "description": "Array of contract addresses to check approvals",
-            "example": ["0xdac17f958d2ee523a2206206994597c13d831ec7"]
           }
         }
       },
@@ -770,7 +660,7 @@
               "properties": {
                 "type": {
                   "type": "string",
-                  "enum": ["token", "address", "nft"],
+                  "enum": ["token", "address", "rug"],
                   "description": "Type of operation"
                 },
                 "params": {
@@ -993,6 +883,60 @@
           }
         }
       },
+      "RugCheckResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "isRugPull": {
+                "type": "boolean",
+                "description": "Whether token shows rug pull indicators",
+                "example": false
+              },
+              "rugScore": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 100,
+                "description": "Rug pull risk score (0=safe, 100=high risk)",
+                "example": 15
+              },
+              "indicators": {
+                "type": "object",
+                "properties": {
+                  "liquidityLocked": {
+                    "type": "boolean",
+                    "description": "Whether liquidity is locked"
+                  },
+                  "ownershipRenounced": {
+                    "type": "boolean",
+                    "description": "Whether contract ownership is renounced"
+                  },
+                  "honeypotRisk": {
+                    "type": "boolean",
+                    "description": "Honeypot detection"
+                  },
+                  "suspiciousHoldings": {
+                    "type": "boolean",
+                    "description": "Large holder concentration detected"
+                  }
+                }
+              },
+              "aiAnalysis": {
+                "$ref": "#/components/schemas/AIAnalysis"
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
       "AddressSecurityResponse": {
         "type": "object",
         "properties": {
@@ -1025,90 +969,6 @@
               },
               "aiAnalysis": {
                 "$ref": "#/components/schemas/AIAnalysis"
-              }
-            }
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "NFTSecurityResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "description": "NFT security data"
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "NFTAnalyzeResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "securityData": {
-                "type": "object"
-              },
-              "aiAnalysis": {
-                "$ref": "#/components/schemas/AIAnalysis"
-              }
-            }
-          },
-          "timestamp": {
-            "type": "string",
-            "format": "date-time"
-          }
-        }
-      },
-      "ApprovalSecurityResponse": {
-        "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean",
-            "example": true
-          },
-          "data": {
-            "type": "object",
-            "properties": {
-              "contract_name": {
-                "type": "string",
-                "example": "TetherToken"
-              },
-              "creator_address": {
-                "type": "string",
-                "example": "0x36928500bc1dcd7af6a2b4008875cc336b927d57"
-              },
-              "deployed_time": {
-                "type": "integer",
-                "example": 1511829681
-              },
-              "is_open_source": {
-                "type": "integer",
-                "example": 1
-              },
-              "is_proxy": {
-                "type": "integer",
-                "example": 0
-              },
-              "doubt_list": {
-                "type": "integer",
-                "description": "Whether contract is on doubt list (0/1)",
-                "example": 0
               }
             }
           },
@@ -1288,3 +1148,4 @@
     }
   }
 }
+

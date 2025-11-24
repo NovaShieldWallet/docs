@@ -33,23 +33,16 @@
         ]
       },
       {
+        "group": "Rug Check",
+        "pages": [
+          "api-reference/rug/check"
+        ]
+      },
+      {
         "group": "Address Security",
         "pages": [
           "api-reference/address/security",
           "api-reference/address/analyze"
-        ]
-      },
-      {
-        "group": "NFT Security",
-        "pages": [
-          "api-reference/nft/security",
-          "api-reference/nft/analyze"
-        ]
-      },
-      {
-        "group": "Approval Security",
-        "pages": [
-          "api-reference/approval/security"
         ]
       },
       {
