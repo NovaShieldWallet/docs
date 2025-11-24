@@ -3,48 +3,40 @@ title: 'Complete Security Analysis'
 openapi: 'GET /token/security/{mint}'
 ---
 
-## Overview
-
-This endpoint runs multiple security modules and returns a comprehensive security report for a Solana token. It provides an overall risk assessment, AI-powered analysis, and detailed insights into:
-
-- Honeypot detection
-- Authority analysis (freeze/mint)
-- Liquidity pool analysis
-- Holder distribution
-- Additional security checks
-
-## Use Cases
-
-- **Pre-trade due diligence** - Check a token before buying
-- **Portfolio monitoring** - Regularly scan tokens you hold
-- **Integration** - Add security checks to your dApp or wallet
+Runs multiple security modules and returns a comprehensive security report for a Solana token.
 
 ## Parameters
 
-The endpoint accepts the token mint address as a path parameter, with an optional `deployer` query parameter for enhanced analysis.
+- **mint** (path, required) - Token mint address
+- **deployer** (query, optional) - Deployer address for enhanced analysis
 
-## Response Fields
+## Response
 
-### Overall Assessment
-- **overallScore** - Composite security score (0-100, higher is better)
-- **riskLevel** - Classification: SAFE, LOW, MEDIUM, HIGH, or CRITICAL
-- **verdict** - Human-readable risk assessment
-- **canTrade** - Boolean recommendation on whether trading is advisable
+```json
+{
+  "success": true,
+  "data": {
+    "overallScore": 85,
+    "riskLevel": "LOW",
+    "verdict": "Token appears safe with minor risks",
+    "canTrade": true,
+    "honeypot": { "isHoneypot": false, "canBuy": true, "canSell": true },
+    "authorities": { "freezeAuthority": null, "mintAuthority": null },
+    "liquidity": { "locked": true, "lpValue": 150000 },
+    "holders": { "top10Concentration": 25, "totalHolders": 1250 },
+    "aiAnalysis": {
+      "summary": "Token shows healthy distribution and locked liquidity",
+      "keyRisks": ["Minor: Recent launch"],
+      "recommendations": ["Verify team before large investments"],
+      "confidence": 95
+    }
+  }
+}
+```
 
-### AI Analysis
-The `aiAnalysis` object provides:
-- **summary** - Natural language summary of findings
-- **keyRisks** - Array of identified risks
-- **recommendations** - Actionable advice
-- **confidence** - AI confidence level (0-100)
+## Key Fields
 
-### Security Modules
-Detailed results from security modules:
-- `honeypot` - Buy/sell restriction detection
-- `authorities` - Freeze and mint authority analysis
-- `liquidity` - LP lock status and depth
-- `holders` - Distribution and concentration metrics
-
-## Rate Limits
-
-This endpoint is rate limited. See the `429` response for details on limits and retry windows.
+- **overallScore** - Security score (0-100, higher = safer)
+- **riskLevel** - SAFE | LOW | MEDIUM | HIGH | CRITICAL
+- **canTrade** - Boolean trading recommendation
+- **aiAnalysis** - AI-powered insights with risks and recommendations

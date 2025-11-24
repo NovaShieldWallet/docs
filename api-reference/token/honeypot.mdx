@@ -3,50 +3,39 @@ title: 'Honeypot Detection'
 openapi: 'GET /token/honeypot/{mint}'
 ---
 
-## Overview
+Detects if a token is a honeypot (can buy but cannot sell).
 
-Detects if a Solana token is a honeypot - a scam where you can buy but cannot sell. This check simulates both buy and sell operations to verify the token is tradeable in both directions.
+## Parameters
 
-## What is a Honeypot?
+- **mint** (path, required) - Token mint address
 
-A honeypot token allows purchases but prevents sales through:
-- Hidden transfer restrictions
-- Blacklist mechanisms
-- Excessive sell taxes (Solana tokens typically don't have taxes, but checks exist)
-- Contract logic that blocks sells
+## Response
 
-## Use Cases
+```json
+{
+  "success": true,
+  "data": {
+    "isHoneypot": false,
+    "canBuy": true,
+    "canSell": true,
+    "confidence": 100,
+    "reasons": ["Buy and sell operations successful"]
+  }
+}
+```
 
-- **Pre-purchase verification** - Ensure you'll be able to sell
-- **Scam detection** - Identify malicious tokens
-- **Wallet protection** - Prevent users from buying untradeable tokens
+## Fields
 
-## Response Fields
-
-- **isHoneypot** - Whether the token is detected as a honeypot (true/false), or `null` if unable to verify
-- **canBuy** - Whether buy operations are possible (true/false), or `null` if unable to verify
-- **canSell** - Whether sell operations are possible (true/false), or `null` if unable to verify
-- **confidence** - Detection confidence level (0-100)
-  - `0` = Unable to verify
-  - `1-79` = Low to moderate confidence
-  - `80-100` = High confidence
-- **reasons** - Array of explanations for the detection result
+- **isHoneypot** - `true` if honeypot, `false` if safe, `null` if unable to verify
+- **canBuy** - Can execute buy operations (or `null`)
+- **canSell** - Can execute sell operations (or `null`)
+- **confidence** - 0 = unable to verify, 100 = certain
+- **reasons** - Explanations for the result
 
 ## Interpreting Results
 
-| canBuy | canSell | isHoneypot | Verdict |
-|--------|---------|------------|---------|
-| ✅ | ✅ | false | Safe to trade |
-| ✅ | ❌ | true | 🚨 HONEYPOT - Do not buy! |
-| ❌ | ❌ | N/A | Token not tradeable |
-| null | null | null | ⚠️ Unable to verify - proceed with caution |
-| ❌ | ✅ | false | Unusual - investigate further |
-
-## Important Notes
-
-- **Null values** indicate the API couldn't verify trading permissions (new/unusual token structure)
-- A `confidence` of `0` means unable to verify - treat with extreme caution
-- Confidence below 80 suggests uncertain results - verify manually
-- Always check liquidity exists before trading
-- Some tokens may have legitimate restrictions (e.g., vesting periods)
-
+| Result | Verdict |
+|--------|---------|
+| `isHoneypot: false` | ✅ Safe to trade |
+| `isHoneypot: true` | 🚨 HONEYPOT - Do not buy |
+| `isHoneypot: null` | ⚠️ Unable to verify |
