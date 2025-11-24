@@ -1,13 +1,13 @@
 ---
-title: 'Check Transaction Status'
-openapi: 'GET /privacy-cash/status/{signature}'
+title: 'Check Transfer Status'
+openapi: 'GET /privacy-cash/status/{transferId}'
 ---
 
-Check the status of a privacy cash transaction.
+Check the status of a privacy cash transfer using the `transferId` from `/privacy-cash/send`.
 
 ## Parameters
 
-- **signature** (path, required) - Transaction signature
+- **transferId** (path, required) - Transfer ID from send endpoint
 
 ## Response
 
@@ -18,7 +18,7 @@ Check the status of a privacy cash transaction.
     "signature": "5J7x...",
     "status": "completed",
     "amount": 50000000,
-    "recipient": "RECIPIENT_WALLET_ADDRESS",
+    "recipient": "RECIPIENT_ADDRESS",
     "timestamp": 1700000000
   }
 }
@@ -26,7 +26,16 @@ Check the status of a privacy cash transaction.
 
 ## Status Values
 
-- **pending** - Transaction processing
-- **completed** - Successfully delivered
-- **failed** - Transaction failed
+| Status | Description |
+|--------|-------------|
+| `pending` | Temp wallet created, awaiting funds |
+| `funded` | Temp wallet received SOL, processing transfer |
+| `completed` | Transfer successfully delivered |
+| `failed` | Transfer failed |
+| `expired` | 30 minute timeout reached, funds returned |
 
+## Transfer Flow
+
+1. **pending** - Initial state, send SOL to temp wallet
+2. **funded** - SOL received, auto-executing transfer
+3. **completed** - Done! Recipient has funds

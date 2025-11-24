@@ -30,7 +30,7 @@
     },
     {
       "name": "Privacy Cash",
-      "description": "Private SOL transfers (minimum 0.03 SOL)"
+      "description": "Private SOL transfers - SOL ONLY (minimum 0.03 SOL after fees)"
     }
   ],
   "paths": {
@@ -215,40 +215,35 @@
     "/privacy-cash/send": {
       "post": {
         "tags": ["Privacy Cash"],
-        "summary": "Send private SOL transfer",
-        "description": "Send SOL privately. Fees: Privacy Cash (0.35% + 0.006 SOL) + NovaShield (0.65%) = Total 1% + 0.006 SOL. Minimum recipient amount: 0.03 SOL after fees. Auto-deposits, auto-withdraws, saves keys to Firebase for recovery.",
+        "summary": "Initiate private SOL transfer (SOL ONLY)",
+        "description": "Creates temp wallet for private SOL transfer. User NEVER sends private key. Returns temp wallet address - user sends SOL to this address. Queue auto-executes transfer when funded (checks every 2 seconds). Temp wallet expires in 30 minutes. SOL ONLY - no tokens. Minimum: 0.04 SOL (recipient gets 0.03 after fees).",
         "requestBody": {
           "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": ["fromPrivateKey", "toAddress", "amount"],
+                "required": ["amount"],
                 "properties": {
-                  "fromPrivateKey": { 
-                    "type": "string", 
-                    "description": "Sender wallet private key (JSON array string)" 
-                  },
-                  "toAddress": { 
-                    "type": "string", 
-                    "description": "Recipient wallet address" 
-                  },
                   "amount": { 
                     "type": "number", 
                     "minimum": 0.04,
-                    "description": "Amount in SOL to send (minimum ~0.04 to ensure recipient gets 0.03 after fees)" 
+                    "description": "Amount in SOL (minimum 0.04, recipient gets 0.03 after fees). SOL ONLY." 
+                  },
+                  "toAddress": {
+                    "type": "string",
+                    "description": "Recipient wallet address"
                   },
                   "network": {
                     "type": "string",
                     "enum": ["devnet", "mainnet-beta"],
-                    "description": "Network to use (default: devnet for testing)"
+                    "default": "devnet"
                   }
                 }
               },
               "example": {
-                "fromPrivateKey": "[1,2,3,...]",
-                "toAddress": "RECIPIENT_WALLET_ADDRESS",
                 "amount": 0.05,
+                "toAddress": "RECIPIENT_ADDRESS",
                 "network": "devnet"
               }
             }
@@ -256,7 +251,7 @@
         },
         "responses": {
           "200": {
-            "description": "Private transfer successful",
+            "description": "Temp wallet created",
             "content": {
               "application/json": {
                 "schema": {
@@ -266,35 +261,32 @@
                     "data": {
                       "type": "object",
                       "properties": {
-                        "signature": { "type": "string" },
-                        "amount": { "type": "integer" },
-                        "recipient": { "type": "string" },
-                        "txId": { "type": "string", "description": "Firebase tracking ID" }
+                        "tempWallet": { "type": "string", "description": "Temp wallet address - user sends SOL here (SOL ONLY)" },
+                        "transferId": { "type": "string", "description": "Transfer ID for status checks" },
+                        "expiresAt": { "type": "integer", "description": "Unix timestamp when wallet expires (30 minutes)" }
                       }
-                    }
+                    },
+                    "message": { "type": "string", "description": "Instruction: Send SOL to tempWallet. Transfer executes automatically when funded." }
                   }
                 }
               }
             }
-          },
-          "400": {
-            "description": "Invalid request or amount too low"
           }
         }
       }
     },
-    "/privacy-cash/status/{signature}": {
+    "/privacy-cash/status/{transferId}": {
       "get": {
         "tags": ["Privacy Cash"],
-        "summary": "Check transaction status",
-        "description": "Check status of privacy cash transaction. Looks up in Firebase database.",
+        "summary": "Check transfer status",
+        "description": "Check status of privacy cash transfer. Returns: pending (temp wallet created, awaiting funds), funded (temp wallet received SOL), completed (transfer done), failed, expired (30min timeout).",
         "parameters": [
           {
-            "name": "signature",
+            "name": "transferId",
             "in": "path",
             "required": true,
             "schema": { "type": "string" },
-            "description": "Transaction signature"
+            "description": "Transfer ID from /privacy-cash/send"
           }
         ],
         "responses": {
@@ -312,7 +304,7 @@
                         "signature": { "type": "string" },
                         "status": { 
                           "type": "string", 
-                          "enum": ["pending", "completed", "failed"] 
+                          "enum": ["pending", "funded", "completed", "failed", "expired"] 
                         },
                         "amount": { "type": "integer" },
                         "recipient": { "type": "string" },

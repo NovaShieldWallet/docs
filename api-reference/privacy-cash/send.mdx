@@ -1,30 +1,29 @@
 ---
-title: 'Send Private SOL'
+title: 'Initiate Private SOL Transfer'
 openapi: 'POST /privacy-cash/send'
 ---
 
-Send SOL with complete privacy. Zero-trace offline transfers.
+**SOL ONLY** - No tokens supported. Send SOL with complete privacy.
 
-## Fees
+## How It Works
 
-**Total: 1% + 0.006 SOL**
-- Privacy Cash: 0.35% + 0.006 SOL
-- NovaShield: 0.65%
-
-## Minimum
-
-Recipient must receive at least **0.03 SOL** after fees. Send ~0.04 SOL minimum.
+1. Call endpoint with amount and recipient
+2. Receive temp wallet address
+3. Send SOL to temp wallet (you keep your private key!)
+4. Transfer auto-executes when funded (checks every 2s)
+5. Temp wallet expires in 30 minutes
 
 ## Request
 
 ```json
 {
-  "fromPrivateKey": "[1,2,3,...]",
-  "toAddress": "RECIPIENT_WALLET_ADDRESS",
   "amount": 0.05,
+  "toAddress": "RECIPIENT_ADDRESS",
   "network": "mainnet-beta"
 }
 ```
+
+**You NEVER send your private key!**
 
 ## Response
 
@@ -32,18 +31,28 @@ Recipient must receive at least **0.03 SOL** after fees. Send ~0.04 SOL minimum.
 {
   "success": true,
   "data": {
-    "signature": "5J7x...",
-    "amount": 50000000,
-    "recipient": "RECIPIENT_WALLET_ADDRESS",
-    "txId": "firebase-tracking-id"
-  }
+    "tempWallet": "TEMP_WALLET_ADDRESS",
+    "transferId": "transfer-123",
+    "expiresAt": 1700001800
+  },
+  "message": "Send SOL to tempWallet. Transfer executes automatically when funded."
 }
 ```
 
-## How It Works
+## Next Steps
 
-1. Auto-deposits to privacy pool
-2. Processes transfer offline
-3. Auto-withdraws to recipient
-4. Keys saved to Firebase for recovery
+1. Send SOL to the `tempWallet` address
+2. Use `transferId` to check status
+3. Transfer completes automatically
 
+## Fees & Minimums
+
+- **Minimum**: 0.04 SOL (recipient gets 0.03 after fees)
+- **Total fee**: 1% + 0.006 SOL
+- **Expiry**: 30 minutes
+
+## Important
+
+⚠️ **SOL ONLY** - Do not send tokens to temp wallet  
+⚠️ **30 minute expiry** - Funds returned if not used  
+✅ **No private key needed** - You remain in control
