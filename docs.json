@@ -113,5 +113,9 @@
       "x": "https://x.com/novashield",
       "github": "https://github.com/novashieldwallet"
     }
+  },
+  "footerSocials": {
+    "x": "https://x.com/novashield",
+    "github": "https://github.com/novashieldwallet"
   }
 }
