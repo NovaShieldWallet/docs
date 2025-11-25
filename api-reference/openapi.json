@@ -62,7 +62,7 @@
           {
             "name": "mint",
             "in": "path",
-            "required": true,
+          "required": true,
             "schema": { "type": "string" },
             "description": "Token mint address"
           },
@@ -71,7 +71,7 @@
             "in": "query",
             "schema": { "type": "string" },
             "description": "Optional deployer address"
-          }
+              }
         ],
         "responses": {
           "200": {
@@ -96,22 +96,22 @@
           {
             "name": "mint",
             "in": "path",
-            "required": true,
+          "required": true,
             "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
             "description": "Rug score",
-            "content": {
-              "application/json": {
+          "content": {
+            "application/json": {
                 "schema": { "$ref": "#/components/schemas/RugScore" }
               }
             }
+              }
+            }
           }
-        }
-      }
-    },
+        },
     "/token/honeypot/{mint}": {
       "get": {
         "tags": ["Token Security"],
@@ -132,10 +132,10 @@
                 "schema": { "$ref": "#/components/schemas/HoneypotResult" }
               }
             }
-          }
-        }
-      }
-    },
+                }
+              }
+            }
+          },
     "/token/lp/{mint}": {
       "get": {
         "tags": ["Token Security"],
@@ -151,10 +151,10 @@
         "responses": {
           "200": {
             "description": "LP analysis"
+            }
           }
         }
-      }
-    },
+      },
     "/api/phishing/check": {
       "post": {
         "tags": ["Phishing"],
@@ -218,10 +218,10 @@
         "summary": "Initiate private SOL transfer with auto-refund (SOL ONLY)",
         "description": "Initiate private SOL transfer. User NEVER sends private key. API creates secure temp wallet - user sends SOL there. Queue auto-executes transfer when funded (checks every 2 seconds). If transfer fails, SOL is AUTOMATICALLY REFUNDED to refundAddress or sender minus network fees. Address expires in 10 minutes. SOL ONLY - no tokens. Minimum: 0.01 SOL.",
         "requestBody": {
-          "required": true,
+            "required": true,
           "content": {
             "application/json": {
-              "schema": {
+            "schema": {
                 "type": "object",
                 "required": ["amount", "toAddress"],
                 "properties": {
@@ -229,7 +229,7 @@
                     "type": "number", 
                     "minimum": 0.01,
                     "description": "Amount in SOL (minimum 0.01). SOL ONLY." 
-                  },
+              },
                   "toAddress": {
                     "type": "string",
                     "description": "Recipient wallet address (where private transfer goes)"
@@ -264,7 +264,7 @@
                   "type": "object",
                   "properties": {
                     "success": { "type": "boolean" },
-                    "data": {
+                      "data": {
                       "type": "object",
                       "properties": {
                         "transferId": { "type": "string", "description": "Transfer ID for status checks" },
@@ -288,15 +288,15 @@
           },
           "400": {
             "description": "Invalid request (amount too low, invalid addresses, etc.)",
-            "content": {
-              "application/json": {
+          "content": {
+            "application/json": {
                 "schema": { "$ref": "#/components/responses/BadRequest" }
               }
             }
+              }
+            }
           }
-        }
-      }
-    },
+        },
     "/privacy-cash/status/{transferId}": {
       "get": {
         "tags": ["Privacy Cash"],
@@ -380,8 +380,8 @@
               "liquidity": { "type": "object" },
               "holders": { "type": "object" },
               "aiAnalysis": {
-                "type": "object",
-                "properties": {
+        "type": "object",
+        "properties": {
                   "summary": { "type": "string" },
                   "keyRisks": { "type": "array", "items": { "type": "string" } },
                   "recommendations": { "type": "array", "items": { "type": "string" } },

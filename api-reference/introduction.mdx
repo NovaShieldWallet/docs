@@ -1,6 +1,12 @@
 ---
-title: 'Quick Start'
-description: 'Get started with NovaShield APIs'
+title: 'NovaShield API Documentation - Quick Start'
+description: 'NovaShield Security API and Privacy Cash API documentation. Solana token security scanner, rug pull detection, and private SOL transfers.'
+keywords: ["nova shield api", "nova api", "solana security api", "rug pull api", "solana token security"]
+"og:title": "NovaShield API Documentation"
+"og:description": "Comprehensive Solana security API. Detect rug pulls, honeypots, phishing sites, and send private SOL transfers."
+"og:image": "/images/hero-light.png"
+"twitter:title": "NovaShield API - Solana Security Scanner"
+"twitter:description": "Free Solana security API for rug pull detection, honeypot checks, and privacy cash transfers"
 ---
 
 ## NovaShield APIs
@@ -36,10 +42,10 @@ curl https://secure.novashield.space/token/security/MINT_ADDRESS
 curl -X POST https://secure.novashield.space/privacy-cash/send \
   -H "Content-Type: application/json" \
   -d '{
-    "fromPrivateKey": "[...]",
-    "toAddress": "RECIPIENT",
-    "amount": 0.05,
-    "network": "mainnet-beta"
+    "amount": 0.1,
+    "toAddress": "RECIPIENT_ADDRESS",
+    "network": "mainnet",
+    "refundAddress": "YOUR_REFUND_ADDRESS"
   }'
 ```
 

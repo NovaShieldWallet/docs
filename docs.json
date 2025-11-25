@@ -117,5 +117,24 @@
   "footerSocials": {
     "x": "https://x.com/novashield",
     "github": "https://github.com/novashieldwallet"
+  },
+  "seo": {
+    "indexing": "all",
+    "metatags": {
+      "description": "NovaShield API - Solana token security scanner and privacy cash transfer API. Detect rug pulls, honeypots, phishing sites, and simulate transactions. Private SOL transfers with zero trace.",
+      "keywords": "rug pull api, solana token security, transaction solana api, nova shield api, nova api, privacy cash transfer, solana security scanner, honeypot detection, multisig, solana api",
+      "og:title": "NovaShield API - Solana Security Scanner & Privacy Cash",
+      "og:description": "Detect rug pulls, honeypots, and phishing sites with our Solana security API. Private SOL transfers with zero trace.",
+      "og:type": "website",
+      "og:site_name": "NovaShield API Documentation",
+      "twitter:card": "summary_large_image",
+      "twitter:site": "@novashield",
+      "twitter:title": "NovaShield API - Solana Security Scanner",
+      "twitter:description": "Rug pull detection, honeypot checks, phishing protection, and private SOL transfers for Solana",
+      "robots": "index, follow",
+      "googlebot": "index, follow",
+      "author": "NovaShield",
+      "theme-color": "#FF7A00"
+    }
   }
 }
