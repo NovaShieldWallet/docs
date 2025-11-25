@@ -136,5 +136,10 @@
       "author": "NovaShield",
       "theme-color": "#FF7A00"
     }
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-WFBLZE5QLR"
+    }
   }
 }
