@@ -67,7 +67,8 @@
           "ios/perpetuals",
           "ios/safari-extension",
           "ios/tron-multisig-scam",
-          "ios/secret-phrase"
+          "ios/secret-phrase",
+          "ios/compliance"
         ]
       }
     ],
