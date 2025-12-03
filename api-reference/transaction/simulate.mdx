@@ -1,0 +1,28 @@
+---
+title: 'Transaction Simulation API - Solana Transaction Scanner'
+description: 'Simulate Solana transactions before signing. Preview transaction effects and detect risks. Free Solana transaction API.'
+keywords: ["transaction solana api", "solana transaction simulation", "solana transaction scanner", "transaction api"]
+"og:title": "Transaction Simulation API - NovaShield"
+"og:description": "Simulate Solana transactions before signing. Preview transaction effects and detect hidden risks."
+openapi: 'POST /api/simulate-transaction'
+---
+
+Simulates a Solana transaction to preview effects before signing.
+
+## Request
+
+```json
+{
+  "transaction": "BASE64_ENCODED_TRANSACTION",
+  "signerPublicKey": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+}
+```
+
+## Response
+
+Returns simulation results including:
+- Transaction success/failure prediction
+- Program logs
+- Risk warnings
+- Account changes
+- Recommended actions

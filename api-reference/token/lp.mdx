@@ -1,0 +1,32 @@
+---
+title: 'Liquidity Pool Analysis'
+openapi: 'GET /token/lp/{mint}'
+---
+
+Analyzes liquidity pools for a Solana token.
+
+## Parameters
+
+- **mint** (path, required) - Token mint address
+
+## Response
+
+Returns information about:
+- LP size and depth
+- Lock status and duration
+- DEX distribution
+- LP provider addresses
+
+## Key Metrics
+
+- **Total liquidity value** (SOL/USDC)
+- **LP lock percentage** (ideally >80%)
+- **Lock duration** (minimum 30 days recommended)
+- **Number of pools**
+
+## Red Flags
+
+**WARNING:** No LP locks  
+**WARNING:** Short lock duration (<30 days)  
+**WARNING:** Shallow liquidity  
+**WARNING:** Single small LP

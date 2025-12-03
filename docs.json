@@ -1,0 +1,146 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "mint",
+  "name": "NovaShield",
+  "colors": {
+    "primary": "#FF7A00",
+    "light": "#FF7A00",
+    "dark": "#FF7A00"
+  },
+  "backgroundDark": "#000000",
+  "favicon": "/favicon.svg",
+  "navigation": {
+    "pages": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart",
+          "error-codes"
+        ]
+      },
+      {
+        "group": "Security API",
+        "pages": [
+          {
+            "group": "Token Security",
+            "pages": [
+              "api-reference/token/security",
+              "api-reference/token/rug-score",
+              "api-reference/token/honeypot",
+              "api-reference/token/lp"
+            ]
+          },
+          {
+            "group": "Phishing Detection",
+            "pages": [
+              "api-reference/phishing/check"
+            ]
+          },
+          {
+            "group": "Transaction Security",
+            "pages": [
+              "api-reference/transaction/simulate"
+            ]
+          }
+        ]
+      },
+      {
+        "group": "Privacy Cash API",
+        "pages": [
+          "api-reference/privacy-cash/send",
+          "api-reference/privacy-cash/status"
+        ]
+      },
+      {
+        "group": "iOS Wallet",
+        "pages": [
+          "ios/help-center",
+          "ios/private-cash",
+          "ios/network-fees",
+          "ios/transaction-status",
+          "ios/watch-wallet",
+          "ios/slippage",
+          "ios/price-impact",
+          "ios/token-verification",
+          "ios/staking",
+          "ios/perpetuals",
+          "ios/safari-extension",
+          "ios/tron-multisig-scam",
+          "ios/secret-phrase",
+          "ios/compliance"
+        ]
+      }
+    ],
+    "anchors": [
+      {
+        "name": "Website",
+        "url": "https://novashield.space",
+        "icon": "globe"
+      },
+      {
+        "name": "GitHub",
+        "url": "https://github.com/novashieldwallet",
+        "icon": "github"
+      }
+    ]
+  },
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png"
+  },
+  "navbar": {
+    "links": [
+      {
+        "label": "Support",
+        "href": "mailto:support@novashield.space"
+      }
+    ]
+  },
+  "contextual": {
+    "options": [
+     "copy",
+     "view",
+     "chatgpt",
+     "claude",
+     "perplexity",
+     "mcp",
+     "cursor",
+     "vscode"
+   ]
+  },
+  "footer": {
+    "socials": {
+      "x": "https://x.com/novashield",
+      "github": "https://github.com/novashieldwallet"
+    }
+  },
+  "footerSocials": {
+    "x": "https://x.com/novashield",
+    "github": "https://github.com/novashieldwallet"
+  },
+  "seo": {
+    "indexing": "all",
+    "metatags": {
+      "description": "NovaShield API - Solana token security scanner and privacy cash transfer API. Detect rug pulls, honeypots, phishing sites, and simulate transactions. Private SOL transfers with zero trace.",
+      "keywords": "rug pull api, solana token security, transaction solana api, nova shield api, nova api, privacy cash transfer, solana security scanner, honeypot detection, multisig, solana api",
+      "og:title": "NovaShield API - Solana Security Scanner & Privacy Cash",
+      "og:description": "Detect rug pulls, honeypots, and phishing sites with our Solana security API. Private SOL transfers with zero trace.",
+      "og:type": "website",
+      "og:site_name": "NovaShield API Documentation",
+      "twitter:card": "summary_large_image",
+      "twitter:site": "@novashield",
+      "twitter:title": "NovaShield API - Solana Security Scanner",
+      "twitter:description": "Rug pull detection, honeypot checks, phishing protection, and private SOL transfers for Solana",
+      "robots": "index, follow",
+      "googlebot": "index, follow",
+      "author": "NovaShield",
+      "theme-color": "#FF7A00"
+    }
+  },
+  "integrations": {
+    "ga4": {
+      "measurementId": "G-WFBLZE5QLR"
+    }
+  }
+}

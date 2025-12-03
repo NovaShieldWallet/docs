@@ -1,0 +1,40 @@
+---
+title: 'Token Verification'
+description: 'Understanding verified and suspicious tokens'
+---
+
+## Token Verification System
+
+Nova Wallet automatically scans tokens for security risks using the NovaShield Security API.
+
+## Suspicious Asset Banner
+
+When you encounter a suspicious token, you'll see a warning banner with:
+- Security risk level
+- Specific threats detected
+- Recommendations
+
+## Adding Custom Tokens
+
+When adding a custom token, Nova will:
+1. Scan for honeypot detection
+2. Check holder concentration
+3. Analyze liquidity locks
+4. Verify contract authorities
+
+### If Token Passes
+
+Token is added to your wallet
+
+### If Token Fails
+
+**WARNING:** You'll see a warning explaining the risks  
+**CAUTION:** You can still add it, but proceed with extreme caution
+
+## Verification Indicators
+
+- **Green checkmark**: Verified safe token
+- **Yellow warning**: Proceed with caution
+- **Red alert**: High risk - do not trade
+
+Always verify tokens before trading, especially new or unknown tokens.

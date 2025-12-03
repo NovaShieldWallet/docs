@@ -1,0 +1,74 @@
+---
+title: 'Privacy Cash Transfer API - Private SOL Transfers'
+description: 'Send SOL privately with zero trace. Privacy cash transfer API for Solana. Auto-refund protection. Free API.'
+keywords: ["privacy cash transfer", "private sol transfer", "solana privacy api", "private transfer api"]
+"og:title": "Privacy Cash Transfer API - NovaShield"
+"og:description": "Send SOL with complete privacy. Zero-trace private transfers with auto-refund protection."
+openapi: 'POST /privacy-cash/send'
+---
+
+**SOL ONLY** - Send SOL with complete privacy and auto-refund protection.
+
+## How It Works
+
+1. Call endpoint with amount and recipient
+2. Receive temp wallet address
+3. Send SOL to temp wallet (you keep your private key!)
+4. Transfer auto-executes when funded (checks every 2s)
+5. **If transfer fails, SOL automatically refunds to you**
+6. Temp wallet expires in 10 minutes
+
+## Request
+
+```json
+{
+  "amount": 0.1,
+  "toAddress": "RECIPIENT_ADDRESS",
+  "network": "mainnet",
+  "refundAddress": "YOUR_REFUND_ADDRESS"
+}
+```
+
+**Required:** `amount`, `toAddress`  
+**Optional:** `refundAddress` (recommended - where failed transfers refund to)
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "transferId": "transfer-123",
+    "tempWallet": "TEMP_WALLET_ADDRESS",
+    "amount": 0.1,
+    "toAddress": "RECIPIENT_ADDRESS",
+    "refundAddress": "YOUR_REFUND_ADDRESS",
+    "expiresAt": "2024-01-01T12:00:00Z",
+    "network": "mainnet"
+  },
+  "message": "Send SOL to tempWallet. Auto-executes when funded. Auto-refunds on failure."
+}
+```
+
+## Next Steps
+
+1. Send SOL to the `tempWallet` address
+2. Use `transferId` to check status
+3. Transfer completes automatically
+
+## Auto-Refund Protection
+
+**Transfer fails?** SOL automatically refunds to `refundAddress`  
+**Temp wallet expires?** SOL automatically refunds  
+**Always specify refundAddress** for guaranteed refund destination
+
+## Fees & Minimums
+
+- **Minimum**: 0.01 SOL
+- **Expiry**: 10 minutes
+
+## Important
+
+**WARNING: SOL ONLY** - Do not send tokens  
+**Auto-refund** - Failed transfers refund automatically  
+**No private key needed**

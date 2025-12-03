@@ -1,0 +1,55 @@
+---
+title: 'Check Transfer Status'
+openapi: 'GET /privacy-cash/status/{transferId}'
+---
+
+Check the status of a privacy cash transfer using the `transferId`.
+
+## Parameters
+
+- **transferId** (path, required) - Transfer ID from send endpoint
+
+## Response
+
+```json
+{
+  "success": true,
+  "data": {
+    "transferId": "transfer-123",
+    "status": "completed",
+    "tempWallet": "TEMP_WALLET_ADDRESS",
+    "amount": 0.1,
+    "recipient": "RECIPIENT_ADDRESS",
+    "signature": "5J7x...",
+    "refundAddress": "YOUR_REFUND_ADDRESS",
+    "expiresAt": "2024-01-01T12:00:00Z",
+    "createdAt": "2024-01-01T11:50:00Z",
+    "completedAt": "2024-01-01T11:51:00Z"
+  }
+}
+```
+
+## Status Values
+
+| Status | Description |
+| ------ | ----------- |
+| pending | Temp wallet created, awaiting SOL |
+| funded | SOL received, processing transfer |
+| completed | Transfer successfully delivered |
+| failed-refunded | Transfer failed, SOL automatically refunded |
+| failed | Transfer failed, refund also failed (rare) |
+| expired | 10 minute timeout, SOL refunded |
+
+## Additional Fields (When Applicable)
+
+**During transfer:**
+- `currentBalance` - Current temp wallet balance in SOL
+
+**If refunded:**
+- `refunded` - Boolean, whether SOL was refunded
+- `refundSignature` - Refund transaction signature
+- `refundAmount` - Amount refunded in SOL
+- `refundAddress` - Where SOL was refunded
+
+**If failed:**
+- `error` - Error message explaining failure

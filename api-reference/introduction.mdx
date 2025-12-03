@@ -1,0 +1,58 @@
+---
+title: 'NovaShield API Documentation - Quick Start'
+description: 'NovaShield Security API and Privacy Cash API documentation. Solana token security scanner, rug pull detection, and private SOL transfers.'
+keywords: ["nova shield api", "nova api", "solana security api", "rug pull api", "solana token security"]
+"og:title": "NovaShield API Documentation"
+"og:description": "Comprehensive Solana security API. Detect rug pulls, honeypots, phishing sites, and send private SOL transfers."
+"og:image": "/images/hero-light.png"
+"twitter:title": "NovaShield API - Solana Security Scanner"
+"twitter:description": "Free Solana security API for rug pull detection, honeypot checks, and privacy cash transfers"
+---
+
+## NovaShield APIs
+
+**Security** - Detect rug pulls, honeypots, and phishing sites before your users get scammed.  
+**Privacy Cash** - Send SOL with zero trace. Complete privacy for sensitive transfers.
+
+Both available as APIs and integrated into the **[Nova iOS Wallet](/quickstart)**.
+
+## Core Features
+
+**Token Security** - AI-powered analysis catches scams before they happen  
+**Honeypot Detection** - Verify tokens are actually tradeable  
+**Privacy Cash** - Untraceable SOL transfers (1% + 0.006 SOL fee)  
+**Phishing Protection** - Block typosquatting and fake sites  
+**Transaction Simulation** - Preview what transactions do before signing
+
+## Base URL
+
+```
+https://secure.novashield.space
+```
+
+## Example: Check Token Security
+
+```bash
+curl https://secure.novashield.space/token/security/MINT_ADDRESS
+```
+
+## Example: Send Private SOL
+
+```bash
+curl -X POST https://secure.novashield.space/privacy-cash/send \
+  -H "Content-Type: application/json" \
+  -d '{
+    "amount": 0.1,
+    "toAddress": "RECIPIENT_ADDRESS",
+    "network": "mainnet",
+    "refundAddress": "YOUR_REFUND_ADDRESS"
+  }'
+```
+
+## Authentication
+
+All endpoints are currently **open** - no API key required.
+
+## Get Started
+
+Browse the endpoint documentation in the sidebar to integrate NovaShield into your app.

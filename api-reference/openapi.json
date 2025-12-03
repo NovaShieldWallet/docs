@@ -1,0 +1,509 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NovaShield Security API",
+    "description": "Solana token security scanner. Local-first detection with 10 security modules.",
+    "version": "2.0.0",
+    "contact": {
+      "name": "NovaShield",
+      "url": "https://novashield.space"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://secure.novashield.space",
+      "description": "Production"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Token Security",
+      "description": "Token security analysis endpoints"
+    },
+    {
+      "name": "Phishing",
+      "description": "Phishing and typosquatting detection"
+    },
+    {
+      "name": "Transaction",
+      "description": "Transaction simulation"
+    },
+    {
+      "name": "Privacy Cash",
+      "description": "Private SOL transfers - SOL ONLY (minimum 0.03 SOL after fees)"
+    }
+  ],
+  "paths": {
+    "/health": {
+      "get": {
+        "summary": "Health check",
+        "responses": {
+          "200": {
+            "description": "Service healthy",
+            "content": {
+              "application/json": {
+                "example": {
+                  "status": "healthy",
+                  "version": "2.0.0",
+                  "mode": "local-first"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/token/security/{mint}": {
+      "get": {
+        "tags": ["Token Security"],
+        "summary": "Complete security analysis",
+        "description": "Runs all 10 security modules and returns comprehensive report",
+        "parameters": [
+          {
+            "name": "mint",
+            "in": "path",
+          "required": true,
+            "schema": { "type": "string" },
+            "description": "Token mint address"
+          },
+          {
+            "name": "deployer",
+            "in": "query",
+            "schema": { "type": "string" },
+            "description": "Optional deployer address"
+              }
+        ],
+        "responses": {
+          "200": {
+            "description": "Security report",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/SecurityReport" }
+              }
+            }
+          },
+          "400": { "$ref": "#/components/responses/BadRequest" },
+          "429": { "$ref": "#/components/responses/RateLimited" },
+          "500": { "$ref": "#/components/responses/ServerError" }
+        }
+      }
+    },
+    "/token/rug-score/{mint}": {
+      "get": {
+        "tags": ["Token Security"],
+        "summary": "Rug pull probability score",
+        "parameters": [
+          {
+            "name": "mint",
+            "in": "path",
+          "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Rug score",
+          "content": {
+            "application/json": {
+                "schema": { "$ref": "#/components/schemas/RugScore" }
+              }
+            }
+              }
+            }
+          }
+        },
+    "/token/honeypot/{mint}": {
+      "get": {
+        "tags": ["Token Security"],
+        "summary": "Honeypot detection",
+        "parameters": [
+          {
+            "name": "mint",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Honeypot status",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/HoneypotResult" }
+              }
+            }
+                }
+              }
+            }
+          },
+    "/token/lp/{mint}": {
+      "get": {
+        "tags": ["Token Security"],
+        "summary": "Liquidity pool analysis",
+        "parameters": [
+          {
+            "name": "mint",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "LP analysis"
+            }
+          }
+        }
+      },
+    "/api/phishing/check": {
+      "post": {
+        "tags": ["Phishing"],
+        "summary": "Phishing detection",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["url"],
+                "properties": {
+                  "url": { "type": "string", "format": "uri" }
+                }
+              },
+              "example": { "url": "https://example.com" }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Phishing analysis",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/PhishingResult" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/simulate-transaction": {
+      "post": {
+        "tags": ["Transaction"],
+        "summary": "Transaction simulation",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["transaction", "signerPublicKey"],
+                "properties": {
+                  "transaction": { "type": "string" },
+                  "signerPublicKey": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Simulation result"
+          }
+        }
+      }
+    },
+    "/privacy-cash/send": {
+      "post": {
+        "tags": ["Privacy Cash"],
+        "summary": "Initiate private SOL transfer with auto-refund (SOL ONLY)",
+        "description": "Initiate private SOL transfer. User NEVER sends private key. API creates secure temp wallet - user sends SOL there. Queue auto-executes transfer when funded (checks every 2 seconds). If transfer fails, SOL is AUTOMATICALLY REFUNDED to refundAddress or sender minus network fees. Address expires in 10 minutes. SOL ONLY - no tokens. Minimum: 0.01 SOL.",
+        "requestBody": {
+            "required": true,
+          "content": {
+            "application/json": {
+            "schema": {
+                "type": "object",
+                "required": ["amount", "toAddress"],
+                "properties": {
+                  "amount": { 
+                    "type": "number", 
+                    "minimum": 0.01,
+                    "description": "Amount in SOL (minimum 0.01). SOL ONLY." 
+              },
+                  "toAddress": {
+                    "type": "string",
+                    "description": "Recipient wallet address (where private transfer goes)"
+                  },
+                  "network": {
+                    "type": "string",
+                    "enum": ["devnet", "mainnet"],
+                    "default": "devnet",
+                    "description": "Solana network to use"
+                  },
+                  "refundAddress": {
+                    "type": "string",
+                    "description": "OPTIONAL: Where to send SOL if transfer fails. If not provided, auto-detects sender address. Recommended to always specify."
+                  }
+                }
+              },
+              "example": {
+                "amount": 0.1,
+                "toAddress": "RECIPIENT_ADDRESS",
+                "network": "devnet",
+                "refundAddress": "YOUR_REFUND_ADDRESS"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transfer initiated - send SOL to temp wallet address",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                      "data": {
+                      "type": "object",
+                      "properties": {
+                        "transferId": { "type": "string", "description": "Transfer ID for status checks" },
+                        "tempWallet": { "type": "string", "description": "Temporary wallet address - SEND SOL HERE" },
+                        "amount": { "type": "number", "description": "Amount in SOL" },
+                        "toAddress": { "type": "string", "description": "Recipient address" },
+                        "refundAddress": { "type": "string", "description": "Refund address if transfer fails" },
+                        "expiresAt": { "type": "string", "format": "date-time", "description": "When temp wallet expires (10 minutes)" },
+                        "network": { "type": "string", "description": "Network (devnet/mainnet)" }
+                      }
+                    },
+                    "message": { 
+                      "type": "string", 
+                      "description": "Instructions: Send SOL to tempWallet. Auto-executes when funded. Auto-refunds on failure." 
+                    },
+                    "timestamp": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request (amount too low, invalid addresses, etc.)",
+          "content": {
+            "application/json": {
+                "schema": { "$ref": "#/components/responses/BadRequest" }
+              }
+            }
+              }
+            }
+          }
+        },
+    "/privacy-cash/status/{transferId}": {
+      "get": {
+        "tags": ["Privacy Cash"],
+        "summary": "Check transfer status",
+        "description": "Check status of privacy cash transfer. Returns: pending (awaiting SOL), funded (SOL received, processing), completed (transfer successful), failed-refunded (transfer failed, SOL refunded), failed (transfer failed, refund failed), expired (10min timeout).",
+        "parameters": [
+          {
+            "name": "transferId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" },
+            "description": "Transfer ID from /privacy-cash/send"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Status retrieved",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": { "type": "boolean" },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "transferId": { "type": "string" },
+                        "status": { 
+                          "type": "string", 
+                          "enum": ["pending", "funded", "completed", "failed-refunded", "failed", "expired"],
+                          "description": "Transfer status. failed-refunded means SOL was automatically returned." 
+                        },
+                        "tempWallet": { "type": "string", "description": "Temporary wallet address" },
+                        "amount": { "type": "number", "description": "Amount in SOL" },
+                        "recipient": { "type": "string", "description": "Recipient address" },
+                        "signature": { "type": "string", "description": "Transaction signature (if completed)" },
+                        "currentBalance": { "type": "number", "description": "Current temp wallet balance in SOL (if pending)" },
+                        "refunded": { "type": "boolean", "description": "Whether SOL was refunded (if failed)" },
+                        "refundSignature": { "type": "string", "description": "Refund transaction signature (if refunded)" },
+                        "refundAmount": { "type": "number", "description": "Amount refunded in SOL (if refunded)" },
+                        "refundAddress": { "type": "string", "description": "Address where SOL was refunded (if refunded)" },
+                        "error": { "type": "string", "description": "Error message (if failed)" },
+                        "expiresAt": { "type": "string", "format": "date-time" },
+                        "createdAt": { "type": "string", "format": "date-time" },
+                        "completedAt": { "type": "string", "format": "date-time" }
+                      }
+                    },
+                    "timestamp": { "type": "string", "format": "date-time" }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server error",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/responses/ServerError" }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "SecurityReport": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "overallScore": { "type": "integer", "minimum": 0, "maximum": 100 },
+              "riskLevel": { "type": "string", "enum": ["SAFE", "LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+              "verdict": { "type": "string" },
+              "canTrade": { "type": "boolean" },
+              "honeypot": { "type": "object" },
+              "authorities": { "type": "object" },
+              "liquidity": { "type": "object" },
+              "holders": { "type": "object" },
+              "aiAnalysis": {
+        "type": "object",
+        "properties": {
+                  "summary": { "type": "string" },
+                  "keyRisks": { "type": "array", "items": { "type": "string" } },
+                  "recommendations": { "type": "array", "items": { "type": "string" } },
+                  "confidence": { "type": "integer" }
+                }
+              }
+            }
+          }
+        }
+      },
+      "RugScore": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "score": { "type": "integer", "minimum": 0, "maximum": 100 },
+              "level": { "type": "string", "enum": ["SAFE", "LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+              "verdict": { "type": "string" },
+              "canTrade": { "type": "boolean" }
+            }
+          }
+        }
+      },
+      "HoneypotResult": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "isHoneypot": { "type": "boolean", "nullable": true, "description": "True if honeypot, false if safe, null if unable to verify" },
+              "canBuy": { "type": "boolean", "nullable": true, "description": "True if can buy, null if unable to verify" },
+              "canSell": { "type": "boolean", "nullable": true, "description": "True if can sell, null if unable to verify" },
+              "confidence": { "type": "integer", "minimum": 0, "maximum": 100, "description": "0 if unable to verify, 100 if certain" },
+              "reasons": { "type": "array", "items": { "type": "string" } }
+            }
+          }
+        }
+      },
+      "PhishingResult": {
+        "type": "object",
+        "properties": {
+          "success": { "type": "boolean" },
+          "data": {
+            "type": "object",
+            "properties": {
+              "url": { "type": "string" },
+              "isPhishing": { "type": "boolean" },
+              "confidence": { "type": "integer" },
+              "riskLevel": { "type": "string" },
+              "verdict": { "type": "string" },
+              "similarTo": { "type": "string", "nullable": true }
+            }
+          }
+        }
+      }
+    },
+    "responses": {
+      "BadRequest": {
+        "description": "Invalid request",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean", "example": false },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": { "type": "string", "example": "INVALID_REQUEST" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "RateLimited": {
+        "description": "Rate limit exceeded",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean", "example": false },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": { "type": "string", "example": "RATE_LIMIT_EXCEEDED" },
+                    "message": { "type": "string" },
+                    "limit": { "type": "integer" },
+                    "window": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ServerError": {
+        "description": "Server error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "success": { "type": "boolean", "example": false },
+                "error": {
+                  "type": "object",
+                  "properties": {
+                    "code": { "type": "string" },
+                    "message": { "type": "string" }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
