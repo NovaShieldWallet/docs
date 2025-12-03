@@ -24,7 +24,7 @@
         "pages": [
           "api-reference/introduction",
           {
-            "group": "Wallet v1",
+            "group": "Scanner",
             "pages": [
               "api-reference/wallet/tx",
               "api-reference/wallet/tx-simulate",
@@ -34,7 +34,7 @@
             ]
           },
           {
-            "group": "Token v1",
+            "group": "Token Check",
             "pages": [
               "api-reference/token/scan",
               "api-reference/token/bundle",
