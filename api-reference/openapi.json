@@ -6,7 +6,7 @@
     "version": "3.0.0",
     "contact": {
       "name": "NovaShield",
-      "url": "https://novashield.space"
+      "url": "https://nshield.org"
     }
   },
   "servers": [
@@ -15,8 +15,8 @@
       "description": "Production"
     },
     {
-      "url": "http://localhost:3005",
-      "description": "Development (local)"
+      "url": "https://sapi.novashield.so",
+      "description": "Staging"
     }
   ],
   "tags": [
@@ -354,136 +354,6 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
-    "/v1/internal/threat-intel/flag-address": {
-      "post": {
-        "summary": "Flag address (internal)",
-        "description": "Internal-only endpoint to flag an address as good or bad.",
-        "tags": [
-          "Security Scanning"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "address",
-                  "type"
-                ],
-                "properties": {
-                  "address": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "good",
-                      "bad"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Address flagged"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          }
-        }
-      }
-    },
-    "/v1/internal/threat-intel/flag-program": {
-      "post": {
-        "summary": "Flag program (internal)",
-        "description": "Internal-only endpoint to flag a program as good or bad.",
-        "tags": [
-          "Security Scanning"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "programId",
-                  "type"
-                ],
-                "properties": {
-                  "programId": {
-                    "type": "string"
-                  },
-                  "type": {
-                    "type": "string",
-                    "enum": [
-                      "good",
-                      "bad"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Program flagged"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
-          }
-        }
-      }
-    },
-    "/v1/internal/threat-intel/flag-domain": {
-      "post": {
-        "summary": "Flag domain (internal)",
-        "description": "Internal-only endpoint to flag a domain verdict.",
-        "tags": [
-          "Security Scanning"
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": [
-                  "domain",
-                  "verdict"
-                ],
-                "properties": {
-                  "domain": {
-                    "type": "string"
-                  },
-                  "verdict": {
-                    "type": "string",
-                    "enum": [
-                      "safe",
-                      "suspicious",
-                      "malicious"
-                    ]
-                  }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Domain flagged"
-          },
-          "400": {
-            "$ref": "#/components/responses/BadRequest"
           }
         }
       }
@@ -1428,4 +1298,3 @@
     }
   }
 }
-

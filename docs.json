@@ -122,7 +122,7 @@
     "metatags": {
       "description": "NovaShield Security Engine - Enterprise-grade Solana security scanning API. Analyze transactions, tokens, addresses, dApps, and URLs before user interaction.",
       "keywords": "solana security api, transaction scanning, token risk analysis, phishing detection, dapp security, novashield",
-      "og:title": "NovaShield Security Engine - Solana Security Scanning API",
+      "og:title": "NovaShield API - Solana Security Scanning API",
       "og:description": "Analyze Solana transactions, tokens, addresses, dApps, and URLs with AI-powered security scanning.",
       "og:type": "website",
       "og:site_name": "NovaShield API Documentation",
