@@ -22,34 +22,32 @@
       {
         "group": "Security API",
         "pages": [
+          "api-reference/introduction",
           {
-            "group": "Token Security",
+            "group": "Wallet v1",
             "pages": [
-              "api-reference/token/security",
-              "api-reference/token/rug-score",
-              "api-reference/token/honeypot",
-              "api-reference/token/lp"
+              "api-reference/wallet/tx",
+              "api-reference/wallet/tx-simulate",
+              "api-reference/wallet/address",
+              "api-reference/wallet/dapp",
+              "api-reference/wallet/url"
             ]
           },
           {
-            "group": "Phishing Detection",
+            "group": "Token v1",
             "pages": [
-              "api-reference/phishing/check"
+              "api-reference/token/scan",
+              "api-reference/token/bundle",
+              "api-reference/token/rug"
             ]
           },
           {
-            "group": "Transaction Security",
+            "group": "System",
             "pages": [
-              "api-reference/transaction/simulate"
+              "api-reference/system/health",
+              "api-reference/system/info"
             ]
           }
-        ]
-      },
-      {
-        "group": "Privacy Cash API",
-        "pages": [
-          "api-reference/privacy-cash/send",
-          "api-reference/privacy-cash/status"
         ]
       },
       {
@@ -122,16 +120,16 @@
   "seo": {
     "indexing": "all",
     "metatags": {
-      "description": "NovaShield API - Solana token security scanner and privacy cash transfer API. Detect rug pulls, honeypots, phishing sites, and simulate transactions. Private SOL transfers with zero trace.",
-      "keywords": "rug pull api, solana token security, transaction solana api, nova shield api, nova api, privacy cash transfer, solana security scanner, honeypot detection, multisig, solana api",
-      "og:title": "NovaShield API - Solana Security Scanner & Privacy Cash",
-      "og:description": "Detect rug pulls, honeypots, and phishing sites with our Solana security API. Private SOL transfers with zero trace.",
+      "description": "NovaShield Security Engine - Enterprise-grade Solana security scanning API. Analyze transactions, tokens, addresses, dApps, and URLs before user interaction.",
+      "keywords": "solana security api, transaction scanning, token risk analysis, phishing detection, dapp security, novashield",
+      "og:title": "NovaShield Security Engine - Solana Security Scanning API",
+      "og:description": "Analyze Solana transactions, tokens, addresses, dApps, and URLs with AI-powered security scanning.",
       "og:type": "website",
       "og:site_name": "NovaShield API Documentation",
       "twitter:card": "summary_large_image",
       "twitter:site": "@novashield",
       "twitter:title": "NovaShield API - Solana Security Scanner",
-      "twitter:description": "Rug pull detection, honeypot checks, phishing protection, and private SOL transfers for Solana",
+      "twitter:description": "AI-powered Solana security scanning: transactions, tokens, addresses, dApps, and URLs.",
       "robots": "index, follow",
       "googlebot": "index, follow",
       "author": "NovaShield",

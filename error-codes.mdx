@@ -3,26 +3,17 @@ title: 'Error Codes'
 description: 'Complete reference for NovaShield API error codes'
 ---
 
-## Token Security Errors (400)
+## Client Errors (400)
 
 | Code | HTTP | Description |
 | ---- | ---- | ----------- |
-| INVALID_MINT_ADDRESS | 400 | Invalid or missing Solana mint address |
-| INVALID_REQUEST | 400 | Missing required parameters |
-| MISSING_REQUIRED_FIELDS | 400 | Missing required fields (Privacy Cash) |
-
-## Amount Validation (400)
-
-| Code | HTTP | Description |
-| ---- | ---- | ----------- |
-| AMOUNT_BELOW_MINIMUM | 400 | Privacy Cash: Recipient would receive less than 0.03 SOL after fees |
+| INVALID_REQUEST | 400 | Invalid or missing request parameters |
 
 ## Rate Limiting (429)
 
 | Code | HTTP | Description |
 | ---- | ---- | ----------- |
 | RATE_LIMIT_EXCEEDED | 429 | Too many requests (100 per 15min general, 20 per 15min strict) |
-| TOO_MANY_AUTH_FAILURES | 429 | Too many failed authentication attempts (not used - no auth) |
 
 ## Request Size (413)
 
@@ -41,22 +32,9 @@ description: 'Complete reference for NovaShield API error codes'
 | Code | HTTP | Description |
 | ---- | ---- | ----------- |
 | ANALYSIS_FAILED | 500 | Complete security analysis failed |
-| HONEYPOT_CHECK_FAILED | 500 | Honeypot detection failed |
-| RUG_SCORE_FAILED | 500 | Rug score calculation failed |
-| LP_ANALYSIS_FAILED | 500 | Liquidity pool analysis failed |
-| HOLDER_ANALYSIS_FAILED | 500 | Holder concentration analysis failed (not used) |
 | BUNDLER_DETECTION_FAILED | 500 | Coordinated buyer detection failed |
 | PHISHING_CHECK_FAILED | 500 | Phishing detection failed |
 | SIMULATION_FAILED | 500 | Transaction simulation failed |
-
-## Privacy Cash Errors (500)
-
-| Code | HTTP | Description |
-| ---- | ---- | ----------- |
-| FIREBASE_UNAVAILABLE | 500 | Firebase backup unavailable - transaction blocked |
-| PRIVACY_TRANSFER_FAILED | 500 | Private transfer failed |
-| TRANSFER_FAILED_REFUNDED | 500 | Transfer failed but funds refunded to sending wallet (minus NovaShield fee) |
-| STATUS_CHECK_FAILED | 500 | Unable to check transaction status |
 
 ## General (500)
 
@@ -68,14 +46,12 @@ description: 'Complete reference for NovaShield API error codes'
 
 ## Summary
 
-**Total: 19 Error Codes**
-
 **Categories:**
-- 4xx Client Errors: 4 codes
-- 429 Rate Limiting: 1 code  
-- 413 Too Large: 1 code
-- 404 Not Found: 1 code
-- 5xx Server Errors: 12 codes
+- 4xx Client Errors
+- 429 Rate Limiting
+- 413 Too Large
+- 404 Not Found
+- 5xx Server Errors (analysis failures + general)
 
 All errors return consistent JSON format:
 

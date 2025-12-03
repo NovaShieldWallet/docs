@@ -1,45 +1,52 @@
 ---
-title: "Quick Start - NovaShield API"
-description: "Solana security scanner powered by AI. Check tokens for rug pulls, detect phishing sites, and simulate transactions before signing."
-keywords: ["rug pull api", "solana token security", "nova shield api", "solana security scanner", "honeypot detection"]
-"og:title": "NovaShield API - Solana Security Scanner & Privacy Cash"
-"og:description": "Detect rug pulls, honeypots, and phishing sites with our Solana security API. Private SOL transfers with zero trace."
+title: "NovaShield Security Engine"
+description: "AI-powered Solana security scanning API. Analyze transactions, tokens, addresses, dApps, and URLs before users sign."
+keywords: ["solana security api", "transaction scanning", "token risk analysis", "phishing detection", "novashield"]
+"og:title": "NovaShield Security Engine — Solana Security Scanning"
+"og:description": "Analyze Solana transactions, tokens, addresses, dApps, and URLs with AI-powered security."
 "og:image": "/images/hero-light.png"
-"twitter:title": "NovaShield API - Solana Security Scanner"
-"twitter:description": "Rug pull detection, honeypot checks, phishing protection, and private SOL transfers"
+"twitter:title": "NovaShield Security Engine"
+"twitter:description": "AI security scanning for Solana: transactions, tokens, addresses, dApps, and URLs."
 ---
 
-## Core Features
+## Core Capabilities
 
-Real-time security analysis powered by AI and blockchain intelligence.
+Real-time analysis powered by AI and on-chain threat intelligence.
 
 <CardGroup cols={2}>
   <Card
-    title="Rug Pull Detection"
-    icon="shield-exclamation"
-    href="/api-reference/token/rug-score"
-  >
-    Fast rug pull detection with clear verdicts. Get risk scores and actionable insights before your users trade.
-  </Card>
-  <Card
-    title="Phishing Detection"
-    icon="fish"
-    href="/api-reference/phishing/check"
-  >
-    Catch typosquatting and fake sites. Protect users from connecting wallets to malicious domains.
-  </Card>
-  <Card
-    title="Transaction Simulation"
+    title="Scan Transaction (Wallet v1)"
     icon="play"
-    href="/api-reference/transaction/simulate"
+    href="/api-reference/wallet/tx"
   >
-    See what a transaction will do before signing. Detect hidden risks and suspicious behavior.
+    Analyze transactions before signing. Get risks, decoded actions, and balance changes.
   </Card>
   <Card
-    title="Token Security"
-    icon="coins"
-    href="/api-reference/token/security"
+    title="Simulate Transaction (Wallet v1)"
+    icon="bolt"
+    href="/api-reference/wallet/tx-simulate"
   >
-    Comprehensive token analysis with holder distribution, liquidity checks, and scam indicators.
+    Simulate effects with a human-readable verdict before users click Sign.
+  </Card>
+  <Card
+    title="Scan Token (Token v1)"
+    icon="coins"
+    href="/api-reference/token/scan"
+  >
+    Full token security analysis: authorities, holders, LPs, impersonation, and risk flags.
+  </Card>
+  <Card
+    title="Bundler & Rug Analysis (Token v1)"
+    icon="shield-exclamation"
+    href="/api-reference/token/rug"
+  >
+    Detect coordinated buyers and get a trader-facing rug-style summary with recommendations.
   </Card>
 </CardGroup>
+
+### Also Available
+
+- Phishing & URL scanning: /api-reference/wallet/url
+- dApp security checks: /api-reference/wallet/dapp
+
+Looking for a native experience? Try the Nova Wallet for iOS: /ios/help-center

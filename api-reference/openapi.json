@@ -1,9 +1,9 @@
 {
   "openapi": "3.0.3",
   "info": {
-    "title": "NovaShield Security API",
-    "description": "Solana token security scanner. Local-first detection with 10 security modules.",
-    "version": "2.0.0",
+    "title": "NovaShield Security Engine",
+    "description": "Enterprise-grade security scanning API for Solana. Analyze transactions, tokens, addresses, and dApps before user interaction.",
+    "version": "3.0.0",
     "contact": {
       "name": "NovaShield",
       "url": "https://novashield.space"
@@ -11,41 +11,32 @@
   },
   "servers": [
     {
-      "url": "https://secure.novashield.space",
+      "url": "https://api.novashield.so",
       "description": "Production"
+    },
+    {
+      "url": "http://localhost:3005",
+      "description": "Development (local)"
     }
   ],
   "tags": [
     {
-      "name": "Token Security",
-      "description": "Token security analysis endpoints"
-    },
-    {
-      "name": "Phishing",
-      "description": "Phishing and typosquatting detection"
-    },
-    {
-      "name": "Transaction",
-      "description": "Transaction simulation"
-    },
-    {
-      "name": "Privacy Cash",
-      "description": "Private SOL transfers - SOL ONLY (minimum 0.03 SOL after fees)"
+      "name": "Security Scanning",
+      "description": "Core security scanning endpoints for transactions, tokens, addresses, and dApps"
     }
   ],
   "paths": {
-    "/health": {
+    "/v1/health": {
       "get": {
-        "summary": "Health check",
+        "summary": "Health check (v1)",
+        "description": "Versioned health check endpoint.",
         "responses": {
           "200": {
             "description": "Service healthy",
             "content": {
               "application/json": {
-                "example": {
-                  "status": "healthy",
-                  "version": "2.0.0",
-                  "mode": "local-first"
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
                 }
               }
             }
@@ -53,310 +44,446 @@
         }
       }
     },
-    "/token/security/{mint}": {
+    "/v1/info": {
       "get": {
-        "tags": ["Token Security"],
-        "summary": "Complete security analysis",
-        "description": "Runs all 10 security modules and returns comprehensive report",
-        "parameters": [
-          {
-            "name": "mint",
-            "in": "path",
-          "required": true,
-            "schema": { "type": "string" },
-            "description": "Token mint address"
-          },
-          {
-            "name": "deployer",
-            "in": "query",
-            "schema": { "type": "string" },
-            "description": "Optional deployer address"
-              }
-        ],
+        "summary": "API information (v1)",
+        "description": "Versioned API info endpoint.",
         "responses": {
           "200": {
-            "description": "Security report",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/SecurityReport" }
-              }
-            }
-          },
-          "400": { "$ref": "#/components/responses/BadRequest" },
-          "429": { "$ref": "#/components/responses/RateLimited" },
-          "500": { "$ref": "#/components/responses/ServerError" }
-        }
-      }
-    },
-    "/token/rug-score/{mint}": {
-      "get": {
-        "tags": ["Token Security"],
-        "summary": "Rug pull probability score",
-        "parameters": [
-          {
-            "name": "mint",
-            "in": "path",
-          "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Rug score",
-          "content": {
-            "application/json": {
-                "schema": { "$ref": "#/components/schemas/RugScore" }
-              }
-            }
-              }
-            }
-          }
-        },
-    "/token/honeypot/{mint}": {
-      "get": {
-        "tags": ["Token Security"],
-        "summary": "Honeypot detection",
-        "parameters": [
-          {
-            "name": "mint",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Honeypot status",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/HoneypotResult" }
-              }
-            }
-                }
-              }
-            }
-          },
-    "/token/lp/{mint}": {
-      "get": {
-        "tags": ["Token Security"],
-        "summary": "Liquidity pool analysis",
-        "parameters": [
-          {
-            "name": "mint",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "LP analysis"
-            }
-          }
-        }
-      },
-    "/api/phishing/check": {
-      "post": {
-        "tags": ["Phishing"],
-        "summary": "Phishing detection",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["url"],
-                "properties": {
-                  "url": { "type": "string", "format": "uri" }
-                }
-              },
-              "example": { "url": "https://example.com" }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Phishing analysis",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/PhishingResult" }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/simulate-transaction": {
-      "post": {
-        "tags": ["Transaction"],
-        "summary": "Transaction simulation",
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "required": ["transaction", "signerPublicKey"],
-                "properties": {
-                  "transaction": { "type": "string" },
-                  "signerPublicKey": { "type": "string" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Simulation result"
-          }
-        }
-      }
-    },
-    "/privacy-cash/send": {
-      "post": {
-        "tags": ["Privacy Cash"],
-        "summary": "Initiate private SOL transfer with auto-refund (SOL ONLY)",
-        "description": "Initiate private SOL transfer. User NEVER sends private key. API creates secure temp wallet - user sends SOL there. Queue auto-executes transfer when funded (checks every 2 seconds). If transfer fails, SOL is AUTOMATICALLY REFUNDED to refundAddress or sender minus network fees. Address expires in 10 minutes. SOL ONLY - no tokens. Minimum: 0.01 SOL.",
-        "requestBody": {
-            "required": true,
-          "content": {
-            "application/json": {
-            "schema": {
-                "type": "object",
-                "required": ["amount", "toAddress"],
-                "properties": {
-                  "amount": { 
-                    "type": "number", 
-                    "minimum": 0.01,
-                    "description": "Amount in SOL (minimum 0.01). SOL ONLY." 
-              },
-                  "toAddress": {
-                    "type": "string",
-                    "description": "Recipient wallet address (where private transfer goes)"
-                  },
-                  "network": {
-                    "type": "string",
-                    "enum": ["devnet", "mainnet"],
-                    "default": "devnet",
-                    "description": "Solana network to use"
-                  },
-                  "refundAddress": {
-                    "type": "string",
-                    "description": "OPTIONAL: Where to send SOL if transfer fails. If not provided, auto-detects sender address. Recommended to always specify."
-                  }
-                }
-              },
-              "example": {
-                "amount": 0.1,
-                "toAddress": "RECIPIENT_ADDRESS",
-                "network": "devnet",
-                "refundAddress": "YOUR_REFUND_ADDRESS"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Transfer initiated - send SOL to temp wallet address",
+            "description": "API information",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": { "type": "boolean" },
-                      "data": {
-                      "type": "object",
-                      "properties": {
-                        "transferId": { "type": "string", "description": "Transfer ID for status checks" },
-                        "tempWallet": { "type": "string", "description": "Temporary wallet address - SEND SOL HERE" },
-                        "amount": { "type": "number", "description": "Amount in SOL" },
-                        "toAddress": { "type": "string", "description": "Recipient address" },
-                        "refundAddress": { "type": "string", "description": "Refund address if transfer fails" },
-                        "expiresAt": { "type": "string", "format": "date-time", "description": "When temp wallet expires (10 minutes)" },
-                        "network": { "type": "string", "description": "Network (devnet/mainnet)" }
-                      }
-                    },
-                    "message": { 
-                      "type": "string", 
-                      "description": "Instructions: Send SOL to tempWallet. Auto-executes when funded. Auto-refunds on failure." 
-                    },
-                    "timestamp": { "type": "string", "format": "date-time" }
-                  }
+                  "$ref": "#/components/schemas/InfoResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/wallet/tx": {
+      "post": {
+        "summary": "Scan transaction (wallet)",
+        "description": "Analyze a transaction before signing. Returns risk assessment with detailed explanations, decoded actions, and balance changes.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanTransactionRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Transaction analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanTransactionResponse"
                 }
               }
             }
           },
           "400": {
-            "description": "Invalid request (amount too low, invalid addresses, etc.)",
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/wallet/tx/simulate": {
+      "post": {
+        "summary": "Simulate transaction (wallet)",
+        "description": "Simulate a transaction and get a human-readable risk verdict before signing.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
           "content": {
             "application/json": {
-                "schema": { "$ref": "#/components/responses/BadRequest" }
-              }
-            }
+              "schema": {
+                "$ref": "#/components/schemas/SimulateTransactionRequest"
               }
             }
           }
         },
-    "/privacy-cash/status/{transferId}": {
-      "get": {
-        "tags": ["Privacy Cash"],
-        "summary": "Check transfer status",
-        "description": "Check status of privacy cash transfer. Returns: pending (awaiting SOL), funded (SOL received, processing), completed (transfer successful), failed-refunded (transfer failed, SOL refunded), failed (transfer failed, refund failed), expired (10min timeout).",
-        "parameters": [
-          {
-            "name": "transferId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "string" },
-            "description": "Transfer ID from /privacy-cash/send"
-          }
-        ],
         "responses": {
           "200": {
-            "description": "Status retrieved",
+            "description": "Transaction simulation complete",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "success": { "type": "boolean" },
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "transferId": { "type": "string" },
-                        "status": { 
-                          "type": "string", 
-                          "enum": ["pending", "funded", "completed", "failed-refunded", "failed", "expired"],
-                          "description": "Transfer status. failed-refunded means SOL was automatically returned." 
-                        },
-                        "tempWallet": { "type": "string", "description": "Temporary wallet address" },
-                        "amount": { "type": "number", "description": "Amount in SOL" },
-                        "recipient": { "type": "string", "description": "Recipient address" },
-                        "signature": { "type": "string", "description": "Transaction signature (if completed)" },
-                        "currentBalance": { "type": "number", "description": "Current temp wallet balance in SOL (if pending)" },
-                        "refunded": { "type": "boolean", "description": "Whether SOL was refunded (if failed)" },
-                        "refundSignature": { "type": "string", "description": "Refund transaction signature (if refunded)" },
-                        "refundAmount": { "type": "number", "description": "Amount refunded in SOL (if refunded)" },
-                        "refundAddress": { "type": "string", "description": "Address where SOL was refunded (if refunded)" },
-                        "error": { "type": "string", "description": "Error message (if failed)" },
-                        "expiresAt": { "type": "string", "format": "date-time" },
-                        "createdAt": { "type": "string", "format": "date-time" },
-                        "completedAt": { "type": "string", "format": "date-time" }
-                      }
-                    },
-                    "timestamp": { "type": "string", "format": "date-time" }
-                  }
+                  "$ref": "#/components/schemas/SimulateTransactionResponse"
                 }
               }
             }
           },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
           "500": {
-            "description": "Server error",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/responses/ServerError" }
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/wallet/address": {
+      "post": {
+        "summary": "Scan address (wallet)",
+        "description": "Check address reputation, classification, and on-chain activity. Identifies wallets, programs, known exchanges, and flagged addresses.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanAddressRequest"
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Address analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanAddressResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/wallet/dapp": {
+      "post": {
+        "summary": "Scan dApp (wallet)",
+        "description": "Scan dApp domain for security threats, phishing attempts, and suspicious patterns.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanDappRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "dApp analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanDappResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/wallet/url": {
+      "post": {
+        "summary": "Scan URL (phishing)",
+        "description": "Check a URL for phishing, typosquatting, and scam indicators before opening.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/PhishingCheckRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "URL analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhishingCheckResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/token": {
+      "post": {
+        "summary": "Scan token (v1)",
+        "description": "Comprehensive token security analysis including mint/freeze authorities, holder distribution, liquidity pool status, and rug pull risk assessment.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanTokenRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Token analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanTokenResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/token/bundle": {
+      "post": {
+        "summary": "Scan token bundlers (v1)",
+        "description": "Analyze a token mint for coordinated buyers and bundler-style activity.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanBundleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bundle analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanBundleResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/token/rug": {
+      "post": {
+        "summary": "Scan token bundlers with rug-style summary (v1)",
+        "description": "Analyze bundler patterns and return a short rug-pull style AI explanation.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ScanBundleRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Bundle + rug-style analysis complete",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ScanBundleRugResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          }
+        }
+      }
+    },
+    "/v1/internal/threat-intel/flag-address": {
+      "post": {
+        "summary": "Flag address (internal)",
+        "description": "Internal-only endpoint to flag an address as good or bad.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "address",
+                  "type"
+                ],
+                "properties": {
+                  "address": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "good",
+                      "bad"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Address flagged"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/v1/internal/threat-intel/flag-program": {
+      "post": {
+        "summary": "Flag program (internal)",
+        "description": "Internal-only endpoint to flag a program as good or bad.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "programId",
+                  "type"
+                ],
+                "properties": {
+                  "programId": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "good",
+                      "bad"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Program flagged"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
+          }
+        }
+      }
+    },
+    "/v1/internal/threat-intel/flag-domain": {
+      "post": {
+        "summary": "Flag domain (internal)",
+        "description": "Internal-only endpoint to flag a domain verdict.",
+        "tags": [
+          "Security Scanning"
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "domain",
+                  "verdict"
+                ],
+                "properties": {
+                  "domain": {
+                    "type": "string"
+                  },
+                  "verdict": {
+                    "type": "string",
+                    "enum": [
+                      "safe",
+                      "suspicious",
+                      "malicious"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Domain flagged"
+          },
+          "400": {
+            "$ref": "#/components/responses/BadRequest"
           }
         }
       }
@@ -364,142 +491,936 @@
   },
   "components": {
     "schemas": {
-      "SecurityReport": {
+      "HealthResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean" },
-          "data": {
+          "status": {
+            "type": "string",
+            "example": "healthy",
+            "description": "Service health status"
+          },
+          "service": {
+            "type": "string",
+            "example": "NovaShield Security Engine",
+            "description": "Service name"
+          },
+          "version": {
+            "type": "string",
+            "example": "3.0.0",
+            "description": "API version"
+          },
+          "chain": {
+            "type": "string",
+            "example": "solana",
+            "description": "Supported blockchain"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Current server time"
+          }
+        }
+      },
+      "InfoResponse": {
+        "type": "object",
+        "properties": {
+          "service": {
+            "type": "string",
+            "example": "NovaShield Security Engine"
+          },
+          "version": {
+            "type": "string",
+            "example": "3.0.0"
+          },
+          "chain": {
+            "type": "string",
+            "example": "solana"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ScanTransactionRequest": {
+        "type": "object",
+        "required": [
+          "chain",
+          "tx_base64",
+          "wallet_address"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "enum": [
+              "solana"
+            ],
+            "description": "Blockchain network (currently only Solana supported)"
+          },
+          "tx_base64": {
+            "type": "string",
+            "description": "Base64-encoded serialized transaction"
+          },
+          "wallet_address": {
+            "type": "string",
+            "description": "User's wallet public key",
+            "example": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
+          },
+          "context": {
+            "type": "object",
+            "description": "Optional context about the transaction origin",
+            "properties": {
+              "source": {
+                "type": "string",
+                "enum": [
+                  "wallet",
+                  "backend",
+                  "agent"
+                ],
+                "description": "Transaction source type"
+              },
+              "dapp_domain": {
+                "type": "string",
+                "description": "Originating dApp domain (if applicable)",
+                "example": "app.raydium.io"
+              },
+              "ui_flow_id": {
+                "type": "string",
+                "description": "Optional identifier for tracking"
+              }
+            }
+          }
+        },
+        "example": {
+          "chain": "solana",
+          "tx_base64": "AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA...",
+          "wallet_address": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU",
+          "context": {
+            "source": "wallet",
+            "dapp_domain": "app.raydium.io"
+          }
+        }
+      },
+      "ScanTransactionResponse": {
+        "type": "object",
+        "properties": {
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "safe",
+              "suspicious",
+              "malicious"
+            ],
+            "description": "Overall risk verdict"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Risk score (0.0 = safe, 1.0 = critical)",
+            "example": 0.15
+          },
+          "summary": {
+            "type": "string",
+            "description": "Human-readable transaction summary",
+            "example": "This transaction swaps 2 SOL for 1000 tokens on Raydium."
+          },
+          "details": {
             "type": "object",
             "properties": {
-              "overallScore": { "type": "integer", "minimum": 0, "maximum": 100 },
-              "riskLevel": { "type": "string", "enum": ["SAFE", "LOW", "MEDIUM", "HIGH", "CRITICAL"] },
-              "verdict": { "type": "string" },
-              "canTrade": { "type": "boolean" },
-              "honeypot": { "type": "object" },
-              "authorities": { "type": "object" },
-              "liquidity": { "type": "object" },
-              "holders": { "type": "object" },
-              "aiAnalysis": {
+              "actions": {
+                "type": "array",
+                "description": "Decoded transaction instructions",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "enum": [
+                        "TRANSFER",
+                        "SWAP",
+                        "APPROVE",
+                        "SET_AUTHORITY",
+                        "CLOSE_ACCOUNT",
+                        "CREATE_ACCOUNT",
+                        "OTHER"
+                      ]
+                    },
+                    "programId": {
+                      "type": "string"
+                    },
+                    "programName": {
+                      "type": "string"
+                    },
+                    "from": {
+                      "type": "string"
+                    },
+                    "to": {
+                      "type": "string"
+                    },
+                    "mint": {
+                      "type": "string"
+                    },
+                    "amountUi": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "balance_diffs": {
+                "type": "array",
+                "description": "Expected balance changes",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "mint": {
+                      "type": "string"
+                    },
+                    "deltaUi": {
+                      "type": "number",
+                      "description": "Balance change (negative = outflow)"
+                    }
+                  }
+                }
+              },
+              "flags": {
+                "type": "array",
+                "description": "Risk flags triggered",
+                "items": {
+                  "type": "string"
+                },
+                "example": [
+                  "UNLIMITED_APPROVAL_UNKNOWN",
+                  "NEW_PROGRAM_SENSITIVE_ACTIONS"
+                ]
+              },
+              "simulation": {
+                "type": "object",
+                "properties": {
+                  "logs": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "err": {
+                    "type": "object",
+                    "nullable": true
+                  }
+                }
+              }
+            }
+          },
+          "explanations": {
+            "type": "array",
+            "description": "Human-readable risk explanations",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Transaction interacts with an unknown program that performs sensitive operations."
+            ]
+          }
+        }
+      },
+      "ScanAddressRequest": {
+        "type": "object",
+        "required": [
+          "chain",
+          "address"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "enum": [
+              "solana"
+            ]
+          },
+          "address": {
+            "type": "string",
+            "description": "Solana address to analyze",
+            "example": "5tzFkiKscXHK5ZXCGbXZxdw7gTjjD1mBwuoFbhUvuAi9"
+          }
+        }
+      },
+      "ScanAddressResponse": {
         "type": "object",
         "properties": {
-                  "summary": { "type": "string" },
-                  "keyRisks": { "type": "array", "items": { "type": "string" } },
-                  "recommendations": { "type": "array", "items": { "type": "string" } },
-                  "confidence": { "type": "integer" }
+          "address": {
+            "type": "string",
+            "description": "The analyzed address"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "safe",
+              "suspicious",
+              "malicious",
+              "unknown"
+            ],
+            "description": "Address reputation verdict"
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Risk score"
+          },
+          "tags": {
+            "type": "array",
+            "description": "Classification tags",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "type:wallet",
+              "verified",
+              "cex:binance"
+            ]
+          },
+          "reasons": {
+            "type": "array",
+            "description": "Explanation for the verdict",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "Belongs to a known trusted entity"
+            ]
+          },
+          "metadata": {
+            "type": "object",
+            "description": "Additional address information",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "wallet",
+                  "program",
+                  "mint",
+                  "token_account",
+                  "unknown"
+                ]
+              },
+              "first_seen": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "last_seen": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "tx_count": {
+                "type": "integer"
+              }
+            }
+          }
+        }
+      },
+      "ScanTokenRequest": {
+        "type": "object",
+        "required": [
+          "chain",
+          "mint"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "enum": [
+              "solana"
+            ]
+          },
+          "mint": {
+            "type": "string",
+            "description": "Token mint address",
+            "example": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+          }
+        }
+      },
+      "ScanTokenResponse": {
+        "type": "object",
+        "properties": {
+          "mint": {
+            "type": "string"
+          },
+          "symbol": {
+            "type": "string",
+            "example": "USDC"
+          },
+          "name": {
+            "type": "string",
+            "example": "USD Coin"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "safe",
+              "suspicious",
+              "malicious"
+            ]
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1,
+            "description": "Risk score (higher = more risky)"
+          },
+          "flags": {
+            "type": "array",
+            "description": "Security flags",
+            "items": {
+              "type": "string"
+            },
+            "example": [
+              "MINT_AUTHORITY_RENOUNCED",
+              "LP_LOCKED",
+              "FREEZE_AUTHORITY_RENOUNCED"
+            ]
+          },
+          "metadata": {
+            "type": "object",
+            "properties": {
+              "decimals": {
+                "type": "integer"
+              },
+              "supply": {
+                "type": "string"
+              },
+              "mint_authority": {
+                "type": "string",
+                "nullable": true,
+                "description": "Mint authority address (null if renounced)"
+              },
+              "freeze_authority": {
+                "type": "string",
+                "nullable": true,
+                "description": "Freeze authority address (null if renounced)"
+              },
+              "update_authority": {
+                "type": "string",
+                "nullable": true
+              },
+              "top_holders": {
+                "type": "array",
+                "description": "Top token holders",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "string"
+                    },
+                    "percentage": {
+                      "type": "number"
+                    }
+                  }
+                }
+              },
+              "lp_info": {
+                "type": "array",
+                "description": "Liquidity pool information",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "dex": {
+                      "type": "string"
+                    },
+                    "pool": {
+                      "type": "string"
+                    },
+                    "liquidity_usd": {
+                      "type": "number"
+                    },
+                    "locked": {
+                      "type": "boolean"
+                    }
+                  }
+                }
+              },
+              "impersonation": {
+                "type": "object",
+                "properties": {
+                  "is_impersonation": {
+                    "type": "boolean"
+                  },
+                  "similarity_score": {
+                    "type": "number"
+                  }
                 }
               }
             }
           }
         }
       },
-      "RugScore": {
+      "ScanDappRequest": {
+        "type": "object",
+        "required": [
+          "domain"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "description": "dApp domain to analyze",
+            "example": "app.raydium.io"
+          },
+          "ai_analyzed": {
+            "type": "boolean",
+            "description": "Whether to run AI + web search analysis (default: true)",
+            "example": true
+          }
+        }
+      },
+      "ScanDappResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean" },
-          "data": {
-            "type": "object",
-            "properties": {
-              "score": { "type": "integer", "minimum": 0, "maximum": 100 },
-              "level": { "type": "string", "enum": ["SAFE", "LOW", "MEDIUM", "HIGH", "CRITICAL"] },
-              "verdict": { "type": "string" },
-              "canTrade": { "type": "boolean" }
+          "domain": {
+            "type": "string"
+          },
+          "verdict": {
+            "type": "string",
+            "enum": [
+              "safe",
+              "suspicious",
+              "malicious",
+              "unknown"
+            ]
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "tags": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "explanations": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         }
       },
-      "HoneypotResult": {
+      "SimulateTransactionRequest": {
+        "type": "object",
+        "required": [
+          "transaction",
+          "signerPublicKey"
+        ],
+        "properties": {
+          "transaction": {
+            "type": "string",
+            "description": "Base64-encoded serialized transaction"
+          },
+          "signerPublicKey": {
+            "type": "string",
+            "description": "User's wallet public key"
+          }
+        }
+      },
+      "SimulateTransactionResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean" },
+          "success": {
+            "type": "boolean"
+          },
           "data": {
             "type": "object",
             "properties": {
-              "isHoneypot": { "type": "boolean", "nullable": true, "description": "True if honeypot, false if safe, null if unable to verify" },
-              "canBuy": { "type": "boolean", "nullable": true, "description": "True if can buy, null if unable to verify" },
-              "canSell": { "type": "boolean", "nullable": true, "description": "True if can sell, null if unable to verify" },
-              "confidence": { "type": "integer", "minimum": 0, "maximum": 100, "description": "0 if unable to verify, 100 if certain" },
-              "reasons": { "type": "array", "items": { "type": "string" } }
+              "simulation": {
+                "type": "object",
+                "properties": {
+                  "success": {
+                    "type": "boolean"
+                  },
+                  "risks": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  },
+                  "warnings": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "transaction": {
+                "type": "object",
+                "properties": {
+                  "instructions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "program": {
+                          "type": "string"
+                        },
+                        "programId": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "riskAssessment": {
+                "type": "object",
+                "properties": {
+                  "score": {
+                    "type": "number"
+                  },
+                  "level": {
+                    "type": "string",
+                    "enum": [
+                      "SAFE",
+                      "LOW",
+                      "MEDIUM",
+                      "HIGH",
+                      "CRITICAL"
+                    ]
+                  },
+                  "verdict": {
+                    "type": "string"
+                  }
+                }
+              },
+              "recommendations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "PhishingCheckRequest": {
+        "type": "object",
+        "required": [
+          "url"
+        ],
+        "properties": {
+          "url": {
+            "type": "string",
+            "description": "URL to analyze for phishing"
+          }
+        }
+      },
+      "PhishingCheckResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "isPhishing": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "description": "Confidence score (0-100)"
+              },
+              "riskLevel": {
+                "type": "string",
+                "enum": [
+                  "SAFE",
+                  "LOW",
+                  "MEDIUM",
+                  "HIGH",
+                  "CRITICAL"
+                ]
+              },
+              "verdict": {
+                "type": "string"
+              },
+              "reasons": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "similarTo": {
+                "type": "string",
+                "nullable": true
+              },
+              "recommendations": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ScanBundleRequest": {
+        "type": "object",
+        "required": [
+          "chain",
+          "mint"
+        ],
+        "properties": {
+          "chain": {
+            "type": "string",
+            "enum": [
+              "solana"
+            ]
+          },
+          "mint": {
+            "type": "string",
+            "description": "Token mint address to analyze"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "launch",
+              "recent"
+            ],
+            "description": "Analysis period (default: recent)"
+          }
+        }
+      },
+      "BundleAnalysis": {
+        "type": "object",
+        "properties": {
+          "bundlerScore": {
+            "type": "integer",
+            "description": "0-100, higher means more coordinated/botted"
+          },
+          "riskLevel": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CRITICAL"
+            ]
+          },
+          "metrics": {
+            "type": "object",
+            "properties": {
+              "timingCluster": {
+                "type": "number"
+              },
+              "walletSimilarity": {
+                "type": "number"
+              },
+              "sizePatterns": {
+                "type": "number"
+              },
+              "distribution": {
+                "type": "number"
+              }
+            }
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "totalTransactions": {
+                "type": "integer"
+              },
+              "uniqueWallets": {
+                "type": "integer"
+              },
+              "suspiciousWallets": {
+                "type": "integer"
+              },
+              "analysisPeriod": {
+                "type": "string"
+              }
+            }
+          },
+          "verdict": {
+            "type": "string"
+          },
+          "concerns": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "topBuyers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "wallet": {
+                  "type": "string"
+                },
+                "totalAmount": {
+                  "type": "number"
+                },
+                "supplyPercentage": {
+                  "type": "number"
+                },
+                "transactionCount": {
+                  "type": "integer"
+                },
+                "isDevRelated": {
+                  "type": "boolean"
+                }
+              }
             }
           }
         }
       },
-      "PhishingResult": {
+      "ScanBundleResponse": {
         "type": "object",
         "properties": {
-          "success": { "type": "boolean" },
-          "data": {
+          "mint": {
+            "type": "string"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "launch",
+              "recent"
+            ]
+          },
+          "isHighRisk": {
+            "type": "boolean",
+            "description": "True if bundler risk is HIGH or CRITICAL"
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/BundleAnalysis"
+          }
+        }
+      },
+      "BundleRugSummary": {
+        "type": "object",
+        "properties": {
+          "riskScore": {
+            "type": "number",
+            "description": "0-100, higher = higher rug-style risk"
+          },
+          "riskLevel": {
+            "type": "string",
+            "enum": [
+              "LOW",
+              "MEDIUM",
+              "HIGH",
+              "CRITICAL"
+            ]
+          },
+          "verdict": {
+            "type": "string"
+          },
+          "canTrade": {
+            "type": "boolean"
+          },
+          "isHighRisk": {
+            "type": "boolean"
+          },
+          "summary": {
+            "type": "string",
+            "description": "1-3 sentence trader-facing explanation"
+          },
+          "reasons": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "recommendations": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "ScanBundleRugResponse": {
+        "type": "object",
+        "properties": {
+          "mint": {
+            "type": "string"
+          },
+          "period": {
+            "type": "string",
+            "enum": [
+              "launch",
+              "recent"
+            ]
+          },
+          "analysis": {
+            "$ref": "#/components/schemas/BundleAnalysis"
+          },
+          "rug": {
+            "$ref": "#/components/schemas/BundleRugSummary"
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
             "type": "object",
             "properties": {
-              "url": { "type": "string" },
-              "isPhishing": { "type": "boolean" },
-              "confidence": { "type": "integer" },
-              "riskLevel": { "type": "string" },
-              "verdict": { "type": "string" },
-              "similarTo": { "type": "string", "nullable": true }
+              "code": {
+                "type": "string",
+                "example": "INVALID_REQUEST"
+              },
+              "message": {
+                "type": "string",
+                "example": "Invalid request parameters"
+              },
+              "details": {
+                "type": "string"
+              }
             }
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
           }
         }
       }
     },
     "responses": {
       "BadRequest": {
-        "description": "Invalid request",
+        "description": "Invalid request parameters",
         "content": {
           "application/json": {
             "schema": {
-              "type": "object",
-              "properties": {
-                "success": { "type": "boolean", "example": false },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "code": { "type": "string", "example": "INVALID_REQUEST" },
-                    "message": { "type": "string" }
-                  }
-                }
-              }
+              "$ref": "#/components/schemas/ErrorResponse"
             }
           }
         }
       },
-      "RateLimited": {
-        "description": "Rate limit exceeded",
+      "InternalError": {
+        "description": "Internal server error",
         "content": {
           "application/json": {
             "schema": {
-              "type": "object",
-              "properties": {
-                "success": { "type": "boolean", "example": false },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "code": { "type": "string", "example": "RATE_LIMIT_EXCEEDED" },
-                    "message": { "type": "string" },
-                    "limit": { "type": "integer" },
-                    "window": { "type": "string" }
-                  }
-                }
-              }
-            }
-          }
-        }
-      },
-      "ServerError": {
-        "description": "Server error",
-        "content": {
-          "application/json": {
-            "schema": {
-              "type": "object",
-              "properties": {
-                "success": { "type": "boolean", "example": false },
-                "error": {
-                  "type": "object",
-                  "properties": {
-                    "code": { "type": "string" },
-                    "message": { "type": "string" }
-                  }
-                }
-              }
+              "$ref": "#/components/schemas/ErrorResponse"
             }
           }
         }
@@ -507,3 +1428,4 @@
     }
   }
 }
+

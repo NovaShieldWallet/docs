@@ -1,58 +1,44 @@
 ---
-title: 'NovaShield API Documentation - Quick Start'
-description: 'NovaShield Security API and Privacy Cash API documentation. Solana token security scanner, rug pull detection, and private SOL transfers.'
-keywords: ["nova shield api", "nova api", "solana security api", "rug pull api", "solana token security"]
-"og:title": "NovaShield API Documentation"
-"og:description": "Comprehensive Solana security API. Detect rug pulls, honeypots, phishing sites, and send private SOL transfers."
+title: "NovaShield Security Engine — API Introduction"
+description: "Enterprise Solana security scanning: analyze transactions, tokens, addresses, dApps, and URLs before user interaction."
+keywords: ["solana security api", "transaction scanning", "token risk analysis", "phishing detection", "novashield"]
+"og:title": "NovaShield Security Engine — API"
+"og:description": "AI + on-chain intelligence to predict and prevent threats on Solana."
 "og:image": "/images/hero-light.png"
-"twitter:title": "NovaShield API - Solana Security Scanner"
-"twitter:description": "Free Solana security API for rug pull detection, honeypot checks, and privacy cash transfers"
+"twitter:title": "NovaShield Security Engine — API"
+"twitter:description": "Analyze Solana transactions, tokens, addresses, dApps, and URLs with AI-powered security."
 ---
 
-## NovaShield APIs
+## What is NovaShield?
 
-**Security** - Detect rug pulls, honeypots, and phishing sites before your users get scammed.  
-**Privacy Cash** - Send SOL with zero trace. Complete privacy for sensitive transfers.
+NovaShield is an on-chain security engine for Solana that uses AI and threat intelligence to analyze transactions, tokens, addresses, dApps, and URLs — helping you predict and block threats before users click Sign.
 
-Both available as APIs and integrated into the **[Nova iOS Wallet](/quickstart)**.
-
-## Core Features
-
-**Token Security** - AI-powered analysis catches scams before they happen  
-**Honeypot Detection** - Verify tokens are actually tradeable  
-**Privacy Cash** - Untraceable SOL transfers (1% + 0.006 SOL fee)  
-**Phishing Protection** - Block typosquatting and fake sites  
-**Transaction Simulation** - Preview what transactions do before signing
-
-## Base URL
+## Base URLs
 
 ```
-https://secure.novashield.space
+Production:  https://api.novashield.so
+Local dev:   http://localhost:3005
 ```
 
-## Example: Check Token Security
+## Versioning
 
-```bash
-curl https://secure.novashield.space/token/security/MINT_ADDRESS
-```
+All endpoints are versioned under `/v1/...`.
 
-## Example: Send Private SOL
+## API Categories
 
-```bash
-curl -X POST https://secure.novashield.space/privacy-cash/send \
-  -H "Content-Type: application/json" \
-  -d '{
-    "amount": 0.1,
-    "toAddress": "RECIPIENT_ADDRESS",
-    "network": "mainnet",
-    "refundAddress": "YOUR_REFUND_ADDRESS"
-  }'
-```
+- **Wallet v1** — Scan transactions before signing, simulate effects, check address reputation, analyze dApps, and detect phishing URLs.
+- **Token v1** — Full token security analysis, bundler detection, and rug-style trader summaries.
+- **System** — Health and info endpoints.
 
 ## Authentication
 
-All endpoints are currently **open** - no API key required.
+No API key required at this time. Rate limiting and abuse protections may apply.
 
-## Get Started
+## Responses and Errors
 
-Browse the endpoint documentation in the sidebar to integrate NovaShield into your app.
+All endpoints return consistent JSON with machine-readable codes. See Error Codes.
+
+## Try it in the Nova iOS Wallet
+
+Prefer native? The same protections power the Nova Wallet for iOS.  
+Get started here: /ios/help-center
