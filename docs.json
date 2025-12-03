@@ -34,7 +34,7 @@
             ]
           },
           {
-            "group": "Token Check",
+            "group": "Token Security",
             "pages": [
               "api-reference/token/scan",
               "api-reference/token/bundle",
