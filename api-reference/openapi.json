@@ -333,7 +333,7 @@
           "content": {
             "application/json": {
             "schema": {
-                "$ref": "#/components/schemas/ScanBundleRequest"
+                "$ref": "#/components/schemas/ScanRugRequest"
               }
             }
           }
@@ -1065,6 +1065,25 @@
               "recent"
             ],
             "description": "Analysis period (default: recent)"
+          }
+        }
+      },
+      "ScanRugRequest": {
+              "type": "object",
+        "required": [
+          "chain",
+          "mint"
+        ],
+              "properties": {
+          "chain": {
+            "type": "string",
+            "enum": [
+              "solana"
+            ]
+          },
+          "mint": {
+            "type": "string",
+            "description": "Token mint address to analyze"
           }
         }
       },
