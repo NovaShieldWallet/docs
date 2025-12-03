@@ -28,7 +28,7 @@
   "paths": {
     "/v1/health": {
       "get": {
-        "summary": "Health check (v1)",
+        "summary": "Health Check",
         "description": "Versioned health check endpoint.",
         "responses": {
           "200": {
@@ -46,7 +46,7 @@
     },
     "/v1/info": {
       "get": {
-        "summary": "API information (v1)",
+        "summary": "API Info",
         "description": "Versioned API info endpoint.",
         "responses": {
           "200": {
@@ -149,15 +149,15 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ScanAddressRequest"
-              }
+          }
             }
           }
         },
         "responses": {
           "200": {
             "description": "Address analysis complete",
-            "content": {
-              "application/json": {
+          "content": {
+            "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ScanAddressResponse"
                 }
@@ -169,10 +169,10 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
+              }
+            }
           }
-        }
-      }
-    },
+        },
     "/v1/wallet/dapp": {
       "post": {
         "summary": "Scan dApp (wallet)",
@@ -181,12 +181,12 @@
           "Security Scanning"
         ],
         "requestBody": {
-          "required": true,
+            "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ScanDappRequest"
-              }
+          }
             }
           }
         },
@@ -206,10 +206,10 @@
           },
           "500": {
             "$ref": "#/components/responses/InternalError"
-          }
-        }
-      }
-    },
+                }
+              }
+            }
+          },
     "/v1/wallet/url": {
       "post": {
         "summary": "Scan URL (phishing)",
@@ -218,12 +218,12 @@
           "Security Scanning"
         ],
         "requestBody": {
-          "required": true,
+            "required": true,
           "content": {
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/PhishingCheckRequest"
-              }
+          }
             }
           }
         },
@@ -234,10 +234,10 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/PhishingCheckResponse"
-                }
-              }
             }
-          },
+          }
+        }
+      },
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -249,7 +249,7 @@
     },
     "/v1/token": {
       "post": {
-        "summary": "Scan token (v1)",
+        "summary": "Scan Token",
         "description": "Comprehensive token security analysis including mint/freeze authorities, holder distribution, liquidity pool status, and rug pull risk assessment.",
         "tags": [
           "Security Scanning"
@@ -260,7 +260,7 @@
             "application/json": {
               "schema": {
                 "$ref": "#/components/schemas/ScanTokenRequest"
-              }
+                }
             }
           }
         },
@@ -286,7 +286,7 @@
     },
     "/v1/token/bundle": {
       "post": {
-        "summary": "Scan token bundlers (v1)",
+        "summary": "Detect Bundlers",
         "description": "Analyze a token mint for coordinated buyers and bundler-style activity.",
         "tags": [
           "Security Scanning"
@@ -308,10 +308,10 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/ScanBundleResponse"
-                }
-              }
-            }
-          },
+          }
+        }
+      }
+    },
           "400": {
             "$ref": "#/components/responses/BadRequest"
           },
@@ -323,16 +323,16 @@
     },
     "/v1/token/rug": {
       "post": {
-        "summary": "Scan token bundlers with rug-style summary (v1)",
+        "summary": "Rug Predict",
         "description": "Analyze bundler patterns and return a short rug-pull style AI explanation.",
         "tags": [
           "Security Scanning"
         ],
         "requestBody": {
-          "required": true,
+            "required": true,
           "content": {
             "application/json": {
-              "schema": {
+            "schema": {
                 "$ref": "#/components/schemas/ScanBundleRequest"
               }
             }
@@ -362,25 +362,25 @@
   "components": {
     "schemas": {
       "HealthResponse": {
-        "type": "object",
-        "properties": {
+                "type": "object",
+                "properties": {
           "status": {
             "type": "string",
             "example": "healthy",
             "description": "Service health status"
           },
           "service": {
-            "type": "string",
+                    "type": "string",
             "example": "NovaShield Security Engine",
             "description": "Service name"
-          },
+                  },
           "version": {
-            "type": "string",
+                    "type": "string",
             "example": "3.0.0",
             "description": "API version"
-          },
+                  },
           "chain": {
-            "type": "string",
+                    "type": "string",
             "example": "solana",
             "description": "Supported blockchain"
           },
@@ -413,13 +413,13 @@
         }
       },
       "ScanTransactionRequest": {
-        "type": "object",
+                  "type": "object",
         "required": [
           "chain",
           "tx_base64",
           "wallet_address"
         ],
-        "properties": {
+                  "properties": {
           "chain": {
             "type": "string",
             "enum": [
@@ -437,9 +437,9 @@
             "example": "7xKXtg2CW87d97TXJSDpbD5jBkheTqA83TZRuJosgAsU"
           },
           "context": {
-            "type": "object",
+                      "type": "object",
             "description": "Optional context about the transaction origin",
-            "properties": {
+                      "properties": {
               "source": {
                 "type": "string",
                 "enum": [
@@ -475,7 +475,7 @@
         "type": "object",
         "properties": {
           "verdict": {
-            "type": "string",
+                      "type": "string", 
             "enum": [
               "safe",
               "suspicious",
@@ -552,10 +552,10 @@
                     "deltaUi": {
                       "type": "number",
                       "description": "Balance change (negative = outflow)"
-                    }
-                  }
                 }
-              },
+              }
+            }
+          },
               "flags": {
                 "type": "array",
                 "description": "Risk flags triggered",
@@ -579,11 +579,11 @@
                   "err": {
                     "type": "object",
                     "nullable": true
-                  }
-                }
+            }
               }
             }
-          },
+          }
+        },
           "explanations": {
             "type": "array",
             "description": "Human-readable risk explanations",
@@ -617,8 +617,8 @@
         }
       },
       "ScanAddressResponse": {
-        "type": "object",
-        "properties": {
+                  "type": "object",
+                  "properties": {
           "address": {
             "type": "string",
             "description": "The analyzed address"
@@ -662,11 +662,11 @@
             ]
           },
           "metadata": {
-            "type": "object",
+                      "type": "object",
             "description": "Additional address information",
-            "properties": {
+                      "properties": {
               "type": {
-                "type": "string",
+                          "type": "string", 
                 "enum": [
                   "wallet",
                   "program",
@@ -685,11 +685,11 @@
               },
               "tx_count": {
                 "type": "integer"
+                  }
+                }
               }
             }
-          }
-        }
-      },
+          },
       "ScanTokenRequest": {
         "type": "object",
         "required": [
@@ -805,13 +805,13 @@
                     },
                     "locked": {
                       "type": "boolean"
-                    }
-                  }
-                }
-              },
+        }
+      }
+    }
+  },
               "impersonation": {
-                "type": "object",
-                "properties": {
+        "type": "object",
+        "properties": {
                   "is_impersonation": {
                     "type": "boolean"
                   },
@@ -825,11 +825,11 @@
         }
       },
       "ScanDappRequest": {
-        "type": "object",
+            "type": "object",
         "required": [
           "domain"
         ],
-        "properties": {
+            "properties": {
           "domain": {
             "type": "string",
             "description": "dApp domain to analyze",
@@ -918,18 +918,18 @@
                     "type": "array",
                     "items": {
                       "type": "string"
-                    }
-                  }
-                }
-              },
+            }
+          }
+        }
+      },
               "transaction": {
-                "type": "object",
-                "properties": {
+        "type": "object",
+        "properties": {
                   "instructions": {
                     "type": "array",
                     "items": {
-                      "type": "object",
-                      "properties": {
+            "type": "object",
+            "properties": {
                         "program": {
                           "type": "string"
                         },
@@ -937,13 +937,13 @@
                           "type": "string"
                         }
                       }
-                    }
-                  }
-                }
-              },
+            }
+          }
+        }
+      },
               "riskAssessment": {
-                "type": "object",
-                "properties": {
+        "type": "object",
+        "properties": {
                   "score": {
                     "type": "number"
                   },
@@ -1031,10 +1031,10 @@
                 "type": "array",
                 "items": {
                   "type": "string"
-                }
-              }
-            }
-          },
+          }
+        }
+      }
+    },
           "timestamp": {
             "type": "string",
             "format": "date-time"
@@ -1042,12 +1042,12 @@
         }
       },
       "ScanBundleRequest": {
-        "type": "object",
+              "type": "object",
         "required": [
           "chain",
           "mint"
         ],
-        "properties": {
+              "properties": {
           "chain": {
             "type": "string",
             "enum": [
@@ -1069,8 +1069,8 @@
         }
       },
       "BundleAnalysis": {
-        "type": "object",
-        "properties": {
+                  "type": "object",
+                  "properties": {
           "bundlerScore": {
             "type": "integer",
             "description": "0-100, higher means more coordinated/botted"
@@ -1159,8 +1159,8 @@
         }
       },
       "ScanBundleResponse": {
-        "type": "object",
-        "properties": {
+                  "type": "object",
+                  "properties": {
           "mint": {
             "type": "string"
           },
@@ -1224,8 +1224,8 @@
         }
       },
       "ScanBundleRugResponse": {
-        "type": "object",
-        "properties": {
+              "type": "object",
+              "properties": {
           "mint": {
             "type": "string"
           },
@@ -1251,9 +1251,9 @@
             "type": "boolean",
             "example": false
           },
-          "error": {
-            "type": "object",
-            "properties": {
+                "error": {
+                  "type": "object",
+                  "properties": {
               "code": {
                 "type": "string",
                 "example": "INVALID_REQUEST"
