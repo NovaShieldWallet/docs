@@ -5,7 +5,7 @@ description: 'Scoped bug bounty program for Nova multisig security vulnerabiliti
 
 # Security Disclosure & Bug Bounty
 
-Nova welcomes responsible disclosure of security vulnerabilities that directly impact **Nova multisig security**. This program is intentionally narrow in scope and is designed to focus only on issues that can affect multisig approvals and transaction safety.
+Nova welcomes responsible disclosure of security vulnerabilities that directly impact **Nova multisig security**. This program is intentionally narrow in scope and is designed to focus only on issues that can affect multisig approvals and transaction safety. It applies only to the Nova iOS multisig client and the Nova-managed on-chain multisig program at `novatSa4s7wJBHPoCWzyK45Z2N6ky3uYiBEQtw3FjJb`, not to web or other non-iOS frontends.
 
 ## Scope
 
@@ -22,7 +22,7 @@ The following areas are in scope **only when they directly impact Nova multisig 
 | Replay or approval reuse attacks                 | Reuse of prior approvals, signatures, or intents to execute new or modified transactions without fresh, explicit multisig approval.                               |
 | State desynchronization between signers          | Inconsistencies between different signers’ views of multisig state that can be exploited to cause incorrect assumptions about approvals or transaction status.    |
 | Client → on-chain multisig message integrity     | Any manipulation of data between the iOS client and the on-chain multisig program that can alter transaction contents, recipients, or amounts without detection.  |
-| On-chain multisig program behavior (Nova usage)  | Vulnerabilities in the on-chain multisig program **as configured and used by Nova** that can lead to unauthorized transactions or incorrect execution semantics.   |
+| On-chain multisig program behavior (Nova usage)  | Vulnerabilities in the Nova-managed on-chain multisig program at `novatSa4s7wJBHPoCWzyK45Z2N6ky3uYiBEQtw3FjJb` that can lead to unauthorized transactions or incorrect execution semantics.   |
 
 If a bug allows bypassing approvals, miscounting approvals, or executing a transaction incorrectly in a multisig context, it is in scope.
 
@@ -38,6 +38,7 @@ The following categories are explicitly **out of scope** for this program and wi
 | Crash-only bugs                           | Crashes, errors, or panics that do not result in a security impact on multisig approvals or transactions.              |
 | Social engineering                        | Attacks against Nova staff, users, or partners via phishing, fraud, or impersonation.                                   |
 | Phishing or fake apps                     | Malicious third-party apps, wallets, or websites impersonating Nova.                                                    |
+| Other clients and frontends (non-iOS)     | Web dashboards, browser extensions, desktop clients, or third-party apps, even if they interact with the same multisig program address.                         |
 | Third-party RPCs, SDKs, or Solana issues  | Vulnerabilities in underlying Solana network, validators, RPC providers, third-party SDKs, or other external services.  |
 | iOS system vulnerabilities                | Vulnerabilities in iOS, Apple services, or hardware outside of Nova’s apps and infrastructure.                          |
 | Testnet-only behavior                     | Issues that occur only on testnet, devnet, or non-production environments.                                              |
