@@ -1,71 +1,117 @@
 ---
-title: 'Bug Bounty Program'
-description: 'Report security issues in any NovaShield product and earn rewards in $NVAI or SOL.'
+title: 'Security Disclosure & Bug Bounty'
+description: 'Scoped bug bounty program for Nova multisig security vulnerabilities.'
 ---
 
-## Overview
+# Security Disclosure & Bug Bounty
 
-The NovaShield Bug Bounty Program rewards security researchers and community members who help us keep **all NovaShield products** safe, including:
-
-- **iOS wallet** (live)
-- **Web & browser experiences** (including multisig and dashboard – coming soon)
-- **Android wallet** (coming soon)
-- Related backend services and APIs that power these experiences
-
-If you discover a vulnerability or suspicious behavior, please **do not** disclose it publicly. Instead, contact us directly so we can investigate and ship a fix.
-
-## How to Report a Bug
-
-You can report bugs and security issues through either of the following channels:
-
-- **Telegram**: Reach out to our team via Telegram (use the in-app link or the official Telegram listed on the NovaShield website).
-- **Email**: Send details to [hi@nshield.org](mailto:hi@nshield.org).
-
-When reporting, please include:
-
-- **Clear description** of the issue
-- **Steps to reproduce** (if possible)
-- **Expected vs actual behavior**
-- **Screenshots, videos, or logs** if they help demonstrate the issue
-- **Environment details** (iOS/Android version, browser, app version, network, etc.)
-- **Your preferred contact** (for follow-ups and reward coordination)
-
-## Rewards
-
-Eligible reports may receive rewards paid in **$NVAI** or **SOL**, depending on:
-
-- **Severity** of the vulnerability
-- **Impact** on user funds, privacy, or platform integrity
-- **Quality and clarity** of the report
-- **Exploitability** and likelihood of real-world abuse
-
-Rewards are granted at NovaShield’s discretion. We may group related reports or adjust rewards based on overlap with previously reported issues.
+Nova welcomes responsible disclosure of security vulnerabilities that directly impact **Nova multisig security**. This program is intentionally narrow in scope and is designed to focus only on issues that can affect multisig approvals and transaction safety.
 
 ## Scope
 
-In general, the following are **in scope**:
+### In Scope
 
-- **NovaShield iOS wallet app** (core functionality, transaction flows, key management, settings)
-- **Upcoming NovaShield web, multisig, and Android wallet** surfaces
-- **Security checks and warnings** related to transactions, tokens, dApps, and URLs
-- **Backend services and APIs** that directly support NovaShield wallet and security features
-- **Account and data handling** that could impact user privacy or security
+The following areas are in scope **only when they directly impact Nova multisig security**:
 
-The following are generally **out of scope**:
+| Category                                          | Description / Examples                                                                                                                                              |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| iOS multisig approval logic                      | Flaws in how the iOS app enforces or presents multisig approvals that could cause an approval to be recorded or interpreted incorrectly.                          |
+| Multisig transaction creation, signing, execution| Issues in how transactions are built, signed, or executed for multisig that could lead to incorrect or unintended on-chain actions.                               |
+| Threshold enforcement                            | Any issue that allows bypassing, weakening, or miscalculating the required multisig signature threshold.                                                          |
+| Signer authorization and validation              | Bugs that cause an unauthorized signer to be treated as authorized, or that incorrectly validate signer identity or permissions.                                  |
+| Replay or approval reuse attacks                 | Reuse of prior approvals, signatures, or intents to execute new or modified transactions without fresh, explicit multisig approval.                               |
+| State desynchronization between signers          | Inconsistencies between different signers’ views of multisig state that can be exploited to cause incorrect assumptions about approvals or transaction status.    |
+| Client → on-chain multisig message integrity     | Any manipulation of data between the iOS client and the on-chain multisig program that can alter transaction contents, recipients, or amounts without detection.  |
+| On-chain multisig program behavior (Nova usage)  | Vulnerabilities in the on-chain multisig program **as configured and used by Nova** that can lead to unauthorized transactions or incorrect execution semantics.   |
 
-- Issues that require a **jailbroken/rooted** device or non-standard OS modifications
-- **Social engineering**, phishing, or attacks that target individual users instead of NovaShield
-- Third-party services or infrastructure not operated by NovaShield
-- UI/UX bugs that do not affect security or privacy
+If a bug allows bypassing approvals, miscounting approvals, or executing a transaction incorrectly in a multisig context, it is in scope.
 
-If you’re unsure whether something is in scope, feel free to contact us anyway—we’ll let you know.
+### Out of Scope
 
-## Responsible Disclosure
+The following categories are explicitly **out of scope** for this program and will not be considered for rewards:
+
+| Category                                  | Description / Examples                                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| UI / UX issues                            | Visual glitches, layout issues, copy changes, non-security usability problems.                                           |
+| Feature requests                          | Suggestions for new features, design changes, or product improvements.                                                  |
+| Performance issues                        | Latency, non-security-related performance problems, or efficiency concerns without security impact.                     |
+| Crash-only bugs                           | Crashes, errors, or panics that do not result in a security impact on multisig approvals or transactions.              |
+| Social engineering                        | Attacks against Nova staff, users, or partners via phishing, fraud, or impersonation.                                   |
+| Phishing or fake apps                     | Malicious third-party apps, wallets, or websites impersonating Nova.                                                    |
+| Third-party RPCs, SDKs, or Solana issues  | Vulnerabilities in underlying Solana network, validators, RPC providers, third-party SDKs, or other external services.  |
+| iOS system vulnerabilities                | Vulnerabilities in iOS, Apple services, or hardware outside of Nova’s apps and infrastructure.                          |
+| Testnet-only behavior                     | Issues that occur only on testnet, devnet, or non-production environments.                                              |
+| Physical device compromise                | Attacks requiring theft, loss, or direct physical control of a user’s device.                                           |
+| Known or already-public vulnerabilities   | Issues that have already been publicly disclosed or are already known and accepted by Nova.                             |
+| Anything not affecting multisig security  | Any issue that does not measurably affect Nova multisig approval, threshold enforcement, or transaction correctness.    |
+
+> **Before You Submit**
+>
+> - Only issues that directly affect **Nova multisig security** are accepted.
+> - UI bugs, non-security crashes, and feature requests will be ignored.
+> - Reports must include clear reproduction steps and a proof of concept (PoC).
+> - Do not publicly disclose any details of the vulnerability before Nova has confirmed and resolved it.
+
+## Submission Process
+
+All vulnerability reports **must be submitted through the official form**. We do not accept reports via email, social media, GitHub issues, or any other channel.
+
+**Bug Submission Form**  
+[https://tally.so/r/dWEX0A](https://tally.so/r/dWEX0A)
+
+When submitting a report, include at minimum:
+
+- Clear, step-by-step **reproduction instructions**.
+- A **proof of concept (PoC)** demonstrating the impact.
+- **App version** and build, if available.
+- **Device and OS version** (for example: iPhone model and iOS version).
+- Any relevant **wallet addresses**, transaction IDs, or multisig identifiers.
+
+Submissions that lack sufficient detail to reproduce and understand impact may be closed without further review.
+
+## Rewards
+
+Nova may offer monetary rewards for valid reports that:
+
+- Demonstrate a clear, exploitable impact on **Nova multisig security**.
+- Fall within the **In Scope** categories defined above.
+- Are reported privately and responsibly through the official form.
+
+Rewards are:
+
+- **Severity-based** and determined at Nova’s sole discretion.
+- **Paid only after verification and remediation** of the issue.
+- **Not paid for duplicate reports** of an issue that has already been reported by another researcher.
+- Discussed and arranged individually with the researcher after validation (no fixed, pre-published payout amounts).
+
+Submitting a report does **not** guarantee a reward.
+
+## Disclosure Rules
 
 By participating in this program, you agree to:
 
-- Avoid accessing, modifying, or deleting other users’ data
-- Not disrupt or degrade the service for other users
-- Give NovaShield a **reasonable amount of time** to investigate and remediate the issue before any public disclosure
+- **No public disclosure** of the vulnerability or related details until Nova confirms that a fix has been deployed or explicitly authorizes disclosure.
+- **No exploitation beyond what is necessary for proof of concept**:
+  - Do not attempt to move, withdraw, or otherwise access funds that do not belong to you.
+  - Do not intentionally disrupt service availability or degrade the experience for other users.
+- **No access to third-party data or accounts** beyond what is necessary to demonstrate the vulnerability.
+- **No spam or automated submissions**, including bulk scanning without a clear, well-documented finding.
 
-We reserve the right to change, pause, or end the bug bounty program at any time. Thank you for helping keep NovaShield and its users safe.
+Violations of these rules may disqualify you from receiving any reward and may result in additional actions if harm is caused.
+
+## Legal Safe Harbor
+
+Nova is committed to supporting good-faith security research on our multisig systems.
+
+If you:
+
+- Make a good-faith effort to comply with this policy,
+- Limit testing to the scope defined above,
+- Avoid privacy violations, destruction of data, or service degradation, and
+- Report findings promptly and privately through the official form,
+
+then Nova will not initiate legal action against you for your security research activities conducted under this policy.
+
+This safe harbor does **not** apply to actions that are unlawful, that cause harm beyond what is necessary to demonstrate a vulnerability, or that fall outside the scope and rules defined in this document.
+
+> This program is intentionally scoped. Reports unrelated to multisig security will be closed without response.
