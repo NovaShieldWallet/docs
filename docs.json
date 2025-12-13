@@ -92,21 +92,21 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@novashield.space"
+        "href": "https://tally.so/r/zxj40g"
       }
     ]
   },
   "contextual": {
     "options": [
-     "copy",
-     "view",
-     "chatgpt",
-     "claude",
-     "perplexity",
-     "mcp",
-     "cursor",
-     "vscode"
-   ]
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
   },
   "footer": {
     "socials": {
