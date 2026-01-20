@@ -68,7 +68,8 @@
           "ios/tron-multisig-scam",
           "ios/secret-phrase",
           "ios/compliance",
-          "ios/fiat-onramp"
+          "ios/fiat-onramp",
+          "ios/uk-users"
         ]
       }
     ],
