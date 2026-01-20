@@ -1,0 +1,343 @@
+---
+title: 'Fiat On-ramp Compliance'
+description: 'Country availability and compliance documentation for fiat on-ramp providers'
+---
+
+# Fiat Provider Compliance Documentation
+
+> Last Updated: January 2026  
+> For: Apple App Store Review
+
+## Overview
+
+Nova Wallet integrates with **5 licensed third-party fiat on-ramp/off-ramp providers** to enable users to buy and sell cryptocurrency using traditional payment methods. All providers are **fully licensed and regulated** financial services companies that handle their own KYC/AML compliance.
+
+**Important:** Nova Wallet does not process payments directly. All fiat transactions are handled by the third-party providers via their hosted checkout flows.
+
+## Fiat Providers
+
+| Provider | Website | Licenses | Services |
+|----------|---------|----------|----------|
+| **MoonPay** | [moonpay.com](https://www.moonpay.com) | FCA (UK), FinCEN (US), AUSTRAC (AU) | Buy & Sell |
+| **Mercuryo** | [mercuryo.io](https://mercuryo.io) | FCA (UK), Estonian FIU | Buy & Sell |
+| **Transak** | [transak.com](https://www.transak.com) | FCA (UK), FinCEN (US) | Buy & Sell |
+| **Banxa** | [banxa.com](https://banxa.com) | AUSTRAC (AU), FINTRAC (CA), FCA (UK) | Buy & Sell |
+| **Paybis** | [paybis.com](https://paybis.com) | FCA (UK), FinCEN (US) | Buy (Not yet integrated) |
+
+All providers perform their own:
+- Identity verification (KYC)
+- Anti-money laundering (AML) checks
+- Transaction monitoring
+- Sanctions screening
+
+## Country Availability by Provider
+
+### MoonPay (169 Supported Countries)
+
+**Supported Countries:**
+```
+AD, AE, AG, AL, AM, AO, AR, AT, AU, AZ, BA, BE, BG, BH, BI, BJ, BN, BO, BR, BS, 
+BT, BW, BZ, CA, CF, CG, CH, CL, CM, CO, CR, CV, CY, CZ, DE, DJ, DK, DM, DO, DZ, 
+EC, EE, EG, ER, ES, ET, FI, FJ, FM, FR, GA, GB, GD, GE, GH, GI, GM, GN, GQ, GR, 
+GT, GY, HK, HN, HR, HU, ID, IE, IL, IN, IS, IT, JO, KE, KG, KH, KI, KM, KN, KR, 
+KW, KY, KZ, LA, LC, LI, LK, LS, LT, LU, LV, MC, MD, ME, MH, MK, ML, MR, MT, MU, 
+MV, MW, MX, MZ, NA, NE, NL, NO, NP, NR, NZ, OM, OT, PE, PG, PH, PL, PT, PW, PY, 
+QA, RO, RS, RW, SA, SB, SC, SE, SG, SI, SK, SL, SM, SR, ST, SV, SZ, TD, TG, TH, 
+TJ, TL, TM, TN, TO, TR, TT, TV, TW, TZ, US, UY, UZ, VA, VC, VN, VU, WS, ZA, ZM
+```
+
+**Blocked Countries (42):**
+```
+AF (Afghanistan), BB (Barbados), BD (Bangladesh), BF (Burkina Faso), 
+BY (Belarus), CD (DR Congo), CI (Côte d'Ivoire), CN (China), CU (Cuba), 
+EH (Western Sahara), GW (Guinea-Bissau), HT (Haiti), IQ (Iraq), IR (Iran), 
+JM (Jamaica), JP (Japan), KP (North Korea), LB (Lebanon), LR (Liberia), 
+LY (Libya), MA (Morocco), MG (Madagascar), MM (Myanmar), MN (Mongolia), 
+MY (Malaysia), NG (Nigeria), NI (Nicaragua), PA (Panama), PK (Pakistan), 
+PS (Palestine), RU (Russia), SD (Sudan), SN (Senegal), SO (Somalia), 
+SS (South Sudan), SY (Syria), UA (Ukraine), UG (Uganda), VE (Venezuela), 
+XK (Kosovo), YE (Yemen), ZW (Zimbabwe)
+```
+
+**Why These Countries Are Blocked:**
+- **Sanctions Compliance:** Countries under OFAC (Office of Foreign Assets Control) sanctions including Iran, North Korea, Syria, Cuba, Russia, Belarus
+- **Regulatory Restrictions:** Countries where cryptocurrency regulations prohibit or restrict fiat on-ramp services (China, Bangladesh, Pakistan)
+- **Compliance Requirements:** Countries where MoonPay cannot meet local regulatory requirements or lacks necessary licenses
+- **Risk Management:** Countries with high financial crime risk or unstable regulatory environments
+
+**References:**
+- [MoonPay Terms of Service](https://www.moonpay.com/legal/terms-of-use)
+- [MoonPay Compliance](https://www.moonpay.com/compliance)
+
+---
+
+### Mercuryo (199 Supported Countries)
+
+**Supported Countries:**
+```
+AD, AE, AG, AI, AL, AM, AR, AT, AU, AW, AZ, BA, BE, BF, BG, BH, BJ, BL, BM, BN, 
+BQ, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CH, CI, CK, CM, CV, CW, CX, CY, CZ, DE, 
+DJ, DK, DM, DO, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, 
+GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GY, HK, HM, HR, HU, ID, IE, IL, IM, IN, 
+IO, IT, JE, JM, JO, JP, KE, KI, KM, KN, KR, KW, KY, KZ, LA, LC, LI, LK, LS, LT, 
+LU, LV, MC, MD, ME, MF, MG, MH, MK, MN, MO, MQ, MR, MS, MT, MU, MV, MW, MX, MY, 
+MZ, NA, NC, NE, NF, NG, NL, NO, NR, NU, NZ, OM, PE, PH, PL, PM, PN, PR, PT, PW, 
+PY, QA, RE, RO, RS, RU, RW, SB, SC, SE, SG, SH, SI, SJ, SK, SM, SN, SR, ST, SV, 
+SX, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TO, TR, TT, TV, TW, TZ, UA, UG, UM, 
+US, UY, UZ, VA, VC, VG, VN, VU, WF, WS, YT, ZA, ZM
+```
+
+**Why Countries May Be Blocked:**
+Mercuryo determines blocked countries based on their internal compliance policies and real-time sanctions screening. Restrictions are typically applied for:
+- OFAC and EU sanctions compliance
+- Local regulatory requirements
+- Risk assessment and AML policies
+- Real-time sanctions list updates
+
+**References:**
+- [Mercuryo Terms of Service](https://mercuryo.io/legal/terms)
+- [Mercuryo Privacy Policy](https://mercuryo.io/legal/privacy)
+
+---
+
+### Banxa (Dynamic Country List)
+
+Banxa supports approximately **100+ countries** and determines availability dynamically based on:
+- User's IP address geolocation
+- Payment method availability
+- Local regulatory requirements
+
+**Generally Supported Regions:**
+- Europe (EU/EEA)
+- United Kingdom
+- Australia & New Zealand
+- Canada
+- United States (select states)
+- Southeast Asia
+- Latin America
+
+**Why Availability Varies:**
+- **State-Level Regulations (US):** Different US states have varying cryptocurrency regulations, affecting availability
+- **Payment Method Restrictions:** Some payment methods (credit cards, bank transfers) may not be available in all countries
+- **Regulatory Compliance:** Banxa must comply with local financial services regulations in each jurisdiction
+- **Licensing Requirements:** Availability depends on Banxa's licensing status in each country
+
+**References:**
+- [Banxa Terms of Service](https://banxa.com/terms-of-service)
+- [Banxa Compliance](https://banxa.com/compliance)
+
+---
+
+### Transak (Dynamic Country List)
+
+Transak supports approximately **150+ countries** with real-time availability checks based on:
+- User location
+- Cryptocurrency type
+- Payment method
+
+**Generally Supported Regions:**
+- Europe (EU/EEA)
+- United Kingdom
+- United States (select states)
+- India
+- Southeast Asia
+- Latin America
+- Africa
+
+**Why Availability Varies:**
+- **Cryptocurrency-Specific Restrictions:** Some cryptocurrencies may be restricted in certain countries due to regulatory concerns
+- **Payment Method Availability:** Different payment methods have different country coverage
+- **Real-Time Compliance:** Transak performs real-time checks against sanctions lists and regulatory requirements
+- **State-Level Regulations:** US state regulations affect availability within the United States
+
+**References:**
+- [Transak Terms of Service](https://transak.com/terms-of-service)
+- [Transak Compliance](https://transak.com/compliance)
+
+---
+
+### Paybis (Hardcoded Country List)
+
+**Supported Countries (180+):**
+```
+AD, AE, AG, AI, AL, AM, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, 
+BG, BH, BI, BJ, BL, BM, BN, BO, BQ, BR, BS, BT, BV, BW, BZ, CA, CC, CH, CI, CK, 
+CL, CM, CN, CO, CR, CW, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, ER, ES, 
+FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, 
+GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IS, IT, JE, 
+JM, JO, JP, KE, KG, KH, KI, KM, KN, KR, KW, KY, KZ, LA, LC, LI, LK, LR, LS, LT, 
+LU, LV, MA, MC, MD, ME, MF, MG, MH, MK, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, 
+MX, MY, MZ, NA, NC, NE, NF, NG, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, 
+PK, PL, PM, PN, PR, PT, PW, PY, QA, RE, RO, RS, RW, SA, SB, SC, SE, SG, SH, SI, 
+SJ, SK, SL, SM, SN, SR, ST, SV, SX, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, 
+TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VG, VI, VN, VU, WF, WS, 
+YT, ZA, ZM, ZW
+```
+
+**Restricted Countries (22) - OFAC & Conflict Zones:**
+```
+AF (Afghanistan)     - Armed conflict / OFAC sanctions
+BY (Belarus)         - OFAC sanctions
+CD (DR Congo)        - Armed conflict
+CF (Central African Republic) - Armed conflict
+CU (Cuba)            - OFAC comprehensive sanctions
+EH (Western Sahara)  - Disputed territory
+ET (Ethiopia)        - Armed conflict
+IQ (Iraq)            - OFAC sanctions
+IR (Iran)            - OFAC comprehensive sanctions
+KP (North Korea)     - OFAC comprehensive sanctions
+LB (Lebanon)         - Partial OFAC sanctions
+LY (Libya)           - OFAC sanctions
+ML (Mali)            - Armed conflict / sanctions
+MM (Myanmar)         - OFAC sanctions
+NI (Nicaragua)       - OFAC sanctions
+PS (Palestine)       - Restricted territory
+RU (Russia)          - OFAC sanctions (2022+)
+SD (Sudan)           - OFAC sanctions
+SO (Somalia)         - OFAC sanctions
+SS (South Sudan)     - OFAC sanctions
+SY (Syria)           - OFAC comprehensive sanctions
+YE (Yemen)           - Armed conflict / sanctions
+```
+
+**Why These Countries Are Blocked:**
+- **OFAC Sanctions:** Countries subject to US Treasury Department sanctions (Iran, North Korea, Syria, Cuba, Russia, Belarus, etc.)
+- **Armed Conflicts:** Countries experiencing active armed conflicts that pose compliance and operational risks
+- **Disputed Territories:** Regions with unclear sovereignty or territorial disputes
+- **Regulatory Compliance:** Paybis blocks these countries to comply with international sanctions and maintain regulatory compliance
+
+**References:**
+- [Paybis Terms of Service](https://paybis.com/en/terms)
+- [Paybis Privacy Policy](https://paybis.com/en/privacy)
+
+---
+
+## Swap/DEX Feature Restrictions
+
+For decentralized exchange (DEX) swaps, the app restricts access only from **OFAC-sanctioned countries**:
+
+- **KP** (North Korea) - OFAC Comprehensive Sanctions
+- **IR** (Iran) - OFAC Comprehensive Sanctions
+- **SY** (Syria) - OFAC Comprehensive Sanctions
+- **CU** (Cuba) - OFAC Comprehensive Sanctions
+
+Users from these regions see: *"Swaps are not available in your region due to regulatory restrictions."*
+
+**Why These Restrictions Exist:**
+- **OFAC Compliance:** US Treasury Department sanctions prohibit US persons and entities from engaging in financial transactions with these countries
+- **Apple App Store Guidelines:** Compliance with Apple Guideline 3.1.5 regarding financial services and regional restrictions
+- **Regulatory Requirements:** Ensuring compliance with international sanctions regimes
+
+---
+
+## How Restrictions Are Enforced
+
+### 1. IP-Based Geolocation
+- User's IP address is detected on API requests
+- Backend determines country via IP geolocation service
+- Providers check if country is in their allowed list
+
+### 2. Provider-Level Enforcement
+Each provider maintains their own country allowlist and blocklist, which is checked before allowing any transaction to proceed.
+
+### 3. Per-Asset Restrictions
+Some cryptocurrencies have additional country restrictions beyond the provider level, based on regulatory concerns or licensing requirements.
+
+### 4. Real-Time Sanctions Screening
+All providers perform real-time sanctions screening during:
+- Account creation
+- Each transaction
+- Periodic re-verification
+
+---
+
+## KYC/AML Compliance
+
+All KYC/AML verification is handled by the third-party providers:
+
+| Provider | KYC Level | Documents Required |
+|----------|-----------|-------------------|
+| MoonPay | Tiered | ID + Selfie (for higher limits) |
+| Mercuryo | Full | ID + Selfie + Proof of Address |
+| Transak | Tiered | ID + Selfie (for higher limits) |
+| Banxa | Full | ID + Selfie |
+| Paybis | Full | ID + Selfie + Proof of Address |
+
+**Nova Wallet does not collect, store, or process any user identity documents.**
+
+All providers are licensed financial services companies that comply with:
+- **FATF (Financial Action Task Force)** recommendations
+- **Local AML/CFT regulations** in their jurisdictions
+- **Sanctions screening** against OFAC, UN, EU, and other sanctions lists
+- **Transaction monitoring** for suspicious activity
+
+---
+
+## Error Messages
+
+Users in restricted regions see appropriate error messages:
+
+| Error Code | Message |
+|------------|---------|
+| `UnsupportedCountry` | "Service not available in your country" |
+| `UnsupportedCountryAsset` | "This cryptocurrency is not available in your country" |
+| `FiatSellNotAllowed` | "Selling crypto is not available in your region" |
+| `SwapRestricted` | "Swaps are not available in your region due to regulatory restrictions" |
+
+---
+
+## Compliance Verification
+
+### Provider Licenses & Registrations
+
+**MoonPay:**
+- FCA (Financial Conduct Authority) - UK: [FCA Register](https://register.fca.org.uk/)
+- FinCEN (Financial Crimes Enforcement Network) - US: MSB Registration
+- AUSTRAC (Australian Transaction Reports and Analysis Centre) - Australia: Registration
+
+**Mercuryo:**
+- FCA (Financial Conduct Authority) - UK: [FCA Register](https://register.fca.org.uk/)
+- Estonian FIU (Financial Intelligence Unit) - Estonia: Registration
+
+**Transak:**
+- FCA (Financial Conduct Authority) - UK: [FCA Register](https://register.fca.org.uk/)
+- FinCEN (Financial Crimes Enforcement Network) - US: MSB Registration
+
+**Banxa:**
+- AUSTRAC (Australian Transaction Reports and Analysis Centre) - Australia: Registration
+- FINTRAC (Financial Transactions and Reports Analysis Centre) - Canada: Registration
+- FCA (Financial Conduct Authority) - UK: [FCA Register](https://register.fca.org.uk/)
+
+**Paybis:**
+- FCA (Financial Conduct Authority) - UK: [FCA Register](https://register.fca.org.uk/)
+- FinCEN (Financial Crimes Enforcement Network) - US: MSB Registration
+
+### Regulatory Compliance
+
+All providers comply with:
+- **Anti-Money Laundering (AML)** regulations in their jurisdictions
+- **Know Your Customer (KYC)** requirements
+- **Counter-Terrorism Financing (CFT)** regulations
+- **International sanctions** (OFAC, UN, EU)
+- **Data protection** regulations (GDPR, CCPA, etc.)
+
+---
+
+## Contact Information
+
+For compliance inquiries:
+- **MoonPay:** [compliance@moonpay.com](mailto:compliance@moonpay.com)
+- **Mercuryo:** [compliance@mercuryo.io](mailto:compliance@mercuryo.io)
+- **Transak:** [compliance@transak.com](mailto:compliance@transak.com)
+- **Banxa:** [compliance@banxa.com](mailto:compliance@banxa.com)
+- **Paybis:** [compliance@paybis.com](mailto:compliance@paybis.com)
+
+**Nova Wallet Compliance:** [support@novashield.space](mailto:support@novashield.space)
+
+---
+
+## Version History
+
+| Version | Date | Changes |
+|---------|------|---------|
+| 1.0 | Jan 2026 | Initial documentation |

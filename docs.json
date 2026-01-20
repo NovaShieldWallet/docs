@@ -67,7 +67,8 @@
           "ios/safari-extension",
           "ios/tron-multisig-scam",
           "ios/secret-phrase",
-          "ios/compliance"
+          "ios/compliance",
+          "ios/fiat-onramp"
         ]
       }
     ],
